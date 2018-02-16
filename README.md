@@ -16,18 +16,18 @@ Nama Sekolah
 
 - Development snapshot
 ```bash
-$ composer require bantenprov/group-egovernment:dev-master
+$ composer require bantenprov/sekolah:dev-master
 ```
 - Latest release:
 
 ```bash
-$ composer require bantenprov/group-egovernment
+$ composer require bantenprov/sekolah
 ```
 
 ### Download via github
 ~~~
 bash
-$ git clone https://github.com/bantenprov/group-egovernment.git
+$ git clone https://github.com/bantenprov/sekolah.git
 ~~~
 
 #### Edit `config/app.php` :
@@ -58,7 +58,7 @@ $ php artisan migrate
 #### Publish database seeder :
 
 ```bash
-$ php artisan vendor:publish --tag=group-egovernment-seeds
+$ php artisan vendor:publish --tag=sekolah-seeds
 ```
 
 #### Lakukan Auto Dump :
@@ -76,7 +76,7 @@ $ php artisan db:seed --class=Bantenprov_GroupEgovernmentSeeder
 #### Lakukan publish component vue :
 
 ```bash
-$ php artisan vendor:publish --tag=group-egovernment-assets
+$ php artisan vendor:publish --tag=sekolah-assets
 ```
 #### Tambahkan route di dalam file : `resources/assets/js/routes.js` :
 
@@ -88,9 +88,9 @@ $ php artisan vendor:publish --tag=group-egovernment-assets
     children: [
         //== ...
         {
-            path: '/admin/group-egovernment',
+            path: '/admin/sekolah',
             components: {
-                main: resolve => require(['./components/bantenprov/group-egovernment/index.vue'], resolve),
+                main: resolve => require(['./components/bantenprov/sekolah/index.vue'], resolve),
                 navbar: resolve => require(['./components/Navbar.vue'], resolve),
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
@@ -99,9 +99,9 @@ $ php artisan vendor:publish --tag=group-egovernment-assets
             }
         },
         {
-            path: '/admin/group-egovernment/create',
+            path: '/admin/sekolah/create',
             components: {
-                main: resolve => require(['./components/bantenprov/group-egovernment/create.vue'], resolve),
+                main: resolve => require(['./components/bantenprov/sekolah/create.vue'], resolve),
                 navbar: resolve => require(['./components/Navbar.vue'], resolve),
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
@@ -110,9 +110,9 @@ $ php artisan vendor:publish --tag=group-egovernment-assets
             }
         },
         {
-            path: '/admin/group-egovernment/:id',
+            path: '/admin/sekolah/:id',
             components: {
-                main: resolve => require(['./components/bantenprov/group-egovernment/show.vue'], resolve),
+                main: resolve => require(['./components/bantenprov/sekolah/show.vue'], resolve),
                 navbar: resolve => require(['./components/Navbar.vue'], resolve),
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
@@ -121,9 +121,9 @@ $ php artisan vendor:publish --tag=group-egovernment-assets
             }
         },
         {
-            path: '/admin/group-egovernment/:id/edit',
+            path: '/admin/sekolah/:id/edit',
             components: {
-                main: resolve => require(['./components/bantenprov/group-egovernment/edit.vue'], resolve),
+                main: resolve => require(['./components/bantenprov/sekolah/edit.vue'], resolve),
                 navbar: resolve => require(['./components/Navbar.vue'], resolve),
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
@@ -147,7 +147,7 @@ $ php artisan vendor:publish --tag=group-egovernment-assets
         //== ...
         {
             name: 'Group Government',
-            link: '/admin/group-egovernment',
+            link: '/admin/sekolah',
             icon: 'fa fa-angle-double-right'
         },
         //== ...
