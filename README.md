@@ -45,7 +45,7 @@ $ git clone https://github.com/bantenprov/sekolah.git
     Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class,
     Illuminate\Cookie\CookieServiceProvider::class,
     //....
-    Bantenprov\GroupEgovernment\GroupEgovernmentServiceProvider::class,
+    Bantenprov\Sekolah\SekolahServiceProvider::class,
 
 ```
 
@@ -70,7 +70,7 @@ $ composer dump-autoload
 #### Lakukan Seeding :
 
 ```bash
-$ php artisan db:seed --class=Bantenprov_GroupEgovernmentSeeder
+$ php artisan db:seed --class=Bantenprov_SekolahSeeder
 ```
 
 #### Lakukan publish component vue :
@@ -95,7 +95,7 @@ $ php artisan vendor:publish --tag=sekolah-assets
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
             meta: {
-                title: "Group Government"
+                title: "Sekolah"
             }
         },
         {
@@ -106,7 +106,7 @@ $ php artisan vendor:publish --tag=sekolah-assets
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
             meta: {
-                title: "Add Group Government"
+                title: "Add Sekolah"
             }
         },
         {
@@ -117,7 +117,7 @@ $ php artisan vendor:publish --tag=sekolah-assets
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
             meta: {
-                title: "View Group Government"
+                title: "View Sekolah"
             }
         },
         {
@@ -128,7 +128,7 @@ $ php artisan vendor:publish --tag=sekolah-assets
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
             meta: {
-                title: "Edit Group Government"
+                title: "Edit Sekolah"
             }
         },
         //== ...
@@ -146,7 +146,7 @@ $ php artisan vendor:publish --tag=sekolah-assets
     childItem: [
         //== ...
         {
-            name: 'Group Government',
+            name: 'Sekolah',
             link: '/admin/sekolah',
             icon: 'fa fa-angle-double-right'
         },
