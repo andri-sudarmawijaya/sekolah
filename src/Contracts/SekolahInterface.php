@@ -1,4 +1,6 @@
-<?php namespace Bantenprov\Sekolah\Contracts;
+<?php
+
+namespace Bantenprov\Sekolah\Contracts;
 
 /**
  * The SekolahInterface interface
