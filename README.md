@@ -153,3 +153,47 @@ $ php artisan vendor:publish --tag=sekolah-assets
         //== ...
     ]
 },
+```
+
+#### Tambahkan components `resources/assets/js/components.js` :
+
+```javascript
+//== Sekolah
+
+import Sekolah from './components/bantenprov/sekolah/Sekolah.chart.vue';
+Vue.component('echarts-sekolah', Sekolah);
+
+import SekolahKota from './components/bantenprov/sekolah/SekolahKota.chart.vue';
+Vue.component('echarts-sekolah-kota', SekolahKota);
+
+import SekolahTahun from './components/bantenprov/sekolah/SekolahTahun.chart.vue';
+Vue.component('echarts-sekolah-tahun', SekolahTahun);
+
+import SekolahAdminShow from './components/bantenprov/sekolah/SekolahAdmin.show.vue';
+Vue.component('admin-view-sekolah-tahun', SekolahAdminShow);
+
+//== Echarts Group Egoverment
+
+import SekolahBar01 from './components/views/bantenprov/sekolah/SekolahBar01.vue';
+Vue.component('sekolah-bar-01', SekolahBar01);
+
+import SekolahBar02 from './components/views/bantenprov/sekolah/SekolahBar02.vue';
+Vue.component('sekolah-bar-02', SekolahBar02);
+
+//== mini bar charts
+import SekolahBar03 from './components/views/bantenprov/sekolah/SekolahBar03.vue';
+Vue.component('sekolah-bar-03', SekolahBar03);
+
+import SekolahPie01 from './components/views/bantenprov/sekolah/SekolahPie01.vue';
+Vue.component('sekolah-pie-01', SekolahPie01);
+
+import SekolahPie02 from './components/views/bantenprov/sekolah/SekolahPie02.vue';
+Vue.component('sekolah-pie-02', SekolahPie02);
+
+//== mini pie charts
+
+
+import SekolahPie03 from './components/views/bantenprov/sekolah/SekolahPie03.vue';
+Vue.component('sekolah-pie-03', SekolahPie03);
+
+```
