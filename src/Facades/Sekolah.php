@@ -1,4 +1,6 @@
-<?php namespace Bantenprov\Sekolah\Facades;
+<?php
+
+namespace Bantenprov\Sekolah\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
@@ -8,7 +10,7 @@ use Illuminate\Support\Facades\Facade;
  * @package Bantenprov\Sekolah
  * @author  bantenprov <developer.bantenprov@gmail.com>
  */
-class Sekolah extends Facade
+class SekolahFacade extends Facade
 {
     /**
      * Get the registered name of the component.

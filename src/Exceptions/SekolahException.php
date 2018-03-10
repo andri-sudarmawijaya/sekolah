@@ -1,4 +1,6 @@
-<?php namespace Bantenprov\Sekolah\Exceptions;
+<?php
+
+namespace Bantenprov\Sekolah\Exceptions;
 
 use Exception;
 

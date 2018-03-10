@@ -13,7 +13,6 @@ use Bantenprov\Sekolah\Console\Commands\SekolahCommand;
  */
 class SekolahServiceProvider extends ServiceProvider
 {
-
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -28,7 +27,6 @@ class SekolahServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Bootstrap handles
         $this->routeHandle();
         $this->configHandle();
         $this->langHandle();
@@ -36,6 +34,7 @@ class SekolahServiceProvider extends ServiceProvider
         $this->assetHandle();
         $this->migrationHandle();
         $this->publicHandle();
+        $this->seedHandle();
     }
 
     /**
@@ -70,16 +69,6 @@ class SekolahServiceProvider extends ServiceProvider
     }
 
     /**
-     * Loading package routes
-     *
-     * @return void
-     */
-    protected function routeHandle()
-    {
-        $this->loadRoutesFrom(__DIR__.'/routes/routes.php');
-    }
-
-    /**
      * Loading and publishing package's config
      *
      * @return void
@@ -93,7 +82,17 @@ class SekolahServiceProvider extends ServiceProvider
 
         $this->publishes([
             $packageConfigPath => $appConfigPath,
-        ], 'config');
+        ], 'sekolah-config');
+    }
+
+    /**
+     * Loading package routes
+     *
+     * @return void
+     */
+    protected function routeHandle()
+    {
+        $this->loadRoutesFrom(__DIR__.'/routes/routes.php');
     }
 
     /**
@@ -109,7 +108,7 @@ class SekolahServiceProvider extends ServiceProvider
 
         $this->publishes([
             $packageTranslationsPath => resource_path('lang/vendor/sekolah'),
-        ], 'lang');
+        ], 'sekolah-lang');
     }
 
     /**
@@ -125,7 +124,7 @@ class SekolahServiceProvider extends ServiceProvider
 
         $this->publishes([
             $packageViewsPath => resource_path('views/vendor/sekolah'),
-        ], 'views');
+        ], 'sekolah-views');
     }
 
     /**
@@ -155,7 +154,7 @@ class SekolahServiceProvider extends ServiceProvider
 
         $this->publishes([
             $packageMigrationsPath => database_path('migrations')
-        ], 'migrations');
+        ], 'sekolah-migrations');
     }
 
     public function publicHandle()
@@ -165,5 +164,14 @@ class SekolahServiceProvider extends ServiceProvider
         $this->publishes([
             $packagePublicPath => base_path('public')
         ], 'sekolah-public');
+    }
+
+    public function seedHandle()
+    {
+        $packageSeedPath = __DIR__.'/database/seeds';
+
+        $this->publishes([
+            $packageSeedPath => base_path('database/seeds')
+        ], 'sekolah-seeds');
     }
 }

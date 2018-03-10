@@ -2,7 +2,7 @@
   <div>
 
     <div class="card mb-3">
-      <div class="card-header">Grafik Produk Domestik Regional Bruto</div>
+      <div class="card-header">Grafik Sekolah</div>
       <div class="card-body">
         <echarts-sekolah></echarts-sekolah>
       </div><!-- /.card-body -->

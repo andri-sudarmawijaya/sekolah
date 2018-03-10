@@ -1,4 +1,6 @@
-<?php namespace Bantenprov\Sekolah\Console\Commands;
+<?php
+
+namespace Bantenprov\Sekolah\Console\Commands;
 
 use Illuminate\Console\Command;
 
@@ -10,7 +12,6 @@ use Illuminate\Console\Command;
  */
 class SekolahCommand extends Command
 {
-
     /**
      * The name and signature of the console command.
      *
