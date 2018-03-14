@@ -82,15 +82,9 @@ $ php artisan vendor:publish --tag=sekolah-assets
 
 ```javascript
 {
-    path: '/admin',
-    redirect: '/admin/dashboard/home',
-    component: layout('Default'),
-    children: [
-        //== ...
-        {
             path: '/admin/sekolah',
             components: {
-                main: resolve => require(['./components/bantenprov/sekolah/index.vue'], resolve),
+                main: resolve => require(['./components/bantenprov/sekolah/Sekolah.index.vue'], resolve),
                 navbar: resolve => require(['./components/Navbar.vue'], resolve),
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
@@ -101,7 +95,7 @@ $ php artisan vendor:publish --tag=sekolah-assets
         {
             path: '/admin/sekolah/create',
             components: {
-                main: resolve => require(['./components/bantenprov/sekolah/create.vue'], resolve),
+                main: resolve => require(['./components/bantenprov/sekolah/Sekolah.add.vue'], resolve),
                 navbar: resolve => require(['./components/Navbar.vue'], resolve),
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
@@ -112,7 +106,7 @@ $ php artisan vendor:publish --tag=sekolah-assets
         {
             path: '/admin/sekolah/:id',
             components: {
-                main: resolve => require(['./components/bantenprov/sekolah/show.vue'], resolve),
+                main: resolve => require(['./components/bantenprov/sekolah/Sekolah.show.vue'], resolve),
                 navbar: resolve => require(['./components/Navbar.vue'], resolve),
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
@@ -123,7 +117,7 @@ $ php artisan vendor:publish --tag=sekolah-assets
         {
             path: '/admin/sekolah/:id/edit',
             components: {
-                main: resolve => require(['./components/bantenprov/sekolah/edit.vue'], resolve),
+                main: resolve => require(['./components/bantenprov/sekolah/Sekolah.edit.vue'], resolve),
                 navbar: resolve => require(['./components/Navbar.vue'], resolve),
                 sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
             },
