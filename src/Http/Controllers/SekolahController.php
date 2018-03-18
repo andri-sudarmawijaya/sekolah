@@ -6,7 +6,7 @@ namespace Bantenprov\Sekolah\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Bantenprov\Sekolah\Facades\SekolahFacade;
-
+use App\User;
 /* Models */
 use Bantenprov\Sekolah\Models\Bantenprov\Sekolah\Sekolah;
 
@@ -26,9 +26,11 @@ class SekolahController extends Controller
      *
      * @return void
      */
-    public function __construct(Sekolah $sekolah)
+    protected $user;
+    public function __construct(Sekolah $sekolah, User $user)
     {
         $this->sekolah = $sekolah;
+        $this->user = $user;
     }
 
     /**
@@ -57,6 +59,10 @@ class SekolahController extends Controller
         $perPage = request()->has('per_page') ? (int) request()->per_page : null;
         $response = $query->paginate($perPage);
 
+        foreach($response as $user){
+            array_set($response->data, 'user', $user->user->name);
+        }
+
         return response()->json($response)
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', 'GET');
@@ -68,13 +74,16 @@ class SekolahController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        $sekolah = $this->sekolah;
+    {        
+        $users = $this->user->all();
 
-        $response['sekolah'] = $sekolah;
+        foreach($users as $user){
+            array_set($user, 'label', $user->name);
+        }
+        
+        $response['user'] = $users;
         $response['status'] = true;
-
-        return response()->json($sekolah);
+        return response()->json($response);
     }
 
     /**
@@ -88,8 +97,13 @@ class SekolahController extends Controller
         $sekolah = $this->sekolah;
 
         $validator = Validator::make($request->all(), [
-            'label' => 'required|max:16|unique:sekolahs,label',
-            'description' => 'max:255',
+            'label'         => 'required|max:16|unique:sekolahs,label',
+            'description'   => 'required',
+            'npsn'          => 'required',
+            'alamat'        => 'required',
+            'logo'          => 'required',
+            'foto_gedung'   => 'required',
+            'user_id'       => 'required',
         ]);
 
         if($validator->fails()){
@@ -98,16 +112,26 @@ class SekolahController extends Controller
             if ($check > 0) {
                 $response['message'] = 'Failed, label ' . $request->label . ' already exists';
             } else {
-                $sekolah->label = $request->input('label');
-                $sekolah->description = $request->input('description');
+                $sekolah->label         = $request->input('label');
+                $sekolah->description   = $request->input('description');
+                $sekolah->npsn          = $request->input('npsn');
+                $sekolah->alamat        = $request->input('alamat');
+                $sekolah->logo          = $request->input('logo');
+                $sekolah->foto_gedung   = $request->input('foto_gedung');
+                $sekolah->user_id       = $request->input('user_id');
                 $sekolah->save();
 
                 $response['message'] = 'success';
             }
         } else {
-            $sekolah->label = $request->input('label');
-            $sekolah->description = $request->input('description');
-            $sekolah->save();
+                $sekolah->label         = $request->input('label');
+                $sekolah->description   = $request->input('description');
+                $sekolah->npsn          = $request->input('npsn');
+                $sekolah->alamat        = $request->input('alamat');
+                $sekolah->logo          = $request->input('logo');
+                $sekolah->foto_gedung   = $request->input('foto_gedung');
+                $sekolah->user_id       = $request->input('user_id');
+                $sekolah->save();
 
             $response['message'] = 'success';
         }
@@ -127,6 +151,8 @@ class SekolahController extends Controller
     {
         $sekolah = $this->sekolah->findOrFail($id);
 
+        array_set($sekolah, 'user', $sekolah->user->name);
+
         $response['sekolah'] = $sekolah;
         $response['status'] = true;
 
@@ -144,6 +170,7 @@ class SekolahController extends Controller
         $sekolah = $this->sekolah->findOrFail($id);
 
         $response['sekolah'] = $sekolah;
+        $response['user'] = $sekolah->user;
         $response['status'] = true;
 
         return response()->json($response);
@@ -163,13 +190,24 @@ class SekolahController extends Controller
         if ($request->input('old_label') == $request->input('label'))
         {
             $validator = Validator::make($request->all(), [
-                'label' => 'required|max:16',
-                'description' => 'max:255',
+                'label'         => 'required',
+                'description'   => 'required',
+                'user_id'       => 'required',
+                'npsn'          => 'required',
+                'alamat'        => 'required',
+                'logo'          => 'required',
+                'foto_gedung'   => 'required',
+
             ]);
         } else {
             $validator = Validator::make($request->all(), [
-                'label' => 'required|max:16|unique:sekolahs,label',
-                'description' => 'max:255',
+                'label'         => 'required',
+                'description'   => 'required',
+                'user_id'       => 'required',
+                'npsn'          => 'required',
+                'alamat'        => 'required',
+                'logo'          => 'required',
+                'foto_gedung'   => 'required',
             ]);
         }
 
@@ -179,15 +217,25 @@ class SekolahController extends Controller
             if ($check > 0) {
                 $response['message'] = 'Failed, label ' . $request->label . ' already exists';
             } else {
-                $sekolah->label = $request->input('label');
-                $sekolah->description = $request->input('description');
+                $sekolah->label         = $request->input('label');
+                $sekolah->description   = $request->input('description');
+                $sekolah->user_id       = $request->input('user_id');
+                $sekolah->npsn          = $request->input('npsn');
+                $sekolah->alamat        = $request->input('alamat');
+                $sekolah->logo          = $request->input('logo');
+                $sekolah->foto_gedung   = $request->input('foto_gedung');
                 $sekolah->save();
 
                 $response['message'] = 'success';
             }
         } else {
-            $sekolah->label = $request->input('label');
-            $sekolah->description = $request->input('description');
+            $sekolah->label         = $request->input('label');
+            $sekolah->description   = $request->input('description');
+            $sekolah->user_id       = $request->input('user_id');
+            $sekolah->npsn          = $request->input('npsn');
+            $sekolah->alamat        = $request->input('alamat');
+            $sekolah->logo          = $request->input('logo');
+            $sekolah->foto_gedung   = $request->input('foto_gedung');
             $sekolah->save();
 
             $response['message'] = 'success';
