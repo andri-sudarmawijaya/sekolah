@@ -26,7 +26,35 @@
           </div>
         </div>
 
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <b>Username :</b> {{ model.user.name }}
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <b>NPSN :</b> {{ model.npsn }}
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <b>Alamat :</b> {{ model.alamat }}
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <b>Logo :</b> {{ model.logo }}
+          </div>
+        </div>
         
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <b>Foto Gedung :</b> {{ model.foto_gedung }}
+          </div>
+        </div>
         
       </vue-form>
     </div>
@@ -39,16 +67,32 @@ export default {
     axios.get('api/sekolah/' + this.$route.params.id)
       .then(response => {
         if (response.data.status == true) {
-          this.model.label = response.data.sekolah.label;
-          this.model.old_label = response.data.sekolah.label;
-          this.model.description = response.data.sekolah.description;
-        } else {
+          this.model.label          = response.data.sekolah.label;
+          this.model.old_label      = response.data.sekolah.label;
+          this.model.description    = response.data.sekolah.description;
+          this.model.user           = response.data.sekolah.user;
+          this.model.npsn           = response.data.sekolah.npsn;
+          this.model.alamat         = response.data.sekolah.alamat;
+          this.model.logo           = response.data.sekolah.logo;
+          this.model.foto_gedung    = response.data.sekolah.foto_gedung;
+
+        } 
+        else {
           alert('Failed');
         }
       })
       .catch(function(response) {
         alert('Break');
         window.location.href = '#/admin/sekolah';
+      }),
+      axios.get('api/sekolah/create')
+      .then(response => {           
+          response.data.user.forEach(element => {
+            this.user.push(element);
+          });
+      })
+      .catch(function(response) {
+        alert('Break');
       })
 
   },
@@ -56,11 +100,15 @@ export default {
     return {
       state: {},
       model: {
-        label: "",
-        description: "",
-        pendaftaran: "",
+        label:        "",
+        description:  "",
+        user_id:      "",
+        npsn:         "",
+        alamat:       "",
+        logo:         "",
+        foto_gedung:  "",
       },
-      pendaftaran: []
+      user: []
     }
   },
   methods: {
@@ -71,10 +119,14 @@ export default {
         return;
       } else {
         axios.put('api/sekolah/' + this.$route.params.id, {
-            label: this.model.label,
-            description: this.model.description,
-            old_label: this.model.old_label,
-            pendaftaran_id: this.model.pendaftaran.id
+            label:        this.model.label,
+            description:  this.model.description,
+            old_label:    this.model.old_label,
+            user_id:      this.model.user_id,
+            npsn:         this.model.npsn,
+            alamat:       this.model.alamat,
+            logo:         this.model.logo,
+            foto_gedung:  this.model.foto_gedung
           })
           .then(response => {
             if (response.data.status == true) {

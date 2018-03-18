@@ -104,11 +104,42 @@ export default {
           titleClass: 'center aligned'
         },
         {
+          name: 'user.name',
+          title: 'Username',
+          sortField: 'user_id',
+          titleClass: 'center aligned'
+        },
+        {
+          name: 'npsn',
+          title: 'NPSN',
+          sortField: 'npsn',
+          titleClass: 'center aligned'
+        },
+        {
+          name: 'alamat',
+          title: 'Alamat',
+          sortField: 'alamat',
+          titleClass: 'center aligned'
+        },
+        {
+          name: 'logo',
+          title: 'Logo',
+          sortField: 'logo',
+          titleClass: 'center aligned'
+        },
+        {
+          name: 'foto_gedung',
+          title: 'Foto Gedung',
+          sortField: 'foto_gedung',
+          titleClass: 'center aligned'
+        },
+        {
           name: '__slot:actions',
           title: 'Actions',
           titleClass: 'center aligned',
           dataClass: 'center aligned'
         },
+
       ],
       sortOrder: [{
         field: 'label',
