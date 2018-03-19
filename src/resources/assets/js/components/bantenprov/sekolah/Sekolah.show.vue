@@ -22,13 +22,13 @@
 
         <div class="form-row mt-4">
           <div class="col-md">
-            <b>Description :</b> {{ model.description }}
+            <b>Username :</b> {{ model.user.name }}
           </div>
         </div>
 
         <div class="form-row mt-4">
           <div class="col-md">
-            <b>Username :</b> {{ model.user.name }}
+            <b>Jenis Sekolah :</b> {{ model.jenis_sekolah.jenis_sekolah }}
           </div>
         </div>
 
@@ -69,8 +69,8 @@ export default {
         if (response.data.status == true) {
           this.model.label          = response.data.sekolah.label;
           this.model.old_label      = response.data.sekolah.label;
-          this.model.description    = response.data.sekolah.description;
           this.model.user           = response.data.sekolah.user;
+          this.model.jenis_sekolah  = response.data.sekolah.jenis_sekolah;
           this.model.npsn           = response.data.sekolah.npsn;
           this.model.alamat         = response.data.sekolah.alamat;
           this.model.logo           = response.data.sekolah.logo;
@@ -100,13 +100,13 @@ export default {
     return {
       state: {},
       model: {
-        label:        "",
-        description:  "",
-        user_id:      "",
-        npsn:         "",
-        alamat:       "",
-        logo:         "",
-        foto_gedung:  "",
+        label:            "",
+        user_id:          "",
+        jenis_sekolah_id: "",
+        npsn:             "",
+        alamat:           "",
+        logo:             "",
+        foto_gedung:      "",
       },
       user: []
     }

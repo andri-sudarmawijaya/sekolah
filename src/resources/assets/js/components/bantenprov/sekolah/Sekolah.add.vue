@@ -30,19 +30,6 @@
         <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
-              <input class="form-control" v-model="model.description" required autofocus name="description" type="text" placeholder="Description">
-
-              <field-messages name="description" show="$invalid && $submitted" class="text-danger">
-                <small class="form-text text-success">Looks good!</small>
-                <small class="form-text text-danger" slot="required">Label is a required field</small>
-              </field-messages>
-            </validate>
-          </div>
-        </div>
-
-        <div class="form-row mt-4">
-          <div class="col-md">
-            <validate tag="div">
               <input class="form-control" v-model="model.npsn" required autofocus name="npsn" type="text" placeholder="NPSN">
 
               <field-messages name="npsn" show="$invalid && $submitted" class="text-danger">
@@ -107,6 +94,20 @@
         </div>
 
         <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+            <label for="jenis_sekolah_id">Jenis Sekolah</label>
+            <v-select name="jenis_sekolah" v-model="model.jenis_sekolah" :options="jenis_sekolah" class="mb-4"></v-select>
+
+            <field-messages name="jenis_sekolah_id" show="$invalid && $submitted" class="text-danger">
+              <small class="form-text text-success">Looks good!</small>
+              <small class="form-text text-danger" slot="required">Label is a required field</small>
+            </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
           <div class="col-md">            
             <button type="submit" class="btn btn-primary">Submit</button>
 
@@ -127,6 +128,11 @@ export default {
         response.data.user.forEach(element => {
           this.user.push(element);
         });
+
+        response.data.jenis_sekolah.forEach(element =>{
+          this.jenis_sekolah.push(element);
+        });
+
     })
     .catch(function(response) {
       alert('Break');
@@ -137,15 +143,16 @@ export default {
       state: {},
       model: {
         label: "",
-        description: "",
         npsn: "",
+        jenis_sekolah: "",
         alamat: "",
         logo: "",
         foto_gedung: "",
         user: ""
 
       },
-      user: []
+      user: [],
+      jenis_sekolah: []
     }
   },
   methods: {
@@ -156,13 +163,13 @@ export default {
         return;
       } else {
         axios.post('api/sekolah', {
-            label: this.model.label,
-            description: this.model.description,
-            npsn: this.model.npsn,
-            alamat: this.model.alamat,
-            logo: this.model.logo,
-            foto_gedung: this.model.foto_gedung,
-            user_id: this.model.user.id
+            label:            this.model.label,
+            jenis_sekolah_id: this.model.jenis_sekolah.id,
+            npsn:             this.model.npsn,
+            alamat:           this.model.alamat,
+            logo:             this.model.logo,
+            foto_gedung:      this.model.foto_gedung,
+            user_id:          this.model.user.id
           })
           .then(response => {
             if (response.data.status == true) {
@@ -184,7 +191,7 @@ export default {
     reset() {
       this.model = {
           label: "",
-          description: "",
+          jenis_sekolah: "",
           npsn: "",
           alamat: "",
           logo: "",
