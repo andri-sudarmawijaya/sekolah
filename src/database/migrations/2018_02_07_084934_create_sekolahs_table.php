@@ -15,9 +15,8 @@ class CreateSekolahsTable extends Migration
 		Schema::create('sekolahs', function(Blueprint $table) {
 			$table->increments('id');
 			$table->string('label');
-			$table->text('description');
-			$table->string('npsn')->unique();
-			//$table->integer('jenis_sekolah_id')->unsigned()->index();
+			$table->string('npsn');
+			$table->integer('jenis_sekolah_id');
 			$table->string('alamat');
 			//$table->integer('kelurahan_id')->unsigned()->index();
 			//$table->integer('kecamatan_id')->unsigned()->index();
@@ -26,7 +25,7 @@ class CreateSekolahsTable extends Migration
 			$table->string('foto_gedung');
 			$table->timestamps();
 			$table->softDeletes();
-			$table->integer('user_id')->unique();
+			$table->integer('user_id');
 		});
 	}
 

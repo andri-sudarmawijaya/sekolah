@@ -98,12 +98,6 @@ export default {
           titleClass: 'center aligned'
         },
         {
-          name: 'description',
-          title: 'Description',
-          sortField: 'description',
-          titleClass: 'center aligned'
-        },
-        {
           name: 'user.name',
           title: 'Username',
           sortField: 'user_id',
@@ -113,6 +107,12 @@ export default {
           name: 'npsn',
           title: 'NPSN',
           sortField: 'npsn',
+          titleClass: 'center aligned'
+        },
+        {
+          name: 'jenis_sekolah.jenis_sekolah',
+          title: 'Jenis Sekolah',
+          sortField: 'jenis_sekolah_id',
           titleClass: 'center aligned'
         },
         {

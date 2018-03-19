@@ -3,7 +3,6 @@
 /* Require */
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
-use Faker\Factory as Faker;
 
 /* Models */
 use Bantenprov\Sekolah\Models\Bantenprov\Sekolah\Sekolah;
@@ -15,24 +14,46 @@ class BantenprovSekolahSeederSekolah extends Seeder
      *
      * @return void
      */
-	public function run()
-	{
-        $faker = Faker::create();
 
-        foreach (range(1,10) as $index) {
-            DB::table('sekolahs')->insert([
-                'label' => $faker->word,
-                'npsn' => $faker->unique()->randomNumber($nbDigits = NULL, $strict = false),
-                //'jenis_sekolah_id' => $faker->unique()->randomNumber($nbDigits = NULL, $strict = false),
-                'alamat' => $faker->streetAddress,
-                //'kelurahan_id' => $faker->streetAddress,
-                //'kecamatan_id' => $faker->streetAddress,
-                //'kebkota_id' => $faker->streetAddress,
-                'logo'          => 'logo', 
-                'foto_gedung'   => 'foto gedung',
-                'description'   => $faker->text($maxNbChars = 200),
-                'user_id'       => $faker->unique()->randomNumber($nbDigits = NULL, $strict = false)                            
-            ]); 
+    public function run()
+    {
+        Model::unguard();
+
+        $sekolahs = (object) [
+            (object) [
+                'label'     => 'label1',
+                'npsn'      => '1',
+                'jenis_sekolah_id'   => '1',
+                'alamat' => 'indonesia',
+                'logo' => 'indonesia',
+                'foto_gedung' => 'indonesia',
+                'user_id' => '1', 
+            ],
+            (object) [
+                'label'     => 'label2',
+                'npsn'      => '2',
+                'jenis_sekolah_id'   => '2',
+                'alamat' => 'indonesia',
+                'logo' => 'indonesia',
+                'foto_gedung' => 'indonesia',
+                'user_id' => '2', 
+            ]
+        ];
+
+        foreach ($sekolahs as $sekolah) {
+            $model = Sekolah::updateOrCreate(
+                [
+                    'jenis_sekolah_id' => $sekolah->jenis_sekolah_id,
+                    'user_id' => $sekolah->user_id,
+                    'label' => $sekolah->label,
+                    'alamat' => $sekolah->alamat,
+                    'logo' => $sekolah->logo,
+                    'foto_gedung' => $sekolah->foto_gedung,
+                    'npsn' => $sekolah->npsn,
+
+                ]
+            );
+            $model->save();
         }       
     }
 }

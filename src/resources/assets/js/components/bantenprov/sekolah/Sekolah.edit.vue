@@ -31,19 +31,6 @@
         <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
-              <label for="description">description</label>
-              <input class="form-control" v-model="model.description" name="description" type="text" placeholder="Description">
-
-              <field-messages name="description" show="$invalid && $submitted" class="text-danger">
-                <small class="form-text text-success">Looks good!</small>
-              </field-messages>
-            </validate>
-          </div>
-        </div>
-
-        <div class="form-row mt-4">
-          <div class="col-md">
-            <validate tag="div">
               <label for="npsn">NPSN</label>
               <input class="form-control" v-model="model.npsn" name="npsn" type="text" placeholder="NPSN">
 
@@ -83,12 +70,13 @@
         <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
-              <label for="foto_gedung">Foto Gedung</label>
-              <input class="form-control" v-model="model.foto_gedung" name="foto_gedung" type="text" placeholder="Foto Gedung">
+            <label for="user_id">Username</label>
+            <v-select name="user_id" v-model="model.user.name" :options="user" class="mb-4"></v-select>
 
-              <field-messages name="foto_gedung" show="$invalid && $submitted" class="text-danger">
-                <small class="form-text text-success">Looks good!</small>
-              </field-messages>
+            <field-messages name="user_id" show="$invalid && $submitted" class="text-danger">
+              <small class="form-text text-success">Looks good!</small>
+              <small class="form-text text-danger" slot="required">Username is a required field</small>
+            </field-messages>
             </validate>
           </div>
         </div>
@@ -96,12 +84,12 @@
         <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
-            <label for="user">Username</label>
-            <v-select name="user" v-model="model.user.name" :options="user" class="mb-4"></v-select>
+            <label for="jenis_sekolah_id">Jenis Sekolah</label>
+            <v-select name="jenis_sekolah_id" v-model="model.jenis_sekolah" :options="jenis_sekolah" class="mb-4"></v-select>
 
-            <field-messages name="user" show="$invalid && $submitted" class="text-danger">
+            <field-messages name="jenis_sekolah_id" show="$invalid && $submitted" class="text-danger">
               <small class="form-text text-success">Looks good!</small>
-              <small class="form-text text-danger" slot="required">Label is a required field</small>
+              <small class="form-text text-danger" slot="required">Jenis Sekolah is a required field</small>
             </field-messages>
             </validate>
           </div>
@@ -127,14 +115,14 @@ export default {
       .then(response => {
         if (response.data.status == true) {
 
-          this.model.label       = response.data.sekolah.label;
-          this.model.old_label   = response.data.sekolah.label;
-          this.model.description = response.data.sekolah.description;
-          this.model.user        = response.data.sekolah.user;
-          this.model.npsn        = response.data.sekolah.npsn;
-          this.model.alamat      = response.data.sekolah.alamat;
-          this.model.logo        = response.data.sekolah.logo;
-          this.model.foto_gedung = response.data.sekolah.foto_gedung;
+          this.model.label          = response.data.sekolah.label;
+          this.model.old_label      = response.data.sekolah.label;
+          this.model.user           = response.data.sekolah.user;
+          this.model.jenis_sekolah  = response.data.sekolah.jenis_sekolah.jenis_sekolah;
+          this.model.npsn           = response.data.sekolah.npsn;
+          this.model.alamat         = response.data.sekolah.alamat;
+          this.model.logo           = response.data.sekolah.logo;
+          this.model.foto_gedung    = response.data.sekolah.foto_gedung;
 
         } else {
           alert('Failed');
@@ -150,6 +138,9 @@ export default {
           response.data.user.forEach(element => {
             this.user.push(element);
           });
+          response.data.jenis_sekolah.forEach(element => {
+            this.jenis_sekolah.push(element);
+          });
       })
       .catch(function(response) {
         alert('Break');
@@ -159,15 +150,16 @@ export default {
     return {
       state: {},
       model: {
-        label:        "",
-        description:  "",
-        user:         "",
-        npsn:         "",
-        alamat:       "",
-        logo:         "",
-        foto_gedung:  "",
+        label:          "",
+        user:           "",
+        jenis_sekolah:  "",
+        npsn:           "",
+        alamat:         "",
+        logo:           "",
+        foto_gedung:    "",
       },
-      user: []
+      user: [],
+      jenis_sekolah: []
     }
   },
   methods: {
@@ -178,14 +170,14 @@ export default {
         return;
       } else {
         axios.put('api/sekolah/' + this.$route.params.id, {
-            label:        this.model.label,
-            description:  this.model.description,
-            old_label:    this.model.old_label,
-            user_id:      this.model.user.id,
-            npsn:         this.model.npsn,
-            alamat:       this.model.alamat,
-            logo:         this.model.logo,
-            foto_gedung:  this.model.foto_gedung,
+            label:              this.model.label,
+            old_label:          this.model.old_label,
+            user_id:            this.model.user.id,
+            jenis_sekolah_id:   this.model.jenis_sekolah.id,
+            npsn:               this.model.npsn,
+            alamat:             this.model.alamat,
+            logo:               this.model.logo,
+            foto_gedung:        this.model.foto_gedung,
           })
           .then(response => {
             if (response.data.status == true) {
@@ -208,13 +200,13 @@ export default {
       axios.get('api/sekolah/' + this.$route.params.id + '/edit')
         .then(response => {
           if (response.data.status == true) {
-            this.model.label        = response.data.sekolah.label;
-            this.model.description  = response.data.sekolah.description;
-            this.model.user         = response.data.sekolah.user;
-            this.model.npsn         = response.data.sekolah.npsn;
-            this.model.alamat       = response.data.sekolah.alamat;
-            this.model.logo         = response.data.sekolah.logo;
-            this.model.foto_gedung  = response.data.sekolah.foto_gedung;
+            this.model.label          = response.data.sekolah.label;
+            this.model.user           = response.data.sekolah.user;
+            this.model.jenis_sekolah  = response.data.sekolah.jenis_sekolah.jenis_sekolah;
+            this.model.npsn           = response.data.sekolah.npsn;
+            this.model.alamat         = response.data.sekolah.alamat;
+            this.model.logo           = response.data.sekolah.logo;
+            this.model.foto_gedung    = response.data.sekolah.foto_gedung;
           } else {
             alert('Failed');
           }
