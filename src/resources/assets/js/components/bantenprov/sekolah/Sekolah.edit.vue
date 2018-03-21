@@ -70,8 +70,21 @@
         <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
+              <label for="foto_gedung">Foto Gedung</label>
+              <input class="form-control" v-model="model.foto_gedung" name="foto_gedung" type="text" placeholder="logo">
+
+              <field-messages name="foto_gedung" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+              </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
             <label for="user_id">Username</label>
-            <v-select name="user_id" v-model="model.user.name" :options="user" class="mb-4"></v-select>
+            <v-select name="user_id" v-model="model.user" :options="user" class="mb-4"></v-select>
 
             <field-messages name="user_id" show="$invalid && $submitted" class="text-danger">
               <small class="form-text text-success">Looks good!</small>
@@ -84,10 +97,10 @@
         <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
-            <label for="jenis_sekolah_id">Jenis Sekolah</label>
-            <v-select name="jenis_sekolah_id" v-model="model.jenis_sekolah" :options="jenis_sekolah" class="mb-4"></v-select>
+            <label for="jenis_sekolah">Jenis Sekolah</label>
+            <v-select name="jenis_sekolah" v-model="model.jenis_sekolah" :options="jenis_sekolah" class="mb-4"></v-select>
 
-            <field-messages name="jenis_sekolah_id" show="$invalid && $submitted" class="text-danger">
+            <field-messages name="jenis_sekolah" show="$invalid && $submitted" class="text-danger">
               <small class="form-text text-success">Looks good!</small>
               <small class="form-text text-danger" slot="required">Jenis Sekolah is a required field</small>
             </field-messages>
@@ -116,9 +129,10 @@ export default {
         if (response.data.status == true) {
 
           this.model.label          = response.data.sekolah.label;
-          this.model.old_label      = response.data.sekolah.label;
-          this.model.user           = response.data.sekolah.user;
-          this.model.jenis_sekolah  = response.data.sekolah.jenis_sekolah.jenis_sekolah;
+          this.model.old_user_id    = response.data.sekolah.user_id;
+          this.model.user           = response.data.user;
+          this.model.old_user       = response.data.sekolah.user;
+          this.model.jenis_sekolah  = response.data.jenis_sekolah;
           this.model.npsn           = response.data.sekolah.npsn;
           this.model.alamat         = response.data.sekolah.alamat;
           this.model.logo           = response.data.sekolah.logo;
@@ -158,8 +172,8 @@ export default {
         logo:           "",
         foto_gedung:    "",
       },
-      user: [],
-      jenis_sekolah: []
+      jenis_sekolah: [],
+      user: []
     }
   },
   methods: {
@@ -171,8 +185,8 @@ export default {
       } else {
         axios.put('api/sekolah/' + this.$route.params.id, {
             label:              this.model.label,
-            old_label:          this.model.old_label,
             user_id:            this.model.user.id,
+            old_user_id:          this.model.old_user_id,
             jenis_sekolah_id:   this.model.jenis_sekolah.id,
             npsn:               this.model.npsn,
             alamat:             this.model.alamat,

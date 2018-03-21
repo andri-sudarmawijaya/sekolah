@@ -183,6 +183,9 @@ class SekolahController extends Controller
     {
         $sekolah = $this->sekolah->findOrFail($id);
 
+        array_set($sekolah->jenis_sekolah, 'label', $sekolah->jenis_sekolah->jenis_sekolah);
+        array_set($sekolah->user, 'label', $sekolah->user->name);
+
         $response['sekolah'] = $sekolah;
         $response['user'] = $sekolah->user;
         $response['jenis_sekolah'] = $sekolah->jenis_sekolah;
@@ -202,7 +205,7 @@ class SekolahController extends Controller
     {
         $sekolah = $this->sekolah->findOrFail($id);
 
-        if ($request->input('old_label') == $request->input('label'))
+        if ($request->input('old_user_id') == $request->input('user_id'))  
         {
             $validator = Validator::make($request->all(), [
                 'label'               => 'required',
@@ -218,7 +221,7 @@ class SekolahController extends Controller
             $validator = Validator::make($request->all(), [
                 'label'             => 'required',
                 'jenis_sekolah_id'  => 'required',
-                'user_id'           => 'required',
+                'user_id'           => 'required|unique:sekolahs,user_id',
                 'npsn'              => 'required',
                 'alamat'            => 'required',
                 'logo'              => 'required',
@@ -227,10 +230,10 @@ class SekolahController extends Controller
         }
 
         if ($validator->fails()) {
-            $check = $sekolah->where('label',$request->label)->whereNull('deleted_at')->count();
+            $check = $sekolah->where('user_id',$request->user_id)->whereNull('deleted_at')->count();
 
             if ($check > 0) {
-                $response['message'] = 'Failed, label ' . $request->label . ' already exists';
+                $response['message'] = 'Failed,Username' . $request->user_id . ' already exists';
             } else {
                 $sekolah->label                 = $request->input('label');
                 $sekolah->jenis_sekolah_id      = $request->input('jenis_sekolah_id');
@@ -244,13 +247,13 @@ class SekolahController extends Controller
                 $response['message'] = 'success';
             }
         } else {
-            $sekolah->label         = $request->input('label');
-            $sekolah->jenis_sekolah_id   = $request->input('jenis_sekolah_id');
-            $sekolah->user_id       = $request->input('user_id');
-            $sekolah->npsn          = $request->input('npsn');
-            $sekolah->alamat        = $request->input('alamat');
-            $sekolah->logo          = $request->input('logo');
-            $sekolah->foto_gedung   = $request->input('foto_gedung');
+            $sekolah->label                  = $request->input('label');
+            $sekolah->jenis_sekolah_id       = $request->input('jenis_sekolah_id');
+            $sekolah->user_id                = $request->input('user_id');
+            $sekolah->npsn                   = $request->input('npsn');
+            $sekolah->alamat                 = $request->input('alamat');
+            $sekolah->logo                   = $request->input('logo');
+            $sekolah->foto_gedung            = $request->input('foto_gedung');
             $sekolah->save();
 
             $response['message'] = 'success';
