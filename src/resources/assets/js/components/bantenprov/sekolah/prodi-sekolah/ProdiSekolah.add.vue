@@ -53,6 +53,21 @@
             </validate>
           </div>
         </div>
+        
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+            <label for="program_keahlian_id">Program Keahlian</label>
+            <v-select name="program_keahlian_id" v-model="model.program_keahlian" :options="program_keahlian" class="mb-4"></v-select>
+
+            <field-messages name="program_keahlian_id" show="$invalid && $submitted" class="text-danger">
+              <small class="form-text text-success">Looks good!</small>
+              <small class="form-text text-danger" slot="required">Program Keahlian is a required field</small>
+            </field-messages>
+            </validate>
+          </div>
+        </div>  
+
 
         <div class="form-row mt-4">
           <div class="col-md">
@@ -94,6 +109,10 @@ export default {
           this.sekolah.push(element);
         });
 
+        response.data.program_keahlian.forEach(element =>{
+          this.program_keahlian.push(element);
+        });
+
     })
     .catch(function(response) {
       alert('Break');
@@ -106,11 +125,13 @@ export default {
         Keterangan: "",
         kuota_siswa: "",
         sekolah: "",
-        user: ""
+        user: "",
+        program_keahlian: "",
 
       },
       user: [],
-      sekolah: []
+      sekolah: [],
+      program_keahlian: []
     }
   },
   methods: {
@@ -121,10 +142,11 @@ export default {
         return;
       } else {
         axios.post('api/prodi-sekolah', {
-            keterangan:       this.model.Keterangan,
-            kuota_siswa:      this.model.kuota_siswa,
-            sekolah_id:       this.model.sekolah.id,
-            user_id:          this.model.user.id
+            keterangan:           this.model.Keterangan,
+            kuota_siswa:          this.model.kuota_siswa,
+            sekolah_id:           this.model.sekolah.id,
+            program_keahlian_id:  this.model.program_keahlian.id,
+            user_id:              this.model.user.id
           })
           .then(response => {
             if (response.data.status == true) {
@@ -147,6 +169,7 @@ export default {
       this.model = {
           Keterangan: "",
           kuota_siswa: "",
+          program_keahlian: "",
           sekolah: "",
           user: ""
       };
