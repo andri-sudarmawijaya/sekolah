@@ -58,7 +58,7 @@ class ProdiSekolahController extends Controller
         if ($request->exists('filter')) {
             $query->where(function($q) use($request) {
                 $value = "%{$request->filter}%";
-                $q->where('keterangan', 'like', $value)                    
+                $q->where('keterangana', 'like', $value)                    
                     ->orWhere('kuota_siswa', 'like', $value);
             });
         }

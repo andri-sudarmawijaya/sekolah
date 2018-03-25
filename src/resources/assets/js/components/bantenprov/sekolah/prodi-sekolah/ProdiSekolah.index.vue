@@ -97,12 +97,7 @@ export default {
           sortField: 'sekolah_id',
           titleClass: 'center aligned'
         },
-        {
-          name: 'user.name',
-          title: 'Username',
-          sortField: 'user_id',
-          titleClass: 'center aligned'
-        },
+        
         {
           name: 'program_keahlian.label',
           title: 'Program Keahlian',
@@ -110,15 +105,15 @@ export default {
           titleClass: 'center aligned'
         },
         {
-          name: 'keterangan',
-          title: 'Keterangan',
-          sortField: 'keterangan',
-          titleClass: 'center aligned'
-        },
-        {
           name: 'kuota_siswa',
           title: 'Kuota siswa',
           sortField: 'kuota_siswa',
+          titleClass: 'center aligned'
+        },
+        {
+          name: 'user.name',
+          title: 'Username',
+          sortField: 'user_id',
           titleClass: 'center aligned'
         },
         {
