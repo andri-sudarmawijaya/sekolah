@@ -104,6 +104,12 @@ export default {
           titleClass: 'center aligned'
         },
         {
+          name: 'program_keahlian.label',
+          title: 'Program Keahlian',
+          sortField: 'program_keahlian_id',
+          titleClass: 'center aligned'
+        },
+        {
           name: 'keterangan',
           title: 'Keterangan',
           sortField: 'keterangan',

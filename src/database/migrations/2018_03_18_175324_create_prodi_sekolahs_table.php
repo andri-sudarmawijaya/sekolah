@@ -16,6 +16,7 @@ class CreateProdiSekolahsTable extends Migration
         Schema::create('prodi_sekolahs', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('sekolah_id');
+            $table->integer('program_keahlian_id');
             $table->string('keterangan');
             $table->string('kuota_siswa');
             $table->integer('user_id');

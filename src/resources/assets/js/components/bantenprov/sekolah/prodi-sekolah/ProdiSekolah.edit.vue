@@ -70,6 +70,20 @@
         </div>
 
         <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+            <label for="program_keahlian_id">Program Keahlian</label>
+            <v-select name="program_keahlian_id" v-model="model.program_keahlian" :options="program_keahlian" class="mb-4"></v-select>
+
+            <field-messages name="program_keahlian_id" show="$invalid && $submitted" class="text-danger">
+              <small class="form-text text-success">Looks good!</small>
+              <small class="form-text text-danger" slot="required">program keahlian is a required field</small>
+            </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
           <div class="col-md">            
             <button type="submit" class="btn btn-primary">Submit</button>
 
@@ -89,12 +103,14 @@ export default {
       .then(response => {
         if (response.data.status == true) {
 
-          this.model.keterangan     = response.data.sekolah.keterangan;
-          this.model.kuota_siswa    = response.data.sekolah.kuota_siswa;
-          this.model.old_user_id    = response.data.sekolah.user_id;
-          this.model.user           = response.data.user;
-          this.model.old_user       = response.data.sekolah.user;
-          this.model.sekolah        = response.data.sekolah.sekolah;
+          this.model.keterangan       = response.data.sekolah.keterangan;
+          this.model.kuota_siswa      = response.data.sekolah.kuota_siswa;
+          this.model.old_user_id      = response.data.sekolah.user_id;
+          this.model.user             = response.data.user;
+          this.model.program_keahlian = response.data.sekolah.program_keahlian;
+          this.model.old_user         = response.data.sekolah.user;
+          this.model.sekolah          = response.data.sekolah.sekolah;
+
           
 
         } else {
@@ -102,7 +118,7 @@ export default {
         }
       })
       .catch(function(response) {
-        alert('Break1');
+        alert('Break');
         window.location.href = '#/admin/prodi-sekolah';
       });
 
@@ -113,6 +129,9 @@ export default {
           });
           response.data.sekolah.forEach(element => {
             this.sekolah.push(element);
+          });
+          response.data.program_keahlian.forEach(element => {
+            this.program_keahlian.push(element);
           });
       })
       .catch(function(response) {
@@ -127,10 +146,12 @@ export default {
         kuota_siswa:         "",
         user:                "",
         sekolah:             "",
+        program_keahlian:    "",
         
       },
       user: [],
-      sekolah: []
+      sekolah: [],
+      program_keahlian: []
     }
   },
   methods: {
@@ -145,6 +166,7 @@ export default {
             old_user_id:        this.model.old_user_id,
             sekolah_id:         this.model.sekolah.id,
             keterangan:         this.model.keterangan,
+            program_keahlian_id:this.model.program_keahlian.id,
             kuota_siswa:        this.model.kuota_siswa,
           })
           .then(response => {
@@ -168,10 +190,11 @@ export default {
       axios.get('api/prodi-sekolah/' + this.$route.params.id + '/edit')
         .then(response => {
           if (response.data.status == true) {
-            this.model.user           = response.data.sekolah.user;
-            this.model.sekolah        = response.data.sekolah.sekolah;
-            this.model.keterangan     = response.data.sekolah.keterangan;
-            this.model.kuota_siswa    = response.data.sekolah.kuota_siswa;
+            this.model.user             = response.data.sekolah.user;
+            this.model.sekolah          = response.data.sekolah.sekolah;
+            this.model.program_keahlian = response.data.sekolah.program_keahlian;
+            this.model.keterangan       = response.data.sekolah.keterangan;
+            this.model.kuota_siswa      = response.data.sekolah.kuota_siswa;
           } else {
             alert('Failed');
           }

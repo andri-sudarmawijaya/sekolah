@@ -28,6 +28,12 @@
 
         <div class="form-row mt-4">
           <div class="col-md">
+            <b>Program Keahlian :</b> {{ model.program_keahlian }}
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
             <b>Keterangan :</b> {{ model.keterangan }}
           </div>
         </div>
@@ -49,10 +55,11 @@ export default {
     axios.get('api/prodi-sekolah/' + this.$route.params.id)
       .then(response => {
         if (response.data.status == true) {
-          this.model.sekolah        = response.data.sekolah.sekolah.label;
-          this.model.user           = response.data.sekolah.user;
-          this.model.keterangan     = response.data.sekolah.keterangan;
-          this.model.kuota_siswa    = response.data.sekolah.kuota_siswa;
+          this.model.sekolah          = response.data.sekolah.sekolah.label;
+          this.model.program_keahlian = response.data.sekolah.program_keahlian.label;
+          this.model.user             = response.data.sekolah.user;
+          this.model.keterangan       = response.data.sekolah.keterangan;
+          this.model.kuota_siswa      = response.data.sekolah.kuota_siswa;
 
         } 
         else {
@@ -72,6 +79,10 @@ export default {
           response.data.sekolah.forEach(element => {
             this.sekolah.push(element);
           });
+
+          response.data.program_keahlian.forEach(element => {
+            this.program_keahlian.push(element);
+          });
       })
       .catch(function(response) {
         alert('Break2');
@@ -86,10 +97,12 @@ export default {
         user_id:          "",
         keterangan:       "",
         kuota_siswa:      "",
+        program_keahlian: "",
     
       },
       user: [],
-      sekolah: []
+      sekolah: [],
+      program_keahlian: [],
     }
   },
   methods: {
