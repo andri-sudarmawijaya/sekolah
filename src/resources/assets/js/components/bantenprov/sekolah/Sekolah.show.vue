@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header">
-      <i class="fa fa-table" aria-hidden="true"></i> Show Sekolah {{ model.label }}
+      <i class="fa fa-table" aria-hidden="true"></i>Sekolah {{ model.label }}
 
       <ul class="nav nav-pills card-header-pills pull-right">
         <li class="nav-item">
@@ -54,12 +54,21 @@
           <div class="col-md">
             <b>Foto Gedung :</b> {{ model.foto_gedung }}
           </div>
-        </div>
-        
+        </div>     
       </vue-form>
+
     </div>
+      <div class="card-footer text-muted">
+        <div class="row">
+          <div class="col-md-6">Dibuat : {{ model.created_at }}</div>
+          <div class="col-md-6 text-right">Diperbaiki : {{ model.updated_at }}</div>
+        </div>
+          
+      </div>
+
   </div>
 </template>
+
 
 <script>
 export default {
@@ -73,6 +82,8 @@ export default {
           this.model.jenis_sekolah  = response.data.sekolah.jenis_sekolah;
           this.model.npsn           = response.data.sekolah.npsn;
           this.model.alamat         = response.data.sekolah.alamat;
+          this.model.created_at     = response.data.sekolah.created_at;
+          this.model.updated_at     = response.data.sekolah.updated_at;
           this.model.logo           = response.data.sekolah.logo;
           this.model.foto_gedung    = response.data.sekolah.foto_gedung;
 
@@ -107,6 +118,8 @@ export default {
         alamat:           "",
         logo:             "",
         foto_gedung:      "",
+        created_at:       "",
+        updated_at:       "",
       },
       user: []
     }

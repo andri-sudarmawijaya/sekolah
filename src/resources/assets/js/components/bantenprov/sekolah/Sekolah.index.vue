@@ -92,18 +92,6 @@ export default {
           dataClass: 'right aligned'
         },
         {
-          name: 'label',
-          title: 'Label',
-          sortField: 'label',
-          titleClass: 'center aligned'
-        },
-        {
-          name: 'user.name',
-          title: 'Username',
-          sortField: 'user_id',
-          titleClass: 'center aligned'
-        },
-        {
           name: 'npsn',
           title: 'NPSN',
           sortField: 'npsn',
@@ -116,9 +104,9 @@ export default {
           titleClass: 'center aligned'
         },
         {
-          name: 'alamat',
-          title: 'Alamat',
-          sortField: 'alamat',
+          name: 'label',
+          title: 'Label',
+          sortField: 'label',
           titleClass: 'center aligned'
         },
         {
@@ -128,9 +116,9 @@ export default {
           titleClass: 'center aligned'
         },
         {
-          name: 'foto_gedung',
-          title: 'Foto Gedung',
-          sortField: 'foto_gedung',
+          name: 'user.name',
+          title: 'Username',
+          sortField: 'user_id',
           titleClass: 'center aligned'
         },
         {
