@@ -64,9 +64,10 @@ class ProdiSekolahController extends Controller
         }
 
         $perPage = request()->has('per_page') ? (int) request()->per_page : null;
-        $response = $query->paginate($perPage);
+        $response = $query->with('user')->with('sekolah')->with('program_keahlian')->paginate($perPage);
         
-        foreach($response as $sekolah){
+        
+        /*foreach($response as $sekolah){
             array_set($response->data, 'sekolah', $sekolah->sekolah->label);
         }         
 
@@ -76,7 +77,7 @@ class ProdiSekolahController extends Controller
 
         foreach($response as $program_keahlian){
             array_set($response->data, 'program_keahlian', $program_keahlian->program_keahlian->label);
-        }
+        }*/
 
 
         return response()->json($response)
