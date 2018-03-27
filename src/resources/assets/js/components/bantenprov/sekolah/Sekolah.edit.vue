@@ -131,9 +131,9 @@ export default {
           this.model.label          = response.data.sekolah.label;
           this.model.old_user_id    = response.data.sekolah.user_id;
           this.model.user           = response.data.user;
-          this.model.old_user       = response.data.sekolah.user;
           this.model.jenis_sekolah  = response.data.jenis_sekolah;
           this.model.npsn           = response.data.sekolah.npsn;
+          this.model.old_npsn       = response.data.sekolah.npsn;
           this.model.alamat         = response.data.sekolah.alamat;
           this.model.logo           = response.data.sekolah.logo;
           this.model.foto_gedung    = response.data.sekolah.foto_gedung;
@@ -171,6 +171,8 @@ export default {
         alamat:         "",
         logo:           "",
         foto_gedung:    "",
+        old_user_id:    "",
+        old_npsn:       "",
       },
       jenis_sekolah: [],
       user: []
@@ -186,9 +188,10 @@ export default {
         axios.put('api/sekolah/' + this.$route.params.id, {
             label:              this.model.label,
             user_id:            this.model.user.id,
-            old_user_id:          this.model.old_user_id,
+            old_user_id:        this.model.old_user_id,
             jenis_sekolah_id:   this.model.jenis_sekolah.id,
             npsn:               this.model.npsn,
+            old_npsn:           this.model.old_npsn,
             alamat:             this.model.alamat,
             logo:               this.model.logo,
             foto_gedung:        this.model.foto_gedung,

@@ -214,34 +214,32 @@ class ProdiSekolahController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $response = array();
+        $message  = array();
+
         $prodi_sekolah = $this->prodi_sekolah->findOrFail($id);
 
-        if ($request->input('old_user_id') == $request->input('user_id'))
-        {
             $validator = Validator::make($request->all(), [
                 'sekolah_id'             => 'required',
-                'user_id'                => 'required',
-                'keterangan'             => 'required',
-                'kuota_siswa'            => 'required',
-                'program_keahlian_id'    => 'required',
-
-
-            ]);
-        } else {
-            $validator = Validator::make($request->all(), [
-                'sekolah_id'             => 'required',
-                'user_id'                => 'required|unique:prodi_sekolahs,user_id',
+                'user_id'                => 'required|unique:prodi_sekolahs,user_id,'.$id,
                 'keterangan'             => 'required',
                 'kuota_siswa'            => 'required',
                 'program_keahlian_id'    => 'required',
             ]);
-        }
 
-        if ($validator->fails()) {
-            $check = $prodi_sekolah->where('user_id',$request->user_id)->whereNull('deleted_at')->count();
+            if($validator->fails()){
 
-            if ($check > 0) {
-                $response['message'] = 'Failed, user  already exists';
+                foreach($validator->messages()->getMessages() as $key => $error){
+                    foreach($error AS $error_get) {
+                        array_push($message, $error_get);
+                    }                
+                } 
+
+                $check_user   = $this->prodi_sekolah->where('id','!=', $id)->where('user_id', $request->user_id);
+
+            if($check_user->count() > 0){
+                    $response['message'] = implode("\n",$message);
+
             } else {
                 $prodi_sekolah->sekolah_id          = $request->input('sekolah_id');
                 $prodi_sekolah->user_id             = $request->input('user_id');
@@ -252,12 +250,13 @@ class ProdiSekolahController extends Controller
 
                 $response['message'] = 'success';
             }
+
         } else {
-                $prodi_sekolah->sekolah_id      = $request->input('sekolah_id');
-                $prodi_sekolah->user_id         = $request->input('user_id');
+                $prodi_sekolah->sekolah_id          = $request->input('sekolah_id');
+                $prodi_sekolah->user_id             = $request->input('user_id');
                 $prodi_sekolah->program_keahlian_id = $request->input('program_keahlian_id');
-                $prodi_sekolah->keterangan      = $request->input('keterangan');
-                $prodi_sekolah->kuota_siswa     = $request->input('kuota_siswa');
+                $prodi_sekolah->keterangan          = $request->input('keterangan');
+                $prodi_sekolah->kuota_siswa         = $request->input('kuota_siswa');
                 $prodi_sekolah->save();
 
             $response['message'] = 'success';
