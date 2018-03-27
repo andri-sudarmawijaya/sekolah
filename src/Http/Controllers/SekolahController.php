@@ -60,14 +60,14 @@ class SekolahController extends Controller
         }
 
         $perPage = request()->has('per_page') ? (int) request()->per_page : null;
-        $response = $query->paginate($perPage);
+        $response = $query->with('user')->with('jenis_sekolah')->paginate($perPage);
 
-        foreach($response as $user){
+        /*foreach($response as $user){
             array_set($response->data, 'user', $user->user->name);
         }
         foreach($response as $jenis_sekolah){
             array_set($response->data, 'jenis_sekolah', $jenis_sekolah->jenis_sekolah);
-        }        
+        }   */     
 
         return response()->json($response)
             ->header('Access-Control-Allow-Origin', '*')
@@ -122,7 +122,7 @@ class SekolahController extends Controller
             $check = $sekolah->where('user_id',$request->user_id)->orWhere('npsn', $request->npsn)->whereNull('deleted_at')->count();
 
             if ($check > 0) {
-                $response['message'] = 'Failed' . $request->user_id . ' already exists';
+                $response['message'] = 'Failed, Username or npsn already exists';
 
             } else {
                 $sekolah->label             = $request->input('label');
@@ -203,49 +203,49 @@ class SekolahController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $response = array();
+        $message  = array();
+
         $sekolah = $this->sekolah->findOrFail($id);
 
-        if ($request->input('old_user_id') == $request->input('user_id'))  
-        {
             $validator = Validator::make($request->all(), [
                 'label'               => 'required',
-                'user_id'             => 'required',
+                'user_id'             => 'required|unique:sekolahs,user_id,'.$id,
                 'jenis_sekolah_id'    => 'required',
-                'npsn'                => 'required',
+                'npsn'                => 'required|unique:sekolahs,npsn,'.$id,
                 'alamat'              => 'required',
                 'logo'                => 'required',
                 'foto_gedung'         => 'required',
 
             ]);
-        } else {
-            $validator = Validator::make($request->all(), [
-                'label'             => 'required',
-                'jenis_sekolah_id'  => 'required',
-                'user_id'           => 'required|unique:sekolahs,user_id',
-                'npsn'              => 'required',
-                'alamat'            => 'required',
-                'logo'              => 'required',
-                'foto_gedung'       => 'required',
-            ]);
-        }
 
-        if ($validator->fails()) {
-            $check = $sekolah->where('user_id',$request->user_id)->whereNull('deleted_at')->count();
+            if($validator->fails()){
 
-            if ($check > 0) {
-                $response['message'] = 'Failed,Username' . $request->user_id . ' already exists';
-            } else {
-                $sekolah->label                 = $request->input('label');
-                $sekolah->jenis_sekolah_id      = $request->input('jenis_sekolah_id');
-                $sekolah->user_id               = $request->input('user_id');
-                $sekolah->npsn                  = $request->input('npsn');
-                $sekolah->alamat                = $request->input('alamat');
-                $sekolah->logo                  = $request->input('logo');
-                $sekolah->foto_gedung           = $request->input('foto_gedung');
-                $sekolah->save();
+                foreach($validator->messages()->getMessages() as $key => $error){
+                    foreach($error AS $error_get) {
+                        array_push($message, $error_get);
+                    }                
+                } 
 
-                $response['message'] = 'success';
+                $check_user   = $this->sekolah->where('id','!=', $id)->where('user_id', $request->user_id);
+                $check_npsn   = $this->sekolah->where('id','!=', $id)->where('npsn', $request->npsn);
+
+
+                if($check_npsn->count() > 0 || $check_user->count() > 0){
+                    $response['message'] = implode("\n",$message);
+                
+                } else {
+                    $sekolah->label                 = $request->input('label');
+                    $sekolah->jenis_sekolah_id      = $request->input('jenis_sekolah_id');
+                    $sekolah->user_id               = $request->input('user_id');
+                    $sekolah->npsn                  = $request->input('npsn');
+                    $sekolah->alamat                = $request->input('alamat');
+                    $sekolah->logo                  = $request->input('logo');
+                    $sekolah->foto_gedung           = $request->input('foto_gedung');
+                    $sekolah->save();   
+                    $response['message'] = 'success';
             }
+
         } else {
             $sekolah->label                  = $request->input('label');
             $sekolah->jenis_sekolah_id       = $request->input('jenis_sekolah_id');
@@ -255,12 +255,10 @@ class SekolahController extends Controller
             $sekolah->logo                   = $request->input('logo');
             $sekolah->foto_gedung            = $request->input('foto_gedung');
             $sekolah->save();
-
             $response['message'] = 'success';
         }
 
         $response['status'] = true;
-
         return response()->json($response);
     }
 
