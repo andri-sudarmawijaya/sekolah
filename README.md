@@ -71,6 +71,8 @@ $ composer dump-autoload
 
 ```bash
 $ php artisan db:seed --class=BantenprovSekolahSeeder
+$ php artisan db:seed --class=BantenprovJenisSekolahSeeder
+$ php artisan db:seed --class=BantenprovProdiSekolahSeeder
 ```
 
 #### Lakukan publish component vue :
@@ -125,6 +127,51 @@ $ php artisan vendor:publish --tag=sekolah-assets
                 title: "Edit Sekolah"
             }
         },
+    //prodi sekolah
+    {
+            path: '/admin/prodi-sekolah',
+            components: {
+                main: resolve => require(['./components/bantenprov/sekolah/prodi-sekolah/ProdiSekolah.index.vue'], resolve),
+                navbar: resolve => require(['./components/Navbar.vue'], resolve),
+                sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
+            },
+            meta: {
+                title: "Prodi Sekolah"
+            }
+        },
+        {
+            path: '/admin/prodi-sekolah/create',
+            components: {
+                main: resolve => require(['./components/bantenprov/sekolah/prodi-sekolah/ProdiSekolah.add.vue'], resolve),
+                navbar: resolve => require(['./components/Navbar.vue'], resolve),
+                sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
+            },
+            meta: {
+                title: "Add Prodi Sekolah"
+            }
+        },
+        {
+            path: '/admin/prodi-sekolah/:id',
+            components: {
+                main: resolve => require(['./components/bantenprov/sekolah/prodi-sekolah/ProdiSekolah.show.vue'], resolve),
+                navbar: resolve => require(['./components/Navbar.vue'], resolve),
+                sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
+            },
+            meta: {
+                title: "View Prodi Sekolah"
+            }
+        },
+        {
+            path: '/admin/prodi-sekolah/:id/edit',
+            components: {
+                main: resolve => require(['./components/bantenprov/sekolah/prodi-sekolah/ProdiSekolah.edit.vue'], resolve),
+                navbar: resolve => require(['./components/Navbar.vue'], resolve),
+                sidebar: resolve => require(['./components/Sidebar.vue'], resolve)
+            },
+            meta: {
+                title: "Edit Prodi Sekolah"
+            }
+        },
         //== ...
     ]
 },
@@ -142,6 +189,11 @@ $ php artisan vendor:publish --tag=sekolah-assets
         {
             name: 'Sekolah',
             link: '/admin/sekolah',
+            icon: 'fa fa-angle-double-right'
+        },
+        {
+            name: 'Prodi Sekolah',
+            link: '/admin/prodi-sekolah',
             icon: 'fa fa-angle-double-right'
         },
         //== ...

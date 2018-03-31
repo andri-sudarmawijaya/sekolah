@@ -14,31 +14,46 @@ class BantenprovSekolahSeederSekolah extends Seeder
      *
      * @return void
      */
-	public function run()
-	{
+
+    public function run()
+    {
         Model::unguard();
 
         $sekolahs = (object) [
             (object) [
-                'label' => 'Sekolah 1',
-                'description' => 'Sekolah 1',
+                'label'     => 'label1',
+                'npsn'      => '1',
+                'jenis_sekolah_id'   => '1',
+                'alamat' => 'indonesia',
+                'logo' => 'indonesia',
+                'foto_gedung' => 'indonesia',
+                'user_id' => '1', 
             ],
             (object) [
-                'label' => 'Sekolah 2',
-                'description' => 'Sekolah 2',
+                'label'     => 'label2',
+                'npsn'      => '2',
+                'jenis_sekolah_id'   => '2',
+                'alamat' => 'indonesia',
+                'logo' => 'indonesia',
+                'foto_gedung' => 'indonesia',
+                'user_id' => '2', 
             ]
         ];
 
         foreach ($sekolahs as $sekolah) {
             $model = Sekolah::updateOrCreate(
                 [
+                    'jenis_sekolah_id' => $sekolah->jenis_sekolah_id,
+                    'user_id' => $sekolah->user_id,
                     'label' => $sekolah->label,
-                ],
-                [
-                    'description' => $sekolah->description,
+                    'alamat' => $sekolah->alamat,
+                    'logo' => $sekolah->logo,
+                    'foto_gedung' => $sekolah->foto_gedung,
+                    'npsn' => $sekolah->npsn,
+
                 ]
             );
             $model->save();
-        }
-	}
+        }       
+    }
 }

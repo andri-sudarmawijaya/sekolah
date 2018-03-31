@@ -5,24 +5,22 @@ namespace Bantenprov\Sekolah\Models\Bantenprov\Sekolah;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Sekolah extends Model
+class ProdiSekolah extends Model
 {
     use SoftDeletes;
 
     public $timestamps = true;
 
-    protected $table = 'sekolahs';
+    protected $table = 'prodi_sekolahs';
     protected $dates = [
         'deleted_at'
     ];
     protected $fillable = [
-        'label',
+        'sekolah_id',
         'user_id',
-        'jenis_sekolah_id',
-        'npsn',
-        'alamat',
-        'logo',
-        'foto_gedung',
+        'program_keahlian_id',
+        'keterangan',
+        'kuota_siswa',
     ];
 
     /**
@@ -37,9 +35,14 @@ class Sekolah extends Model
         return $this->belongsTo('App\User','user_id');
     }
 
-       public function jenis_sekolah()
+      public function sekolah()
     {
-        return $this->belongsTo('Bantenprov\Sekolah\Models\Bantenprov\Sekolah\JenisSekolah','jenis_sekolah_id');
+        return $this->belongsTo('Bantenprov\Sekolah\Models\Bantenprov\Sekolah\Sekolah','sekolah_id');
+    }
+
+    public function program_keahlian()
+    {
+        return $this->belongsTo('Bantenprov\ProgramKeahlian\Models\Bantenprov\ProgramKeahlian\ProgramKeahlian','program_keahlian_id');
     }
 
 }

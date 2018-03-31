@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header">
-      <i class="fa fa-table" aria-hidden="true"></i>Sekolah {{ model.label }}
+      <i class="fa fa-table" aria-hidden="true"></i>Prodi sekolah {{ model.keterangan }}
 
       <ul class="nav nav-pills card-header-pills pull-right">
         <li class="nav-item">
@@ -16,43 +16,30 @@
       <vue-form class="form-horizontal form-validation" :state="state" @submit.prevent="onSubmit">
         <div class="form-row">
           <div class="col-md">
-            <b>Label :</b> {{ model.label }}
+            <b>Sekolah :</b> {{ model.sekolah}}
+          </div>
+        </div>
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <b>Program Keahlian :</b> {{ model.program_keahlian }}
           </div>
         </div>
 
         <div class="form-row mt-4">
           <div class="col-md">
-            <b>Jenis Sekolah :</b> {{ model.jenis_sekolah.jenis_sekolah }}
+            <b>Keterangan :</b> {{ model.keterangan }}
           </div>
         </div>
 
         <div class="form-row mt-4">
           <div class="col-md">
-            <b>NPSN :</b> {{ model.npsn }}
-          </div>
-        </div>
-
-        <div class="form-row mt-4">
-          <div class="col-md">
-            <b>Alamat :</b> {{ model.alamat }}
-          </div>
-        </div>
-
-        <div class="form-row mt-4">
-          <div class="col-md">
-            <b>Logo :</b> {{ model.logo }}
+            <b>Kuota Siswa :</b> {{ model.kuota_siswa }}
           </div>
         </div>
         
-        <div class="form-row mt-4">
-          <div class="col-md">
-            <b>Foto Gedung :</b> {{ model.foto_gedung }}
-          </div>
-        </div>     
       </vue-form>
-
     </div>
-       <div class="card-footer text-muted">
+     <div class="card-footer text-muted">
         <div class="row">
           <div class="col-md">
             <b>Username :</b> {{ model.user.name }}
@@ -66,23 +53,19 @@
   </div>
 </template>
 
-
 <script>
 export default {
   mounted() {
-    axios.get('api/sekolah/' + this.$route.params.id)
+    axios.get('api/prodi-sekolah/' + this.$route.params.id)
       .then(response => {
         if (response.data.status == true) {
-          this.model.label          = response.data.sekolah.label;
-          this.model.old_label      = response.data.sekolah.label;
-          this.model.user           = response.data.sekolah.user;
-          this.model.jenis_sekolah  = response.data.sekolah.jenis_sekolah;
-          this.model.npsn           = response.data.sekolah.npsn;
-          this.model.alamat         = response.data.sekolah.alamat;
-          this.model.created_at     = response.data.sekolah.created_at;
-          this.model.updated_at     = response.data.sekolah.updated_at;
-          this.model.logo           = response.data.sekolah.logo;
-          this.model.foto_gedung    = response.data.sekolah.foto_gedung;
+          this.model.sekolah          = response.data.sekolah.sekolah.label;
+          this.model.program_keahlian = response.data.sekolah.program_keahlian.label;
+          this.model.user             = response.data.sekolah.user;
+          this.model.keterangan       = response.data.sekolah.keterangan;
+          this.model.kuota_siswa      = response.data.sekolah.kuota_siswa;
+          this.model.created_at       = response.data.sekolah.created_at;
+          this.model.updated_at       = response.data.sekolah.updated_at; 
 
         } 
         else {
@@ -90,17 +73,25 @@ export default {
         }
       })
       .catch(function(response) {
-        alert('Break');
-        window.location.href = '#/admin/sekolah';
+        alert('Break1');
+        window.location.href = '#/admin/prodi-sekolah';
       }),
-      axios.get('api/sekolah/create')
+      axios.get('api/prodi-sekolah/create')
       .then(response => {           
           response.data.user.forEach(element => {
             this.user.push(element);
           });
+
+          response.data.sekolah.forEach(element => {
+            this.sekolah.push(element);
+          });
+
+          response.data.program_keahlian.forEach(element => {
+            this.program_keahlian.push(element);
+          });
       })
       .catch(function(response) {
-        alert('Break');
+        alert('Break2');
       })
 
   },
@@ -108,17 +99,18 @@ export default {
     return {
       state: {},
       model: {
-        label:            "",
+        sekolah_id:       "",
         user_id:          "",
-        jenis_sekolah_id: "",
-        npsn:             "",
-        alamat:           "",
-        logo:             "",
-        foto_gedung:      "",
+        keterangan:       "",
+        kuota_siswa:      "",
+        program_keahlian: "",
         created_at:       "",
         updated_at:       "",
+    
       },
-      user: []
+      user: [],
+      sekolah: [],
+      program_keahlian: [],
     }
   },
   methods: {
@@ -128,15 +120,11 @@ export default {
       if (this.state.$invalid) {
         return;
       } else {
-        axios.put('api/sekolah/' + this.$route.params.id, {
-            label:        this.model.label,
-            description:  this.model.description,
-            old_label:    this.model.old_label,
+        axios.put('api/prodi-sekolah/' + this.$route.params.id, {
+            sekolah_id:   this.model.sekolah_id,
             user_id:      this.model.user_id,
-            npsn:         this.model.npsn,
-            alamat:       this.model.alamat,
-            logo:         this.model.logo,
-            foto_gedung:  this.model.foto_gedung
+            keterangan:   this.model.keterangan,
+            kuota_siswa:  this.model.kuota_siswa,
           })
           .then(response => {
             if (response.data.status == true) {
@@ -156,7 +144,7 @@ export default {
       }
     },
     reset() {
-      axios.get('api/sekolah/' + this.$route.params.id + '/edit')
+      axios.get('api/prodi-sekolah/' + this.$route.params.id + '/edit')
         .then(response => {
           if (response.data.status == true) {
             this.model.label = response.data.sekolah.label;
@@ -170,7 +158,7 @@ export default {
         });
     },
     back() {
-      window.location = '#/admin/sekolah';
+      window.location = '#/admin/prodi-sekolah';
     }
   }
 }

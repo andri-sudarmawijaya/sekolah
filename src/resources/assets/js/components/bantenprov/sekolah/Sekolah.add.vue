@@ -25,23 +25,96 @@
               </field-messages>
             </validate>
           </div>
+        </div>
 
+        <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
-              <input class="form-control" v-model="model.description" name="description" type="text" placeholder="Description">
+              <input class="form-control" v-model="model.npsn" required autofocus name="npsn" type="text" placeholder="NPSN">
 
-              <field-messages name="description" show="$invalid && $submitted" class="text-danger">
+              <field-messages name="npsn" show="$invalid && $submitted" class="text-danger">
                 <small class="form-text text-success">Looks good!</small>
+                <small class="form-text text-danger" slot="required">Label is a required field</small>
               </field-messages>
             </validate>
           </div>
+        </div>
 
-          <div class="col-auto">
-            <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+              <input class="form-control" v-model="model.alamat" required autofocus name="alamat" type="text" placeholder="Alamat">
 
-            <button type="reset" class="btn btn-secondary" @click="reset">Reset</button>
+              <field-messages name="alamat" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+                <small class="form-text text-danger" slot="required">Label is a required field</small>
+              </field-messages>
+            </validate>
           </div>
         </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+              <input class="form-control" v-model="model.logo" required autofocus name="logo" type="text" placeholder="Logo">
+
+              <field-messages name="logo" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+                <small class="form-text text-danger" slot="required">Label is a required field</small>
+              </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+              <input class="form-control" v-model="model.foto_gedung" required autofocus name="foto_gedung" type="text" placeholder="Foto Gedung">
+
+              <field-messages name="foto_gedung" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+                <small class="form-text text-danger" slot="required">Label is a required field</small>
+              </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+            <label for="user_id">Username</label>
+            <v-select name="user_id" v-model="model.user" :options="user" class="mb-4"></v-select>
+
+            <field-messages name="user_id" show="$invalid && $submitted" class="text-danger">
+              <small class="form-text text-success">Looks good!</small>
+              <small class="form-text text-danger" slot="required">Label is a required field</small>
+            </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+            <label for="jenis_sekolah_id">Jenis Sekolah</label>
+            <v-select name="jenis_sekolah" v-model="model.jenis_sekolah" :options="jenis_sekolah" class="mb-4"></v-select>
+
+            <field-messages name="jenis_sekolah_id" show="$invalid && $submitted" class="text-danger">
+              <small class="form-text text-success">Looks good!</small>
+              <small class="form-text text-danger" slot="required">Label is a required field</small>
+            </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">            
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+            <button type="reset" class="btn btn-secondary" @click="reset">Reset</button>            
+          </div>
+        </div>
+        
       </vue-form>
     </div>
   </div>
@@ -49,13 +122,37 @@
 
 <script>
 export default {
+  mounted(){
+    axios.get('api/sekolah/create')
+    .then(response => {           
+        response.data.user.forEach(element => {
+          this.user.push(element);
+        });
+
+        response.data.jenis_sekolah.forEach(element =>{
+          this.jenis_sekolah.push(element);
+        });
+
+    })
+    .catch(function(response) {
+      alert('Break');
+    });
+  },
   data() {
     return {
       state: {},
       model: {
         label: "",
-        description: ""
-      }
+        npsn: "",
+        jenis_sekolah: "",
+        alamat: "",
+        logo: "",
+        foto_gedung: "",
+        user: ""
+
+      },
+      user: [],
+      jenis_sekolah: []
     }
   },
   methods: {
@@ -66,8 +163,13 @@ export default {
         return;
       } else {
         axios.post('api/sekolah', {
-            label: this.model.label,
-            description: this.model.description
+            label:            this.model.label,
+            jenis_sekolah_id: this.model.jenis_sekolah.id,
+            npsn:             this.model.npsn,
+            alamat:           this.model.alamat,
+            logo:             this.model.logo,
+            foto_gedung:      this.model.foto_gedung,
+            user_id:          this.model.user.id
           })
           .then(response => {
             if (response.data.status == true) {
@@ -89,7 +191,12 @@ export default {
     reset() {
       this.model = {
           label: "",
-          description: ""
+          jenis_sekolah: "",
+          npsn: "",
+          alamat: "",
+          logo: "",
+          foto_gedung: "",
+          user: ""
       };
     },
     back() {

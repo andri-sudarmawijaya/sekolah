@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header">
-      <i class="fa fa-table" aria-hidden="true"></i> Sekolah
+      <i class="fa fa-table" aria-hidden="true"></i>  Prodi Sekolah
 
       <ul class="nav nav-pills card-header-pills pull-right">
         <li class="nav-item">
@@ -26,7 +26,7 @@
 
       <div class="table-responsive">
         <vuetable ref="vuetable"
-          api-url="/api/sekolah"
+          api-url="/api/prodi-sekolah"
           :fields="fields"
           :sort-order="sortOrder"
           :css="css.table"
@@ -92,27 +92,22 @@ export default {
           dataClass: 'right aligned'
         },
         {
-          name: 'npsn',
-          title: 'NPSN',
-          sortField: 'npsn',
+          name: 'sekolah.label',
+          title: 'Sekolah',
+          sortField: 'sekolah_id',
+          titleClass: 'center aligned'
+        },
+        
+        {
+          name: 'program_keahlian.label',
+          title: 'Program Keahlian',
+          sortField: 'program_keahlian_id',
           titleClass: 'center aligned'
         },
         {
-          name: 'jenis_sekolah.jenis_sekolah',
-          title: 'Jenis Sekolah',
-          sortField: 'jenis_sekolah_id',
-          titleClass: 'center aligned'
-        },
-        {
-          name: 'label',
-          title: 'Label',
-          sortField: 'label',
-          titleClass: 'center aligned'
-        },
-        {
-          name: 'logo',
-          title: 'Logo',
-          sortField: 'logo',
+          name: 'kuota_siswa',
+          title: 'Kuota siswa',
+          sortField: 'kuota_siswa',
           titleClass: 'center aligned'
         },
         {
@@ -130,8 +125,8 @@ export default {
 
       ],
       sortOrder: [{
-        field: 'label',
-        direction: 'asc'
+        field: 'keterangan',
+        direction: 'keterangan'
       }],
       moreParams: {},
       css: {
@@ -158,19 +153,19 @@ export default {
   },
   methods: {
     createRow() {
-      window.location = '#/admin/sekolah/create';
+      window.location = '#/admin/prodi-sekolah/create';
     },
     viewRow(rowData) {
-      window.location = '#/admin/sekolah/' + rowData.id;
+      window.location = '#/admin/prodi-sekolah/' + rowData.id;
     },
     editRow(rowData) {
-      window.location = '#/admin/sekolah/' + rowData.id + '/edit';
+      window.location = '#/admin/prodi-sekolah/' + rowData.id + '/edit';
     },
     deleteRow(rowData) {
       let app = this;
 
       if (confirm('Do you really want to delete it?')) {
-        axios.delete('/api/sekolah/' + rowData.id)
+        axios.delete('/api/prodi-sekolah/' + rowData.id)
           .then(function(response) {
             if (response.data.status == true) {
               app.$refs.vuetable.reload()
