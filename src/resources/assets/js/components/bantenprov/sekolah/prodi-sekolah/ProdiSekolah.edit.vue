@@ -124,18 +124,23 @@ export default {
 
       axios.get('api/prodi-sekolah/create')
       .then(response => {
-          response.data.user.forEach(element => {
-            this.user.push(element);
-          });
           response.data.sekolah.forEach(element => {
             this.sekolah.push(element);
           });
           response.data.program_keahlian.forEach(element => {
             this.program_keahlian.push(element);
           });
+          if(response.data.user_special == true){
+            response.data.user.forEach(user_element => {
+              this.user.push(user_element);
+            });
+          }else{
+            this.user.push(response.data.user);
+          }
       })
       .catch(function(response) {
         alert('Break');
+        window.location.href = '#/admin/prodi-sekolah';
       })
   },
   data() {

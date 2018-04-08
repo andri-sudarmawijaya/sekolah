@@ -149,15 +149,20 @@ export default {
 
       axios.get('api/sekolah/create')
       .then(response => {
-          response.data.user.forEach(element => {
-            this.user.push(element);
-          });
           response.data.jenis_sekolah.forEach(element => {
             this.jenis_sekolah.push(element);
           });
+          if(response.data.user_special == true){
+            response.data.user.forEach(user_element => {
+              this.user.push(user_element);
+            });
+          }else{
+            this.user.push(response.data.user);
+          }
       })
       .catch(function(response) {
         alert('Break');
+        window.location.href = '#/admin/sekolah';
       })
   },
   data() {
