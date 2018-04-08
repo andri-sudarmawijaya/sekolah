@@ -14,6 +14,7 @@ class CreateSekolahsTable extends Migration
 	{
 		Schema::create('sekolahs', function(Blueprint $table) {
 			$table->increments('id');
+			$table->integer('user_id');
 			$table->string('label');
 			$table->string('npsn');
 			$table->integer('jenis_sekolah_id');
@@ -23,9 +24,15 @@ class CreateSekolahsTable extends Migration
 			//$table->integer('kabkota_id')->unsigned()->index();
 			$table->string('logo');
 			$table->string('foto_gedung');
+			$table->string('province_id');
+			$table->string('city_id');
+			$table->string('district_id');
+			$table->string('village_id');
+			$table->string('no_telp');
+			$table->string('email');
+			$table->string('zona_id');
 			$table->timestamps();
 			$table->softDeletes();
-			$table->integer('user_id');
 		});
 	}
 
