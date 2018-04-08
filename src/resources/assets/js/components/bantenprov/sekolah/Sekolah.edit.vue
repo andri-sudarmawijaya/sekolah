@@ -17,8 +17,8 @@
         <div class="form-row">
           <div class="col-md">
             <validate tag="div">
-              <label for="label">label</label>
-              <input class="form-control" v-model="model.label" required autofocus name="label" type="text" placeholder="Label">
+              <label for="label">Nama Sekolah</label>
+              <input class="form-control" v-model="model.label" required autofocus name="label" type="text" placeholder="Nama Sekolah">
 
               <field-messages name="label" show="$invalid && $submitted" class="text-danger">
                 <small class="form-text text-success">Looks good!</small>
@@ -58,7 +58,7 @@
           <div class="col-md">
             <validate tag="div">
               <label for="logo">Logo</label>
-              <input class="form-control" v-model="model.logo" name="logo" type="text" placeholder="logo">
+              <input class="form-control" v-model="model.logo" name="logo" type="text" placeholder="Logo">
 
               <field-messages name="logo" show="$invalid && $submitted" class="text-danger">
                 <small class="form-text text-success">Looks good!</small>
@@ -71,9 +71,100 @@
           <div class="col-md">
             <validate tag="div">
               <label for="foto_gedung">Foto Gedung</label>
-              <input class="form-control" v-model="model.foto_gedung" name="foto_gedung" type="text" placeholder="logo">
+              <input class="form-control" v-model="model.foto_gedung" name="foto_gedung" type="text" placeholder="Foto Gedung">
 
               <field-messages name="foto_gedung" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+              </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+              <label for="province_id">Provinsi</label>
+              <input class="form-control" v-model="model.province_id" name="province_id" type="text" placeholder="Provinsi">
+
+              <field-messages name="province_id" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+              </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+              <label for="city_id">Kota/Kabupaten</label>
+              <input class="form-control" v-model="model.city_id" name="city_id" type="text" placeholder="Kota/Kabupaten">
+
+              <field-messages name="city_id" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+              </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+              <label for="district_id">Kecamatan</label>
+              <input class="form-control" v-model="model.district_id" name="district_id" type="text" placeholder="Kecamatan">
+
+              <field-messages name="district_id" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+              </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+              <label for="village_id">Kelurahan</label>
+              <input class="form-control" v-model="model.village_id" name="village_id" type="text" placeholder="Kelurahan">
+
+              <field-messages name="village_id" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+              </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+              <label for="no_telp">No Telepon</label>
+              <input class="form-control" v-model="model.no_telp" name="no_telp" type="text" placeholder="No Telepon">
+
+              <field-messages name="no_telp" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+              </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+              <label for="email">E-mail</label>
+              <input class="form-control" v-model="model.email" name="email" type="text" placeholder="E-mail">
+
+              <field-messages name="email" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+              </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+              <label for="zona_id">Zona</label>
+              <input class="form-control" v-model="model.zona_id" name="zona_id" type="text" placeholder="Zona">
+
+              <field-messages name="zona_id" show="$invalid && $submitted" class="text-danger">
                 <small class="form-text text-success">Looks good!</small>
               </field-messages>
             </validate>
@@ -109,13 +200,13 @@
         </div>
 
         <div class="form-row mt-4">
-          <div class="col-md">
+          <div class="col-md">            
             <button type="submit" class="btn btn-primary">Submit</button>
 
-            <button type="reset" class="btn btn-secondary" @click="reset">Reset</button>
+            <button type="reset" class="btn btn-secondary" @click="reset">Reset</button>            
           </div>
         </div>
-
+        
       </vue-form>
     </div>
   </div>
@@ -137,6 +228,13 @@ export default {
           this.model.alamat         = response.data.sekolah.alamat;
           this.model.logo           = response.data.sekolah.logo;
           this.model.foto_gedung    = response.data.sekolah.foto_gedung;
+          this.model.province_id    = response.data.sekolah.province_id;
+          this.model.city_id        = response.data.sekolah.city_id;
+          this.model.district_id    = response.data.sekolah.district_id;
+          this.model.village_id     = response.data.sekolah.village_id;
+          this.model.no_telp        = response.data.sekolah.no_telp;
+          this.model.email          = response.data.sekolah.email;
+          this.model.zona_id        = response.data.sekolah.zona_id;
 
         } else {
           alert('Failed');
@@ -176,6 +274,13 @@ export default {
         alamat:         "",
         logo:           "",
         foto_gedung:    "",
+        province_id: "",
+        city_id: "",
+        district_id: "",
+        village_id: "",
+        no_telp: "",
+        email: "",
+        zona_id: "",
         old_user_id:    "",
         old_npsn:       "",
       },
@@ -200,6 +305,13 @@ export default {
             alamat:             this.model.alamat,
             logo:               this.model.logo,
             foto_gedung:        this.model.foto_gedung,
+            province_id:        this.model.province_id,
+            city_id:            this.model.city_id,
+            district_id:        this.model.district_id,
+            village_id:         this.model.village_id,
+            no_telp:            this.model.no_telp,
+            email:              this.model.email,
+            zona_id:            this.model.zona_id,
           })
           .then(response => {
             if (response.data.status == true) {
@@ -229,6 +341,13 @@ export default {
             this.model.alamat         = response.data.sekolah.alamat;
             this.model.logo           = response.data.sekolah.logo;
             this.model.foto_gedung    = response.data.sekolah.foto_gedung;
+            this.model.province_id    = response.data.sekolah.province_id;
+          this.model.city_id        = response.data.sekolah.city_id;
+          this.model.district_id    = response.data.sekolah.district_id;
+          this.model.village_id     = response.data.sekolah.village_id;
+          this.model.no_telp        = response.data.sekolah.no_telp;
+          this.model.email          = response.data.sekolah.email;
+          this.model.zona_id        = response.data.sekolah.zona_id;
           } else {
             alert('Failed');
           }
