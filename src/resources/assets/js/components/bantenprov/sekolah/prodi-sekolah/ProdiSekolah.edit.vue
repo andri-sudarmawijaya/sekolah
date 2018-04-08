@@ -44,20 +44,6 @@
         <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
-            <label for="user_id">Username</label>
-            <v-select name="user_id" v-model="model.user" :options="user" class="mb-4"></v-select>
-
-            <field-messages name="user_id" show="$invalid && $submitted" class="text-danger">
-              <small class="form-text text-success">Looks good!</small>
-              <small class="form-text text-danger" slot="required">Username is a required field</small>
-            </field-messages>
-            </validate>
-          </div>
-        </div>
-
-        <div class="form-row mt-4">
-          <div class="col-md">
-            <validate tag="div">
             <label for="sekolah">Sekolah</label>
             <v-select name="sekolah" v-model="model.sekolah" :options="sekolah" class="mb-4"></v-select>
 
@@ -84,13 +70,27 @@
         </div>
 
         <div class="form-row mt-4">
-          <div class="col-md">            
-            <button type="submit" class="btn btn-primary">Submit</button>
+          <div class="col-md">
+            <validate tag="div">
+            <label for="user_id">Username</label>
+            <v-select name="user_id" v-model="model.user" :options="user" class="mb-4"></v-select>
 
-            <button type="reset" class="btn btn-secondary" @click="reset">Reset</button>            
+            <field-messages name="user_id" show="$invalid && $submitted" class="text-danger">
+              <small class="form-text text-success">Looks good!</small>
+              <small class="form-text text-danger" slot="required">Username is a required field</small>
+            </field-messages>
+            </validate>
           </div>
         </div>
-        
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+            <button type="reset" class="btn btn-secondary" @click="reset">Reset</button>
+          </div>
+        </div>
+
       </vue-form>
     </div>
   </div>
@@ -111,7 +111,7 @@ export default {
           this.model.old_user         = response.data.sekolah.user;
           this.model.sekolah          = response.data.sekolah.sekolah;
 
-          
+
 
         } else {
           alert('Failed');
@@ -123,7 +123,7 @@ export default {
       });
 
       axios.get('api/prodi-sekolah/create')
-      .then(response => {           
+      .then(response => {
           response.data.user.forEach(element => {
             this.user.push(element);
           });
@@ -147,7 +147,7 @@ export default {
         user:                "",
         sekolah:             "",
         program_keahlian:    "",
-        
+
       },
       user: [],
       sekolah: [],

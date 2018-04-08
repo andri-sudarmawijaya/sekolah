@@ -43,20 +43,6 @@
         <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
-            <label for="user_id">Username</label>
-            <v-select name="user_id" v-model="model.user" :options="user" class="mb-4"></v-select>
-
-            <field-messages name="user_id" show="$invalid && $submitted" class="text-danger">
-              <small class="form-text text-success">Looks good!</small>
-              <small class="form-text text-danger" slot="required">Label is a required field</small>
-            </field-messages>
-            </validate>
-          </div>
-        </div>
-        
-        <div class="form-row mt-4">
-          <div class="col-md">
-            <validate tag="div">
             <label for="program_keahlian_id">Program Keahlian</label>
             <v-select name="program_keahlian_id" v-model="model.program_keahlian" :options="program_keahlian" class="mb-4"></v-select>
 
@@ -66,7 +52,7 @@
             </field-messages>
             </validate>
           </div>
-        </div>  
+        </div>
 
 
         <div class="form-row mt-4">
@@ -84,13 +70,27 @@
         </div>
 
         <div class="form-row mt-4">
-          <div class="col-md">            
-            <button type="submit" class="btn btn-primary">Submit</button>
+          <div class="col-md">
+            <validate tag="div">
+            <label for="user_id">Username</label>
+            <v-select name="user_id" v-model="model.user" :options="user" class="mb-4"></v-select>
 
-            <button type="reset" class="btn btn-secondary" @click="reset">Reset</button>            
+            <field-messages name="user_id" show="$invalid && $submitted" class="text-danger">
+              <small class="form-text text-success">Looks good!</small>
+              <small class="form-text text-danger" slot="required">Label is a required field</small>
+            </field-messages>
+            </validate>
           </div>
         </div>
-        
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+            <button type="reset" class="btn btn-secondary" @click="reset">Reset</button>
+          </div>
+        </div>
+
       </vue-form>
     </div>
   </div>
@@ -100,7 +100,7 @@
 export default {
   mounted(){
     axios.get('api/prodi-sekolah/create')
-    .then(response => {           
+    .then(response => {
         response.data.user.forEach(element => {
           this.user.push(element);
         });
