@@ -36,7 +36,7 @@
             <b>Kuota Siswa :</b> {{ model.kuota_siswa }}
           </div>
         </div>
-        
+
       </vue-form>
     </div>
      <div class="card-footer text-muted">
@@ -65,9 +65,9 @@ export default {
           this.model.keterangan       = response.data.sekolah.keterangan;
           this.model.kuota_siswa      = response.data.sekolah.kuota_siswa;
           this.model.created_at       = response.data.sekolah.created_at;
-          this.model.updated_at       = response.data.sekolah.updated_at; 
+          this.model.updated_at       = response.data.sekolah.updated_at;
 
-        } 
+        }
         else {
           alert('Failed');
         }
@@ -77,7 +77,7 @@ export default {
         window.location.href = '#/admin/prodi-sekolah';
       }),
       axios.get('api/prodi-sekolah/create')
-      .then(response => {           
+      .then(response => {
           response.data.user.forEach(element => {
             this.user.push(element);
           });
@@ -92,6 +92,7 @@ export default {
       })
       .catch(function(response) {
         alert('Break2');
+        window.location = '#/admin/prodi-sekolah';
       })
 
   },
@@ -106,7 +107,7 @@ export default {
         program_keahlian: "",
         created_at:       "",
         updated_at:       "",
-    
+
       },
       user: [],
       sekolah: [],

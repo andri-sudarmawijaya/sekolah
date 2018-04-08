@@ -82,6 +82,20 @@
         <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
+            <label for="jenis_sekolah_id">Jenis Sekolah</label>
+            <v-select name="jenis_sekolah" v-model="model.jenis_sekolah" :options="jenis_sekolah" class="mb-4"></v-select>
+
+            <field-messages name="jenis_sekolah_id" show="$invalid && $submitted" class="text-danger">
+              <small class="form-text text-success">Looks good!</small>
+              <small class="form-text text-danger" slot="required">Label is a required field</small>
+            </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
             <label for="user_id">Username</label>
             <v-select name="user_id" v-model="model.user" :options="user" class="mb-4"></v-select>
 
@@ -95,26 +109,12 @@
 
         <div class="form-row mt-4">
           <div class="col-md">
-            <validate tag="div">
-            <label for="jenis_sekolah_id">Jenis Sekolah</label>
-            <v-select name="jenis_sekolah" v-model="model.jenis_sekolah" :options="jenis_sekolah" class="mb-4"></v-select>
-
-            <field-messages name="jenis_sekolah_id" show="$invalid && $submitted" class="text-danger">
-              <small class="form-text text-success">Looks good!</small>
-              <small class="form-text text-danger" slot="required">Label is a required field</small>
-            </field-messages>
-            </validate>
-          </div>
-        </div>
-
-        <div class="form-row mt-4">
-          <div class="col-md">            
             <button type="submit" class="btn btn-primary">Submit</button>
 
-            <button type="reset" class="btn btn-secondary" @click="reset">Reset</button>            
+            <button type="reset" class="btn btn-secondary" @click="reset">Reset</button>
           </div>
         </div>
-        
+
       </vue-form>
     </div>
   </div>
@@ -124,18 +124,27 @@
 export default {
   mounted(){
     axios.get('api/sekolah/create')
-    .then(response => {           
-        response.data.user.forEach(element => {
-          this.user.push(element);
-        });
+    .then(response => {
+      if (response.data.status == true) {
+        this.model.user = response.data.current_user;
 
         response.data.jenis_sekolah.forEach(element =>{
           this.jenis_sekolah.push(element);
         });
-
+        if(response.data.user_special == true){
+          response.data.user.forEach(user_element => {
+            this.user.push(user_element);
+          });
+        }else{
+          this.user.push(response.data.user);
+        }
+      } else {
+        alert('Failed');
+      }
     })
     .catch(function(response) {
       alert('Break');
+      window.location = '#/admin/sekolah';
     });
   },
   data() {

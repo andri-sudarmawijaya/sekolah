@@ -58,18 +58,18 @@ class ProdiSekolahController extends Controller
         if ($request->exists('filter')) {
             $query->where(function($q) use($request) {
                 $value = "%{$request->filter}%";
-                $q->where('keterangana', 'like', $value)                    
+                $q->where('keterangana', 'like', $value)
                     ->orWhere('kuota_siswa', 'like', $value);
             });
         }
 
         $perPage = request()->has('per_page') ? (int) request()->per_page : null;
         $response = $query->with('user')->with('sekolah')->with('program_keahlian')->paginate($perPage);
-        
-        
+
+
         /*foreach($response as $sekolah){
             array_set($response->data, 'sekolah', $sekolah->sekolah->label);
-        }         
+        }
 
         foreach($response as $user){
             array_set($response->data, 'user', $user->user->name);
@@ -85,29 +85,45 @@ class ProdiSekolahController extends Controller
             ->header('Access-Control-Allow-Methods', 'GET');
     }
 
-    
+
      /** Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response*/
-     
+
     public function create()
-    {        
-        $users              = $this->user->all();
+    {
+        $response = [];
+
         $sekolahs           = $this->sekolah->all();
         $program_keahlians  = $this->program_keahlian->all();
+        $users_special = $this->user->all();
+        $users_standar = $this->user->find(\Auth::User()->id);
+        $current_user = \Auth::User();
 
-        foreach($users as $user){
-            array_set($user, 'label', $user->name);
+        $role_check = \Auth::User()->hasRole(['superadministrator','administrator']);
+
+        if($role_check){
+            $response['user_special'] = true;
+            foreach($users_special as $user){
+                array_set($user, 'label', $user->name);
+            }
+            $response['user'] = $users_special;
+        }else{
+            $response['user_special'] = false;
+            array_set($users_standar, 'label', $users_standar->name);
+            $response['user'] = $users_standar;
         }
+
+        array_set($current_user, 'label', $current_user->name);
+
+        $response['current_user'] = $current_user;
 
         foreach($program_keahlians as $program_keahlian){
             array_set($program_keahlian, 'program_keahlian', $program_keahlian->program_keahlian);
         }
 
-        
         $response['sekolah'] = $sekolahs;
         $response['program_keahlian'] = $program_keahlians;
-        $response['user'] = $users;
         $response['status'] = true;
         return response()->json($response);
     }
@@ -232,8 +248,8 @@ class ProdiSekolahController extends Controller
                 foreach($validator->messages()->getMessages() as $key => $error){
                     foreach($error AS $error_get) {
                         array_push($message, $error_get);
-                    }                
-                } 
+                    }
+                }
 
                 $check_user   = $this->prodi_sekolah->where('id','!=', $id)->where('user_id', $request->user_id);
 

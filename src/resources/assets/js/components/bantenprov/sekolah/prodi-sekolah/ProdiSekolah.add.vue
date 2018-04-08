@@ -43,20 +43,6 @@
         <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
-            <label for="user_id">Username</label>
-            <v-select name="user_id" v-model="model.user" :options="user" class="mb-4"></v-select>
-
-            <field-messages name="user_id" show="$invalid && $submitted" class="text-danger">
-              <small class="form-text text-success">Looks good!</small>
-              <small class="form-text text-danger" slot="required">Label is a required field</small>
-            </field-messages>
-            </validate>
-          </div>
-        </div>
-        
-        <div class="form-row mt-4">
-          <div class="col-md">
-            <validate tag="div">
             <label for="program_keahlian_id">Program Keahlian</label>
             <v-select name="program_keahlian_id" v-model="model.program_keahlian" :options="program_keahlian" class="mb-4"></v-select>
 
@@ -66,7 +52,7 @@
             </field-messages>
             </validate>
           </div>
-        </div>  
+        </div>
 
 
         <div class="form-row mt-4">
@@ -84,13 +70,27 @@
         </div>
 
         <div class="form-row mt-4">
-          <div class="col-md">            
-            <button type="submit" class="btn btn-primary">Submit</button>
+          <div class="col-md">
+            <validate tag="div">
+            <label for="user_id">Username</label>
+            <v-select name="user_id" v-model="model.user" :options="user" class="mb-4"></v-select>
 
-            <button type="reset" class="btn btn-secondary" @click="reset">Reset</button>            
+            <field-messages name="user_id" show="$invalid && $submitted" class="text-danger">
+              <small class="form-text text-success">Looks good!</small>
+              <small class="form-text text-danger" slot="required">Label is a required field</small>
+            </field-messages>
+            </validate>
           </div>
         </div>
-        
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+            <button type="reset" class="btn btn-secondary" @click="reset">Reset</button>
+          </div>
+        </div>
+
       </vue-form>
     </div>
   </div>
@@ -100,22 +100,30 @@
 export default {
   mounted(){
     axios.get('api/prodi-sekolah/create')
-    .then(response => {           
-        response.data.user.forEach(element => {
-          this.user.push(element);
-        });
+    .then(response => {
+      if (response.data.status == true) {
+        this.model.user = response.data.current_user;
 
         response.data.sekolah.forEach(element =>{
           this.sekolah.push(element);
         });
-
         response.data.program_keahlian.forEach(element =>{
           this.program_keahlian.push(element);
         });
-
+        if(response.data.user_special == true){
+          response.data.user.forEach(user_element => {
+            this.user.push(user_element);
+          });
+        }else{
+          this.user.push(response.data.user);
+        }
+      } else {
+        alert('Failed');
+      }
     })
     .catch(function(response) {
       alert('Break');
+      window.location = '#/admin/prodi-sekolah';
     });
   },
   data() {
