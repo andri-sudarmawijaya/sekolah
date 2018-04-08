@@ -43,12 +43,12 @@
             <b>Logo :</b> {{ model.logo }}
           </div>
         </div>
-        
+
         <div class="form-row mt-4">
           <div class="col-md">
             <b>Foto Gedung :</b> {{ model.foto_gedung }}
           </div>
-        </div>     
+        </div>
       </vue-form>
 
     </div>
@@ -84,7 +84,7 @@ export default {
           this.model.logo           = response.data.sekolah.logo;
           this.model.foto_gedung    = response.data.sekolah.foto_gedung;
 
-        } 
+        }
         else {
           alert('Failed');
         }
@@ -94,13 +94,14 @@ export default {
         window.location.href = '#/admin/sekolah';
       }),
       axios.get('api/sekolah/create')
-      .then(response => {           
+      .then(response => {
           response.data.user.forEach(element => {
             this.user.push(element);
           });
       })
       .catch(function(response) {
         alert('Break');
+      window.location = '#/admin/sekolah';
       })
 
   },

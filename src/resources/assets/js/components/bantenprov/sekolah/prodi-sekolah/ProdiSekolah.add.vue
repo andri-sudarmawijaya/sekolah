@@ -101,21 +101,29 @@ export default {
   mounted(){
     axios.get('api/prodi-sekolah/create')
     .then(response => {
-        response.data.user.forEach(element => {
-          this.user.push(element);
-        });
+      if (response.data.status == true) {
+        this.model.user = response.data.current_user;
 
         response.data.sekolah.forEach(element =>{
           this.sekolah.push(element);
         });
-
         response.data.program_keahlian.forEach(element =>{
           this.program_keahlian.push(element);
         });
-
+        if(response.data.user_special == true){
+          response.data.user.forEach(user_element => {
+            this.user.push(user_element);
+          });
+        }else{
+          this.user.push(response.data.user);
+        }
+      } else {
+        alert('Failed');
+      }
     })
     .catch(function(response) {
       alert('Break');
+      window.location = '#/admin/prodi-sekolah';
     });
   },
   data() {
