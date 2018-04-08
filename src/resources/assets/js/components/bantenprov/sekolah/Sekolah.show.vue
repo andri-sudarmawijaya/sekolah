@@ -117,7 +117,6 @@ export default {
       .then(response => {
         if (response.data.status == true) {
           this.model.label          = response.data.sekolah.label;
-          this.model.old_label      = response.data.sekolah.label;
           this.model.user           = response.data.sekolah.user;
           this.model.jenis_sekolah  = response.data.sekolah.jenis_sekolah;
           this.model.npsn           = response.data.sekolah.npsn;
@@ -142,25 +141,15 @@ export default {
       .catch(function(response) {
         alert('Break');
         window.location.href = '#/admin/sekolah';
-      }),
-      axios.get('api/sekolah/create')
-      .then(response => {
-          response.data.user.forEach(element => {
-            this.user.push(element);
-          });
-      })
-      .catch(function(response) {
-        alert('Break');
-      window.location = '#/admin/sekolah';
       })
   },
   data() {
     return {
       state: {},
-      model: {
+      model: {        
         label:            "",
-        user_id:          "",
-        jenis_sekolah_id: "",
+        user:          "",
+        jenis_sekolah: "",
         npsn:             "",
         alamat:           "",
         logo:             "",
@@ -174,44 +163,12 @@ export default {
         zona_id: "",
         created_at:       "",
         updated_at:       "",
+        user:""
       },
       user: []
     }
   },
-  methods: {
-    onSubmit: function() {
-      let app = this;
-
-      if (this.state.$invalid) {
-        return;
-      } else {
-        axios.put('api/sekolah/' + this.$route.params.id, {
-            label:        this.model.label,
-            description:  this.model.description,
-            old_label:    this.model.old_label,
-            user_id:      this.model.user_id,
-            npsn:         this.model.npsn,
-            alamat:       this.model.alamat,
-            logo:         this.model.logo,
-            foto_gedung:  this.model.foto_gedung
-          })
-          .then(response => {
-            if (response.data.status == true) {
-              if(response.data.message == 'success'){
-                alert(response.data.message);
-                app.back();
-              }else{
-                alert(response.data.message);
-              }
-            } else {
-              alert(response.data.message);
-            }
-          })
-          .catch(function(response) {
-            alert('Break ' + response.data.message);
-          });
-      }
-    },
+  methods: {    
     reset() {
       axios.get('api/sekolah/' + this.$route.params.id + '/edit')
         .then(response => {
