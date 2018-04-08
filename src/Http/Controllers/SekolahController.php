@@ -54,7 +54,7 @@ class SekolahController extends Controller
         if ($request->exists('filter')) {
             $query->where(function($q) use($request) {
                 $value = "%{$request->filter}%";
-                $q->where('label', 'like', $value)                    
+                $q->where('label', 'like', $value)
                     ->orWhere('npsn', 'like', $value);
             });
         }
@@ -67,7 +67,7 @@ class SekolahController extends Controller
         }
         foreach($response as $jenis_sekolah){
             array_set($response->data, 'jenis_sekolah', $jenis_sekolah->jenis_sekolah);
-        }   */     
+        }   */
 
         return response()->json($response)
             ->header('Access-Control-Allow-Origin', '*')
@@ -80,20 +80,37 @@ class SekolahController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {        
-        $users          = $this->user->all();
-        $jenis_sekolahs  = $this->jenis_sekolah->all();
+    {
+        $response = [];
 
-        foreach($users as $user){
-            array_set($user, 'label', $user->name);
+        $jenis_sekolahs  = $this->jenis_sekolah->all();
+        $users_special = $this->user->all();
+        $users_standar = $this->user->find(\Auth::User()->id);
+        $current_user = \Auth::User();
+
+        $role_check = \Auth::User()->hasRole(['superadministrator','administrator']);
+
+        if($role_check){
+            $response['user_special'] = true;
+            foreach($users_special as $user){
+                array_set($user, 'label', $user->name);
+            }
+            $response['user'] = $users_special;
+        }else{
+            $response['user_special'] = false;
+            array_set($users_standar, 'label', $users_standar->name);
+            $response['user'] = $users_standar;
         }
+
+        array_set($current_user, 'label', $current_user->name);
+
+        $response['current_user'] = $current_user;
 
         foreach($jenis_sekolahs as $jenis_sekolah){
             array_set($jenis_sekolah, 'label', $jenis_sekolah->jenis_sekolah);
         }
-        
+
         $response['jenis_sekolah'] = $jenis_sekolahs;
-        $response['user'] = $users;
         $response['status'] = true;
         return response()->json($response);
     }
@@ -224,8 +241,8 @@ class SekolahController extends Controller
                 foreach($validator->messages()->getMessages() as $key => $error){
                     foreach($error AS $error_get) {
                         array_push($message, $error_get);
-                    }                
-                } 
+                    }
+                }
 
                 $check_user   = $this->sekolah->where('id','!=', $id)->where('user_id', $request->user_id);
                 $check_npsn   = $this->sekolah->where('id','!=', $id)->where('npsn', $request->npsn);
@@ -233,7 +250,7 @@ class SekolahController extends Controller
 
                 if($check_npsn->count() > 0 || $check_user->count() > 0){
                     $response['message'] = implode("\n",$message);
-                
+
                 } else {
                     $sekolah->label                 = $request->input('label');
                     $sekolah->jenis_sekolah_id      = $request->input('jenis_sekolah_id');
@@ -242,7 +259,7 @@ class SekolahController extends Controller
                     $sekolah->alamat                = $request->input('alamat');
                     $sekolah->logo                  = $request->input('logo');
                     $sekolah->foto_gedung           = $request->input('foto_gedung');
-                    $sekolah->save();   
+                    $sekolah->save();
                     $response['message'] = 'success';
             }
 
