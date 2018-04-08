@@ -105,14 +105,14 @@ export default {
         },
         {
           name: 'label',
-          title: 'Label',
+          title: 'Nama Sekolah',
           sortField: 'label',
           titleClass: 'center aligned'
         },
         {
-          name: 'logo',
-          title: 'Logo',
-          sortField: 'logo',
+          name: 'no_telp',
+          title: 'No Telepon',
+          sortField: 'no_telp',
           titleClass: 'center aligned'
         },
         {

@@ -17,11 +17,11 @@
         <div class="form-row">
           <div class="col-md">
             <validate tag="div">
-              <input class="form-control" v-model="model.label" required autofocus name="label" type="text" placeholder="Label">
+              <input class="form-control" v-model="model.label" required autofocus name="label" type="text" placeholder="Nama Sekolah">
 
               <field-messages name="label" show="$invalid && $submitted" class="text-danger">
                 <small class="form-text text-success">Looks good!</small>
-                <small class="form-text text-danger" slot="required">Label is a required field</small>
+                <small class="form-text text-danger" slot="required">Nama Sekolah is a required field</small>
               </field-messages>
             </validate>
           </div>
@@ -79,6 +79,97 @@
           </div>
         </div>
 
+         <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+              <input class="form-control" v-model="model.province_id" required autofocus name="province_id" type="text" placeholder="Provinsi">
+
+              <field-messages name="province_id" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+                <small class="form-text text-danger" slot="required">Provinsi is a required field</small>
+              </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+              <input class="form-control" v-model="model.city_id" required autofocus name="city_id" type="text" placeholder="Kota/Kabupaten">
+
+              <field-messages name="city_id" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+                <small class="form-text text-danger" slot="required">Kota/Kabupaten is a required field</small>
+              </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+              <input class="form-control" v-model="model.district_id" required autofocus name="district_id" type="text" placeholder="Kecamatan">
+
+              <field-messages name="district_id" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+                <small class="form-text text-danger" slot="required">Kecamatan is a required field</small>
+              </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+              <input class="form-control" v-model="model.village_id" required autofocus name="village_id" type="text" placeholder="Kelurahan">
+
+              <field-messages name="village_id" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+                <small class="form-text text-danger" slot="required">Kelurahan is a required field</small>
+              </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+              <input class="form-control" v-model="model.no_telp" required autofocus name="no_telp" type="text" placeholder="No Telepon">
+
+              <field-messages name="no_telp" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+                <small class="form-text text-danger" slot="required">No Telepon is a required field</small>
+              </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+              <input class="form-control" v-model="model.email" required autofocus name="email" type="text" placeholder="E-mail">
+
+              <field-messages name="email" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+                <small class="form-text text-danger" slot="required">E-mail is a required field</small>
+              </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+              <input class="form-control" v-model="model.zona_id" required autofocus name="zona_id" type="text" placeholder="Zona">
+
+              <field-messages name="zona_id" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+                <small class="form-text text-danger" slot="required">Zona is a required field</small>
+              </field-messages>
+            </validate>
+          </div>
+        </div>
+
         <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
@@ -108,13 +199,13 @@
         </div>
 
         <div class="form-row mt-4">
-          <div class="col-md">
+          <div class="col-md">            
             <button type="submit" class="btn btn-primary">Submit</button>
 
-            <button type="reset" class="btn btn-secondary" @click="reset">Reset</button>
+            <button type="reset" class="btn btn-secondary" @click="reset">Reset</button>            
           </div>
         </div>
-
+        
       </vue-form>
     </div>
   </div>
@@ -122,12 +213,11 @@
 
 <script>
 export default {
-  mounted(){
+   mounted(){
     axios.get('api/sekolah/create')
     .then(response => {
       if (response.data.status == true) {
         this.model.user = response.data.current_user;
-
         response.data.jenis_sekolah.forEach(element =>{
           this.jenis_sekolah.push(element);
         });
@@ -157,6 +247,13 @@ export default {
         alamat: "",
         logo: "",
         foto_gedung: "",
+        province_id: "",
+        city_id: "",
+        district_id: "",
+        village_id: "",
+        no_telp: "",
+        email: "",
+        zona_id: "",
         user: ""
 
       },
@@ -178,6 +275,13 @@ export default {
             alamat:           this.model.alamat,
             logo:             this.model.logo,
             foto_gedung:      this.model.foto_gedung,
+            province_id:      this.model.province_id,
+            city_id:          this.model.city_id,
+            district_id:      this.model.district_id,
+            village_id:       this.model.village_id,
+            no_telp:          this.model.no_telp,
+            email:            this.model.email,
+            zona_id:          this.model.zona_id,
             user_id:          this.model.user.id
           })
           .then(response => {
@@ -205,7 +309,14 @@ export default {
           alamat: "",
           logo: "",
           foto_gedung: "",
-          user: ""
+          province_id: "",
+        city_id: "",
+        district_id: "",
+        village_id: "",
+        no_telp: "",
+        email: "",
+        zona_id: ""
+          
       };
     },
     back() {

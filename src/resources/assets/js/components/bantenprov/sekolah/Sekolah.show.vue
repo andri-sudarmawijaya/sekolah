@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header">
-      <i class="fa fa-table" aria-hidden="true"></i>Sekolah {{ model.label }}
+      <i class="fa fa-table" aria-hidden="true"></i> {{ model.label }}
 
       <ul class="nav nav-pills card-header-pills pull-right">
         <li class="nav-item">
@@ -16,7 +16,7 @@
       <vue-form class="form-horizontal form-validation" :state="state" @submit.prevent="onSubmit">
         <div class="form-row">
           <div class="col-md">
-            <b>Label :</b> {{ model.label }}
+            <b>Nama Sekolah :</b> {{ model.label }}
           </div>
         </div>
 
@@ -43,12 +43,55 @@
             <b>Logo :</b> {{ model.logo }}
           </div>
         </div>
-
+        
         <div class="form-row mt-4">
           <div class="col-md">
             <b>Foto Gedung :</b> {{ model.foto_gedung }}
           </div>
-        </div>
+        </div> 
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <b>Provinsi :</b> {{ model.province_id }}
+          </div>
+        </div> 
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <b>Kota/Kabupaten :</b> {{ model.city_id }}
+          </div>
+        </div> 
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <b>Kecamatan :</b> {{ model.district_id }}
+          </div>
+        </div> 
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <b>Kelurahan :</b> {{ model.village_id }}
+          </div>
+        </div> 
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <b>No Telepon :</b> {{ model.no_telp }}
+          </div>
+        </div> 
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <b>Email :</b> {{ model.email }}
+          </div>
+        </div> 
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <b>Zona :</b> {{ model.zona_id }}
+          </div>
+        </div> 
+
       </vue-form>
 
     </div>
@@ -83,8 +126,15 @@ export default {
           this.model.updated_at     = response.data.sekolah.updated_at;
           this.model.logo           = response.data.sekolah.logo;
           this.model.foto_gedung    = response.data.sekolah.foto_gedung;
+          this.model.province_id    = response.data.sekolah.province_id;
+          this.model.city_id        = response.data.sekolah.city_id;
+          this.model.district_id    = response.data.sekolah.district_id;
+          this.model.village_id     = response.data.sekolah.village_id;
+          this.model.no_telp        = response.data.sekolah.no_telp;
+          this.model.email          = response.data.sekolah.email;
+          this.model.zona_id        = response.data.sekolah.zona_id;
 
-        }
+        } 
         else {
           alert('Failed');
         }
@@ -103,7 +153,6 @@ export default {
         alert('Break');
       window.location = '#/admin/sekolah';
       })
-
   },
   data() {
     return {
@@ -116,6 +165,13 @@ export default {
         alamat:           "",
         logo:             "",
         foto_gedung:      "",
+        province_id: "",
+        city_id: "",
+        district_id: "",
+        village_id: "",
+        no_telp: "",
+        email: "",
+        zona_id: "",
         created_at:       "",
         updated_at:       "",
       },

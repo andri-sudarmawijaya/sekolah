@@ -132,6 +132,13 @@ class SekolahController extends Controller
             'alamat'            => 'required',
             'logo'              => 'required',
             'foto_gedung'       => 'required',
+            'province_id'       => 'required',
+            'city_id'           => 'required',
+            'district_id'       => 'required',
+            'village_id'        => 'required',
+            'no_telp    '       => 'required',
+            'email'             => 'required',
+            'zona_id'           => 'required',
             'user_id'           => 'required|unique:sekolahs,user_id',
         ]);
 
@@ -148,6 +155,13 @@ class SekolahController extends Controller
                 $sekolah->alamat            = $request->input('alamat');
                 $sekolah->logo              = $request->input('logo');
                 $sekolah->foto_gedung       = $request->input('foto_gedung');
+                $sekolah->province_id       = $request->input('province_id');
+                $sekolah->city_id           = $request->input('city_id');
+                $sekolah->district_id       = $request->input('district_id');
+                $sekolah->village_id        = $request->input('village_id');
+                $sekolah->no_telp           = $request->input('no_telp');
+                $sekolah->email             = $request->input('email');
+                $sekolah->zona_id           = $request->input('zona_id');
                 $sekolah->user_id           = $request->input('user_id');
                 $sekolah->save();
 
@@ -160,6 +174,13 @@ class SekolahController extends Controller
                 $sekolah->alamat            = $request->input('alamat');
                 $sekolah->logo              = $request->input('logo');
                 $sekolah->foto_gedung       = $request->input('foto_gedung');
+                $sekolah->province_id       = $request->input('province_id');
+                $sekolah->city_id           = $request->input('city_id');
+                $sekolah->district_id       = $request->input('district_id');
+                $sekolah->village_id        = $request->input('village_id');
+                $sekolah->no_telp           = $request->input('no_telp');
+                $sekolah->email             = $request->input('email');
+                $sekolah->zona_id           = $request->input('zona_id');
                 $sekolah->user_id           = $request->input('user_id');
                 $sekolah->save();
 
@@ -233,6 +254,13 @@ class SekolahController extends Controller
                 'alamat'              => 'required',
                 'logo'                => 'required',
                 'foto_gedung'         => 'required',
+                'province_id'         => 'required',
+                'city_id'             => 'required',
+                'district_id'         => 'required',
+                'village_id'          => 'required',
+                'no_telp    '         => 'required',
+                'email'               => 'required',
+                'zona_id'             => 'required',
 
             ]);
 
@@ -252,25 +280,39 @@ class SekolahController extends Controller
                     $response['message'] = implode("\n",$message);
 
                 } else {
-                    $sekolah->label                 = $request->input('label');
-                    $sekolah->jenis_sekolah_id      = $request->input('jenis_sekolah_id');
-                    $sekolah->user_id               = $request->input('user_id');
-                    $sekolah->npsn                  = $request->input('npsn');
-                    $sekolah->alamat                = $request->input('alamat');
-                    $sekolah->logo                  = $request->input('logo');
-                    $sekolah->foto_gedung           = $request->input('foto_gedung');
+                    $sekolah->label             = $request->input('label');
+                $sekolah->jenis_sekolah_id  = $request->input('jenis_sekolah_id');
+                $sekolah->npsn              = $request->input('npsn');
+                $sekolah->alamat            = $request->input('alamat');
+                $sekolah->logo              = $request->input('logo');
+                $sekolah->foto_gedung       = $request->input('foto_gedung');
+                $sekolah->province_id       = $request->input('province_id');
+                $sekolah->city_id           = $request->input('city_id');
+                $sekolah->district_id       = $request->input('district_id');
+                $sekolah->village_id        = $request->input('village_id');
+                $sekolah->no_telp           = $request->input('no_telp');
+                $sekolah->email             = $request->input('email');
+                $sekolah->zona_id           = $request->input('zona_id');
+                $sekolah->user_id           = $request->input('user_id');
                     $sekolah->save();
                     $response['message'] = 'success';
             }
 
         } else {
-            $sekolah->label                  = $request->input('label');
-            $sekolah->jenis_sekolah_id       = $request->input('jenis_sekolah_id');
-            $sekolah->user_id                = $request->input('user_id');
-            $sekolah->npsn                   = $request->input('npsn');
-            $sekolah->alamat                 = $request->input('alamat');
-            $sekolah->logo                   = $request->input('logo');
-            $sekolah->foto_gedung            = $request->input('foto_gedung');
+            $sekolah->label             = $request->input('label');
+                $sekolah->jenis_sekolah_id  = $request->input('jenis_sekolah_id');
+                $sekolah->npsn              = $request->input('npsn');
+                $sekolah->alamat            = $request->input('alamat');
+                $sekolah->logo              = $request->input('logo');
+                $sekolah->foto_gedung       = $request->input('foto_gedung');
+                $sekolah->province_id       = $request->input('province_id');
+                $sekolah->city_id           = $request->input('city_id');
+                $sekolah->district_id       = $request->input('district_id');
+                $sekolah->village_id        = $request->input('village_id');
+                $sekolah->no_telp           = $request->input('no_telp');
+                $sekolah->email             = $request->input('email');
+                $sekolah->zona_id           = $request->input('zona_id');
+                $sekolah->user_id           = $request->input('user_id');
             $sekolah->save();
             $response['message'] = 'success';
         }
