@@ -10,7 +10,7 @@
 [![Monthly Downloads](https://poser.pugx.org/bantenprov/sekolah/d/monthly)](https://packagist.org/packages/bantenprov/sekolah)
 [![Daily Downloads](https://poser.pugx.org/bantenprov/sekolah/d/daily)](https://packagist.org/packages/bantenprov/sekolah)
 
-Nama Sekolah
+Daftar Nama Sekolah
 
 ### Install via composer
 
