@@ -97,22 +97,22 @@ export default {
           sortField: 'npsn',
           titleClass: 'center aligned'
         },
-        {
+        /*{
           name: 'jenis_sekolah.jenis_sekolah',
           title: 'Jenis Sekolah',
           sortField: 'jenis_sekolah_id',
           titleClass: 'center aligned'
-        },
+        },*/
         {
           name: 'label',
-          title: 'Label',
+          title: 'Nama Sekolah',
           sortField: 'label',
           titleClass: 'center aligned'
         },
         {
-          name: 'logo',
-          title: 'Logo',
-          sortField: 'logo',
+          name: 'no_telp',
+          title: 'No Telepon',
+          sortField: 'no_telp',
           titleClass: 'center aligned'
         },
         {
