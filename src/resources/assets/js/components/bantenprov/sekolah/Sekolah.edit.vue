@@ -161,12 +161,13 @@
         <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
-              <label for="zona_id">Zona</label>
-              <input class="form-control" v-model="model.zona_id" name="zona_id" type="text" placeholder="Zona">
+            <label for="master_zona">Zona</label>
+            <v-select name="master_zona" v-model="model.master_zona" :options="master_zona" class="mb-4"></v-select>
 
-              <field-messages name="zona_id" show="$invalid && $submitted" class="text-danger">
-                <small class="form-text text-success">Looks good!</small>
-              </field-messages>
+            <field-messages name="master_zona" show="$invalid && $submitted" class="text-danger">
+              <small class="form-text text-success">Looks good!</small>
+              <small class="form-text text-danger" slot="required">Zona is a required field</small>
+            </field-messages>
             </validate>
           </div>
         </div>
@@ -234,7 +235,7 @@ export default {
           this.model.village_id     = response.data.sekolah.village_id;
           this.model.no_telp        = response.data.sekolah.no_telp;
           this.model.email          = response.data.sekolah.email;
-          this.model.zona_id        = response.data.sekolah.zona_id;
+          this.model.master_zona    = response.data.sekolah.master_zona;
 
         } else {
           alert('Failed');
@@ -249,6 +250,9 @@ export default {
       .then(response => {
           response.data.jenis_sekolah.forEach(element => {
             this.jenis_sekolah.push(element);
+          });
+          response.data.master_zona.forEach(element => {
+            this.master_zona.push(element);
           });
           if(response.data.user_special == true){
             response.data.user.forEach(user_element => {
@@ -280,12 +284,13 @@ export default {
         village_id: "",
         no_telp: "",
         email: "",
-        zona_id: "",
+        master_zona: "",
         old_user_id:    "",
         old_npsn:       "",
       },
       jenis_sekolah: [],
-      user: []
+      user: [],
+      master_zona: [],
     }
   },
   methods: {
@@ -311,7 +316,7 @@ export default {
             village_id:         this.model.village_id,
             no_telp:            this.model.no_telp,
             email:              this.model.email,
-            zona_id:            this.model.zona_id,
+            kode_zona:            this.model.master_zona.id,
           })
           .then(response => {
             if (response.data.status == true) {

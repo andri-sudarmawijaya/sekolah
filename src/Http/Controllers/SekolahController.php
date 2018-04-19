@@ -125,7 +125,7 @@ class SekolahController extends Controller
         }
 
 
-        /*foreach($zonas as $zona){
+        /*foreach($master_zonas as $master_zona){
             array_set($zona, 'label', $zona->master_zona->label);
         }*/
 
@@ -162,14 +162,14 @@ class SekolahController extends Controller
             'no_telp    '       => 'required',
             'email'             => 'required',
             'kode_zona'           => 'required',
-            'user_id'           => 'required|unique:sekolahs,user_id',
+            'user_id'           => 'required',
         ]);
 
         if($validator->fails()){
-            $check = $sekolah->where('user_id',$request->user_id)->orWhere('npsn', $request->npsn)->whereNull('deleted_at')->count();
+            $check = $sekolah->where('npsn', $request->npsn)->whereNull('deleted_at')->count();
 
             if ($check > 0) {
-                $response['message'] = 'Failed, Username or npsn already exists';
+                $response['message'] = 'Failed, Npsn already exists';
 
             } else {
                 $sekolah->label             = $request->input('label');
@@ -228,7 +228,7 @@ class SekolahController extends Controller
         array_set($sekolah, 'user', $sekolah->user->name);
         array_set($sekolah, 'jenis_sekolah', $sekolah->jenis_sekolah);
 
-
+        $response['master_zona'] = $sekolah->master_zona;
         $response['sekolah'] = $sekolah;
         $response['status'] = true;
 
@@ -249,6 +249,7 @@ class SekolahController extends Controller
         array_set($sekolah->user, 'label', $sekolah->user->name);
 
         $response['sekolah'] = $sekolah;
+        $response['master_zona'] = $sekolah->master_zona;
         $response['user'] = $sekolah->user;
         $response['jenis_sekolah'] = $sekolah->jenis_sekolah;
         $response['status'] = true;
@@ -276,15 +277,13 @@ class SekolahController extends Controller
                 'jenis_sekolah_id'    => 'required',
                 'npsn'                => 'required|unique:sekolahs,npsn,'.$id,
                 'alamat'              => 'required',
-                'logo'                => 'required',
-                'foto_gedung'         => 'required',
                 'province_id'         => 'required',
                 'city_id'             => 'required',
                 'district_id'         => 'required',
                 'village_id'          => 'required',
-                'no_telp    '         => 'required',
+                'no_telp'             => 'required',
                 'email'               => 'required',
-                'zona_id'             => 'required',
+                'kode_zona'           => 'required',
 
             ]);
 
@@ -300,11 +299,12 @@ class SekolahController extends Controller
                 $check_npsn   = $this->sekolah->where('id','!=', $id)->where('npsn', $request->npsn);
 
 
-                if($check_npsn->count() > 0 || $check_user->count() > 0){
+               // if($check_npsn->count() > 0 || $check_user->count() > 0){
+                 if($check_npsn->count() > 0){
                     $response['message'] = implode("\n",$message);
 
                 } else {
-                    $sekolah->label             = $request->input('label');
+                $sekolah->label             = $request->input('label');
                 $sekolah->jenis_sekolah_id  = $request->input('jenis_sekolah_id');
                 $sekolah->npsn              = $request->input('npsn');
                 $sekolah->alamat            = $request->input('alamat');
@@ -316,7 +316,7 @@ class SekolahController extends Controller
                 $sekolah->village_id        = $request->input('village_id');
                 $sekolah->no_telp           = $request->input('no_telp');
                 $sekolah->email             = $request->input('email');
-                $sekolah->zona_id           = $request->input('zona_id');
+                $sekolah->kode_zona         = $request->input('kode_zona');
                 $sekolah->user_id           = $request->input('user_id');
                     $sekolah->save();
                     $response['message'] = 'success';
@@ -335,7 +335,7 @@ class SekolahController extends Controller
                 $sekolah->village_id        = $request->input('village_id');
                 $sekolah->no_telp           = $request->input('no_telp');
                 $sekolah->email             = $request->input('email');
-                $sekolah->zona_id           = $request->input('zona_id');
+                $sekolah->kode_zona           = $request->input('kode_zona');
                 $sekolah->user_id           = $request->input('user_id');
             $sekolah->save();
             $response['message'] = 'success';

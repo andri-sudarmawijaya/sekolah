@@ -160,12 +160,12 @@
         <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
-            <label for="zona_id">Zona</label>
-            <v-select name="zona_id" v-model="model.zona" :options="zona" class="mb-4"></v-select>
+            <label for="kode_zona">Zona</label>
+            <v-select name="kode_zona" v-model="model.master_zona" :options="master_zona" class="mb-4"></v-select>
 
-            <field-messages name="zona_id" show="$invalid && $submitted" class="text-danger">
+            <field-messages name="kode_zona" show="$invalid && $submitted" class="text-danger">
               <small class="form-text text-success">Looks good!</small>
-              <small class="form-text text-danger" slot="required">Zona is a required field</small>
+              <small class="form-text text-danger" slot="required">Label is a required field</small>
             </field-messages>
             </validate>
           </div>
@@ -222,7 +222,6 @@ export default {
         response.data.jenis_sekolah.forEach(element =>{
           this.jenis_sekolah.push(element);
         });
-
         response.data.master_zona.forEach(element =>{
           this.master_zona.push(element);
         });
@@ -238,7 +237,7 @@ export default {
       }
     })
     .catch(function(response) {
-      alert('Break');
+      alert('Break111');
       window.location = '#/admin/sekolah';
     });
   },
@@ -258,14 +257,13 @@ export default {
         village_id: "",
         no_telp: "",
         email: "",
-        zona_id: "",
-        zona: "",
+        master_zona: "",
         user: ""
 
       },
       user: [],
       jenis_sekolah: [],
-      zona: []
+      master_zona: []
     }
   },
   methods: {
@@ -288,7 +286,7 @@ export default {
             village_id:       this.model.village_id,
             no_telp:          this.model.no_telp,
             email:            this.model.email,
-            zona_id:          this.model.zona.id,
+            kode_zona:        this.model.master_zona.id,
             user_id:          this.model.user.id
           })
           .then(response => {
