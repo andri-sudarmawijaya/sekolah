@@ -5,6 +5,7 @@ Route::group(['prefix' => 'api/sekolah', 'middleware' => ['web']], function() {
     $name           = 'sekolah';
     $controllers    = (object) [
         'index'     => $class.'@index',
+        'get'       => $class.'@get',
         'create'    => $class.'@create',
         'show'      => $class.'@show',
         'store'     => $class.'@store',
@@ -14,6 +15,7 @@ Route::group(['prefix' => 'api/sekolah', 'middleware' => ['web']], function() {
     ];
 
     Route::get('/',             $controllers->index)->name($name.'.index');
+    Route::get('/get',          $controllers->get)->name($name.'.get');
     Route::get('/create',       $controllers->create)->name($name.'.create');
     Route::get('/{id}',         $controllers->show)->name($name.'.show');
     Route::post('/',            $controllers->store)->name($name.'.store');
@@ -27,6 +29,7 @@ Route::group(['prefix' => 'api/prodi-sekolah', 'middleware' => ['web']], functio
     $name           = 'prodi-sekolah';
     $controllers    = (object) [
         'index'     => $class.'@index',
+        'get'       => $class.'@get',
         'create'    => $class.'@create',
         'show'      => $class.'@show',
         'store'     => $class.'@store',
@@ -36,6 +39,7 @@ Route::group(['prefix' => 'api/prodi-sekolah', 'middleware' => ['web']], functio
     ];
 
     Route::get('/',             $controllers->index)->name($name.'.index');
+    Route::get('/get',          $controllers->get)->name($name.'.get');
     Route::get('/create',       $controllers->create)->name($name.'.create');
     Route::get('/{id}',         $controllers->show)->name($name.'.show');
     Route::post('/',            $controllers->store)->name($name.'.store');
