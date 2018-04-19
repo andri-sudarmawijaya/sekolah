@@ -115,6 +115,13 @@ export default {
           sortField: 'no_telp',
           titleClass: 'center aligned'
         },
+
+        {
+          name: 'master_zona.label',
+          title: 'zona',
+          sortField: 'kode_zona',
+          titleClass: 'center aligned'
+        },
         {
           name: 'user.name',
           title: 'Username',

@@ -67,7 +67,7 @@ class BantenprovSekolahSeeder extends Seeder
                 'village_id' => $data['village_id'],
                 'no_telp' => $data['no_telp'],
                 'email' => $data['email'],
-                'zona_id' => $data['zona_id'],
+                'kode_zona' => $data['kode_zona'],
 
             ]);
             
@@ -99,7 +99,7 @@ class BantenprovSekolahSeeder extends Seeder
                 echo"\n";
                 $this->orangeText('email : ').$this->greenText($data['logo']);
                 echo"\n";
-                $this->orangeText('zona_id : ').$this->greenText($data['zona_id']);
+                $this->orangeText('kode_zona : ').$this->greenText($data['kode_zona']);
                 echo"\n";
                 echo "============[DATA]============\n\n";
             }
@@ -143,7 +143,7 @@ class BantenprovSekolahSeeder extends Seeder
                             'village_id' => $data[10],
                             'no_telp' => $data[11],
                             'email' => $data[12],
-                            'zona_id' => $data[13],
+                            'kode_zona' => $data[13],
                         ];
         }        
         fclose($file);
