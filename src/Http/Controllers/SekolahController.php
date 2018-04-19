@@ -6,13 +6,15 @@ namespace Bantenprov\Sekolah\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Bantenprov\Sekolah\Facades\SekolahFacade;
-use App\User;
+
 /* Models */
-use Bantenprov\Sekolah\Models\Bantenprov\Sekolah\Sekolah;
 use Bantenprov\Sekolah\Models\Bantenprov\Sekolah\JenisSekolah;
+use Bantenprov\Sekolah\Models\Bantenprov\Sekolah\Sekolah;
+use App\User;
 
 /* Etc */
 use Validator;
+use Auth;
 
 /**
  * The SekolahController class.
@@ -22,18 +24,20 @@ use Validator;
  */
 class SekolahController extends Controller
 {
+    protected $user;
+    protected $jenis_sekolah;
+    protected $sekolah;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    protected $user;
-    protected $jenis_sekolah;
-    public function __construct(Sekolah $sekolah, User $user, JenisSekolah $jenis_sekolah)
+    public function __construct()
     {
-        $this->sekolah          = $sekolah;
-        $this->user             = $user;
-        $this->jenis_sekolah    = $jenis_sekolah;
+        $this->jenis_sekolah    = new JenisSekolah;
+        $this->sekolah          = new Sekolah;
+        $this->user             = new User;
     }
 
     /**
@@ -54,20 +58,16 @@ class SekolahController extends Controller
         if ($request->exists('filter')) {
             $query->where(function($q) use($request) {
                 $value = "%{$request->filter}%";
-                $q->where('label', 'like', $value)
-                    ->orWhere('npsn', 'like', $value);
+                $q->where('nama', 'like', $value)
+                    ->orWhere('npsn', 'like', $value)
+                    ->orWhere('alamat', 'like', $value)
+                    ->orWhere('email', 'like', $value);
             });
         }
 
         $perPage = request()->has('per_page') ? (int) request()->per_page : null;
-        $response = $query->with('user')->with('jenis_sekolah')->paginate($perPage);
 
-        /*foreach($response as $user){
-            array_set($response->data, 'user', $user->user->name);
-        }
-        foreach($response as $jenis_sekolah){
-            array_set($response->data, 'jenis_sekolah', $jenis_sekolah->jenis_sekolah);
-        }   */
+        $response = $query->with('jenis_sekolah', 'user')->paginate($perPage);
 
         return response()->json($response)
             ->header('Access-Control-Allow-Origin', '*')
@@ -332,9 +332,13 @@ class SekolahController extends Controller
         $sekolah = $this->sekolah->findOrFail($id);
 
         if ($sekolah->delete()) {
-            $response['status'] = true;
+            $response['message']    = 'Success';
+            $response['success']    = true;
+            $response['status']     = true;
         } else {
-            $response['status'] = false;
+            $response['message']    = 'Failed';
+            $response['success']    = false;
+            $response['status']     = false;
         }
 
         return json_encode($response);
