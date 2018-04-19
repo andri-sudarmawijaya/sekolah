@@ -88,7 +88,7 @@
 
         <div class="form-row mt-4">
           <div class="col-md">
-            <b>Zona :</b> {{ model.zona_id }}
+            <b>Zona :</b> {{ model.master_zona.label }}
           </div>
         </div> 
 
@@ -131,7 +131,7 @@ export default {
           this.model.village_id     = response.data.sekolah.village_id;
           this.model.no_telp        = response.data.sekolah.no_telp;
           this.model.email          = response.data.sekolah.email;
-          this.model.zona_id        = response.data.sekolah.zona_id;
+          this.model.master_zona    = response.data.sekolah.master_zona;
 
         } 
         else {
@@ -160,7 +160,7 @@ export default {
         village_id: "",
         no_telp: "",
         email: "",
-        zona_id: "",
+        master_zona: "",
         created_at:       "",
         updated_at:       "",
         user:""
@@ -169,20 +169,6 @@ export default {
     }
   },
   methods: {    
-    reset() {
-      axios.get('api/sekolah/' + this.$route.params.id + '/edit')
-        .then(response => {
-          if (response.data.status == true) {
-            this.model.label = response.data.sekolah.label;
-            this.model.description = response.data.sekolah.description;
-          } else {
-            alert('Failed');
-          }
-        })
-        .catch(function(response) {
-          alert('Break ');
-        });
-    },
     back() {
       window.location = '#/admin/sekolah';
     }
