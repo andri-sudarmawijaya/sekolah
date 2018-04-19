@@ -23,6 +23,13 @@ class Sekolah extends Model
         'alamat',
         'logo',
         'foto_gedung',
+        'province_id',
+        'city_id',
+        'district_id',
+        'village_id',
+        'no_telp',
+        'email',
+        'kode_zona'
     ];
 
     /**
@@ -41,5 +48,11 @@ class Sekolah extends Model
     {
         return $this->belongsTo('Bantenprov\Sekolah\Models\Bantenprov\Sekolah\JenisSekolah','jenis_sekolah_id');
     }
+
+    public function master_zona()
+    {
+        return $this->belongsTo('Bantenprov\Zona\Models\Bantenprov\Zona\MasterZona','kode_zona');
+    }
+
 
 }

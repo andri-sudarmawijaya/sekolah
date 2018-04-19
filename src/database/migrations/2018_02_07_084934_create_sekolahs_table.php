@@ -30,7 +30,7 @@ class CreateSekolahsTable extends Migration
 			$table->string('village_id');
 			$table->string('no_telp');
 			$table->string('email');
-			$table->string('zona_id');
+			$table->integer('kode_zona');
 			$table->timestamps();
 			$table->softDeletes();
 		});

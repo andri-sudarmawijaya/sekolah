@@ -10,6 +10,8 @@ use App\User;
 /* Models */
 use Bantenprov\Sekolah\Models\Bantenprov\Sekolah\Sekolah;
 use Bantenprov\Sekolah\Models\Bantenprov\Sekolah\JenisSekolah;
+//use Bantenprov\Zona\Models\Bantenprov\Zona\Zona;
+use Bantenprov\Zona\Models\Bantenprov\Zona\MasterZona;
 
 /* Etc */
 use Validator;
@@ -29,11 +31,15 @@ class SekolahController extends Controller
      */
     protected $user;
     protected $jenis_sekolah;
-    public function __construct(Sekolah $sekolah, User $user, JenisSekolah $jenis_sekolah)
+    //protected $zona;
+    protected $master_zona;
+    public function __construct(Sekolah $sekolah, User $user, JenisSekolah $jenis_sekolah,  MasterZona $master_zona)
     {
         $this->sekolah          = $sekolah;
         $this->user             = $user;
         $this->jenis_sekolah    = $jenis_sekolah;
+        //$this->zona             = $zona;
+        $this->master_zona      = $master_zona;
     }
 
     /**
@@ -60,7 +66,7 @@ class SekolahController extends Controller
         }
 
         $perPage = request()->has('per_page') ? (int) request()->per_page : null;
-        $response = $query->with('user')->with('jenis_sekolah')->paginate($perPage);
+        $response = $query->with('user')->with('jenis_sekolah')->with('master_zona') ->paginate($perPage);
 
         /*foreach($response as $user){
             array_set($response->data, 'user', $user->user->name);
@@ -68,6 +74,12 @@ class SekolahController extends Controller
         foreach($response as $jenis_sekolah){
             array_set($response->data, 'jenis_sekolah', $jenis_sekolah->jenis_sekolah);
         }   */
+
+        /*$master_zonas = $this->master_zona->all();
+
+        foreach($master_zonas as $master_zona){
+            array_set($msater_zona, 'label', $master_zona->label);
+        }*/
 
         return response()->json($response)
             ->header('Access-Control-Allow-Origin', '*')
@@ -84,6 +96,8 @@ class SekolahController extends Controller
         $response = [];
 
         $jenis_sekolahs  = $this->jenis_sekolah->all();
+       // $zonas = $this->zona->all();
+        $master_zonas = $this->master_zona->all();
         $users_special = $this->user->all();
         $users_standar = $this->user->find(\Auth::User()->id);
         $current_user = \Auth::User();
@@ -110,6 +124,15 @@ class SekolahController extends Controller
             array_set($jenis_sekolah, 'label', $jenis_sekolah->jenis_sekolah);
         }
 
+
+        /*foreach($zonas as $zona){
+            array_set($zona, 'label', $zona->master_zona->label);
+        }*/
+
+        //dd($master_zona);
+
+        $response['master_zona'] = $master_zonas;
+       // $response['zona']       = $zonas;
         $response['jenis_sekolah'] = $jenis_sekolahs;
         $response['status'] = true;
         return response()->json($response);
@@ -138,7 +161,7 @@ class SekolahController extends Controller
             'village_id'        => 'required',
             'no_telp    '       => 'required',
             'email'             => 'required',
-            'zona_id'           => 'required',
+            'kode_zona'           => 'required',
             'user_id'           => 'required|unique:sekolahs,user_id',
         ]);
 
@@ -161,7 +184,7 @@ class SekolahController extends Controller
                 $sekolah->village_id        = $request->input('village_id');
                 $sekolah->no_telp           = $request->input('no_telp');
                 $sekolah->email             = $request->input('email');
-                $sekolah->zona_id           = $request->input('zona_id');
+                $sekolah->kode_zona           = $request->input('kode_zona');
                 $sekolah->user_id           = $request->input('user_id');
                 $sekolah->save();
 
@@ -180,7 +203,7 @@ class SekolahController extends Controller
                 $sekolah->village_id        = $request->input('village_id');
                 $sekolah->no_telp           = $request->input('no_telp');
                 $sekolah->email             = $request->input('email');
-                $sekolah->zona_id           = $request->input('zona_id');
+                $sekolah->kode_zona           = $request->input('kode_zona');
                 $sekolah->user_id           = $request->input('user_id');
                 $sekolah->save();
 
@@ -204,6 +227,7 @@ class SekolahController extends Controller
 
         array_set($sekolah, 'user', $sekolah->user->name);
         array_set($sekolah, 'jenis_sekolah', $sekolah->jenis_sekolah);
+
 
         $response['sekolah'] = $sekolah;
         $response['status'] = true;
