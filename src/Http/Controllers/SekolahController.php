@@ -8,8 +8,12 @@ use Illuminate\Http\Request;
 use Bantenprov\Sekolah\Facades\SekolahFacade;
 
 /* Models */
-use Bantenprov\Sekolah\Models\Bantenprov\Sekolah\JenisSekolah;
 use Bantenprov\Sekolah\Models\Bantenprov\Sekolah\Sekolah;
+use Bantenprov\Sekolah\Models\Bantenprov\Sekolah\JenisSekolah;
+use Laravolt\Indonesia\Models\Province;
+use Laravolt\Indonesia\Models\City;
+use Laravolt\Indonesia\Models\District;
+use Laravolt\Indonesia\Models\Village;
 use Bantenprov\Zona\Models\Bantenprov\Zona\Zona;
 use App\User;
 
@@ -25,8 +29,8 @@ use Auth;
  */
 class SekolahController extends Controller
 {
-    protected $jenis_sekolah;
     protected $sekolah;
+    protected $jenis_sekolah;
     protected $zona;
     protected $user;
 
@@ -37,9 +41,13 @@ class SekolahController extends Controller
      */
     public function __construct()
     {
-        $this->jenis_sekolah    = new JenisSekolah;
         $this->sekolah          = new Sekolah;
-        $this->zona          = new Zona;
+        $this->jenis_sekolah    = new JenisSekolah;
+        $this->province         = new Province;
+        $this->city             = new City;
+        $this->district         = new District;
+        $this->village          = new Village;
+        $this->zona             = new Zona;
         $this->user             = new User;
     }
 
@@ -90,7 +98,7 @@ class SekolahController extends Controller
             array_set($sekolah, 'label', $sekolah->nama);
         }
 
-        $response['sekolahs']    = $sekolahs;
+        $response['sekolahs']   = $sekolahs;
         $response['error']      = false;
         $response['message']    = 'Success';
         $response['status']     = true;
@@ -105,37 +113,77 @@ class SekolahController extends Controller
      */
     public function create()
     {
-        $response = [];
-
-        $jenis_sekolahs  = $this->jenis_sekolah->all();
-        $users_special = $this->user->all();
-        $users_standar = $this->user->find(\Auth::User()->id);
-        $current_user = \Auth::User();
-
-        $role_check = \Auth::User()->hasRole(['superadministrator','administrator']);
-
-        if($role_check){
-            $response['user_special'] = true;
-            foreach($users_special as $user){
-                array_set($user, 'label', $user->name);
-            }
-            $response['user'] = $users_special;
-        }else{
-            $response['user_special'] = false;
-            array_set($users_standar, 'label', $users_standar->name);
-            $response['user'] = $users_standar;
-        }
-
-        array_set($current_user, 'label', $current_user->name);
-
-        $response['current_user'] = $current_user;
+        $user_id        = isset(Auth::User()->id) ? Auth::User()->id : null;
+        $sekolah        = $this->sekolah->getAttributes();
+        $jenis_sekolahs = $this->jenis_sekolah->all();
+        $provinces      = $this->province->getAttributes();
+        $cities         = $this->city->getAttributes();
+        $districts      = $this->district->getAttributes();
+        $villages       = $this->village->getAttributes();
+        $zonas          = $this->zona->all();
+        $users          = $this->user->getAttributes();
+        $users_special  = $this->user->all();
+        $users_standar  = $this->user->findOrFail($user_id);
+        $current_user   = Auth::User();
 
         foreach($jenis_sekolahs as $jenis_sekolah){
             array_set($jenis_sekolah, 'label', $jenis_sekolah->jenis_sekolah);
         }
 
-        $response['jenis_sekolah'] = $jenis_sekolahs;
-        $response['status'] = true;
+        foreach($provinces as $province){
+            array_set($province, 'label', $province->name);
+        }
+
+        foreach($cities as $city){
+            array_set($city, 'label', $city->name);
+        }
+
+        foreach($districts as $district){
+            array_set($district, 'label', $district->name);
+        }
+
+        foreach($villages as $village){
+            array_set($village, 'label', $village->name);
+        }
+
+        foreach($zonas as $zona){
+            array_set($zona, 'label', (string) $zona->id);
+        }
+
+        $role_check = Auth::User()->hasRole(['superadministrator','administrator']);
+
+        if($role_check){
+            $user_special = true;
+
+            foreach($users_special as $user){
+                array_set($user, 'label', $user->name);
+            }
+
+            $users = $users_special;
+        }else{
+            $user_special = false;
+
+            array_set($users_standar, 'label', $users_standar->name);
+
+            $users = $users_standar;
+        }
+
+        array_set($current_user, 'label', $current_user->name);
+
+        $response['sekolah']        = $sekolah;
+        $response['jenis_sekolahs'] = $jenis_sekolahs;
+        $response['provinces']      = $provinces;
+        $response['cities']         = $cities;
+        $response['districts']      = $districts;
+        $response['villages']       = $villages;
+        $response['zonas']          = $zonas;
+        $response['users']          = $users;
+        $response['user_special']   = $user_special;
+        $response['current_user']   = $current_user;
+        $response['error']          = false;
+        $response['message']        = 'Success';
+        $response['status']         = true;
+
         return response()->json($response);
     }
 
@@ -150,68 +198,49 @@ class SekolahController extends Controller
         $sekolah = $this->sekolah;
 
         $validator = Validator::make($request->all(), [
-            'label'             => 'required',
-            'jenis_sekolah_id'  => 'required',
-            'npsn'              => 'required|unique:sekolahs,npsn',
-            'alamat'            => 'required',
-            'logo'              => 'required',
-            'foto_gedung'       => 'required',
-            'province_id'       => 'required',
-            'city_id'           => 'required',
-            'district_id'       => 'required',
-            'village_id'        => 'required',
-            'no_telp    '       => 'required',
-            'email'             => 'required',
-            'zona_id'           => 'required',
-            'user_id'           => 'required|unique:sekolahs,user_id',
+            'nama'              => 'required|max:255',
+            'npsn'              => "required|max:255|unique:{$this->sekolah->getTable()},npsn,NULL,id,deleted_at,NULL",
+            'jenis_sekolah_id'  => "required|exists:{$this->jenis_sekolah->getTable()},id",
+            'alamat'            => 'required|max:255',
+            'logo'              => 'required|max:255',
+            'foto_gedung'       => 'required|max:255',
+            'province_id'       => "required|exists:{$this->province->getTable()},id",
+            'city_id'           => "required|exists:{$this->city->getTable()},id",
+            'district_id'       => "required|exists:{$this->district->getTable()},id",
+            'village_id'        => "required|exists:{$this->village->getTable()},id",
+            'no_telp'           => 'required|digits_between:10,12',
+            'email'             => 'required|email|max:255',
+            'zona_id'           => "required|exists:{$this->zona->getTable()},id",
+            'user_id'           => "required|exists:{$this->user->getTable()},id",
         ]);
 
-        if($validator->fails()){
-            $check = $sekolah->where('user_id',$request->user_id)->orWhere('npsn', $request->npsn)->whereNull('deleted_at')->count();
-
-            if ($check > 0) {
-                $response['message'] = 'Failed, Username or npsn already exists';
-
-            } else {
-                $sekolah->label             = $request->input('label');
-                $sekolah->jenis_sekolah_id  = $request->input('jenis_sekolah_id');
-                $sekolah->npsn              = $request->input('npsn');
-                $sekolah->alamat            = $request->input('alamat');
-                $sekolah->logo              = $request->input('logo');
-                $sekolah->foto_gedung       = $request->input('foto_gedung');
-                $sekolah->province_id       = $request->input('province_id');
-                $sekolah->city_id           = $request->input('city_id');
-                $sekolah->district_id       = $request->input('district_id');
-                $sekolah->village_id        = $request->input('village_id');
-                $sekolah->no_telp           = $request->input('no_telp');
-                $sekolah->email             = $request->input('email');
-                $sekolah->zona_id           = $request->input('zona_id');
-                $sekolah->user_id           = $request->input('user_id');
-                $sekolah->save();
-
-                $response['message'] = 'success';
-            }
+        if ($validator->fails()) {
+            $error      = true;
+            $message    = $validator->errors()->first();
         } else {
-                $sekolah->label             = $request->input('label');
-                $sekolah->jenis_sekolah_id  = $request->input('jenis_sekolah_id');
-                $sekolah->npsn              = $request->input('npsn');
-                $sekolah->alamat            = $request->input('alamat');
-                $sekolah->logo              = $request->input('logo');
-                $sekolah->foto_gedung       = $request->input('foto_gedung');
-                $sekolah->province_id       = $request->input('province_id');
-                $sekolah->city_id           = $request->input('city_id');
-                $sekolah->district_id       = $request->input('district_id');
-                $sekolah->village_id        = $request->input('village_id');
-                $sekolah->no_telp           = $request->input('no_telp');
-                $sekolah->email             = $request->input('email');
-                $sekolah->zona_id           = $request->input('zona_id');
-                $sekolah->user_id           = $request->input('user_id');
-                $sekolah->save();
+            $sekolah->nama              = $request->input('nama');
+            $sekolah->npsn              = $request->input('npsn');
+            $sekolah->jenis_sekolah_id  = $request->input('jenis_sekolah_id');
+            $sekolah->alamat            = $request->input('alamat');
+            $sekolah->logo              = $request->input('logo');
+            $sekolah->foto_gedung       = $request->input('foto_gedung');
+            $sekolah->province_id       = $request->input('province_id');
+            $sekolah->city_id           = $request->input('city_id');
+            $sekolah->district_id       = $request->input('district_id');
+            $sekolah->village_id        = $request->input('village_id');
+            $sekolah->no_telp           = $request->input('no_telp');
+            $sekolah->email             = $request->input('email');
+            $sekolah->zona_id           = $request->input('zona_id');
+            $sekolah->user_id           = $request->input('user_id');
+            $sekolah->save();
 
-            $response['message'] = 'success';
+            $error      = false;
+            $message    = 'Success';
         }
 
-        $response['status'] = true;
+        $response['error']      = $error;
+        $response['message']    = $message;
+        $response['status']     = true;
 
         return response()->json($response);
     }
