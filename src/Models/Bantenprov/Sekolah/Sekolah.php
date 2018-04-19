@@ -16,10 +16,9 @@ class Sekolah extends Model
         'deleted_at'
     ];
     protected $fillable = [
-        'label',
-        'user_id',
-        'jenis_sekolah_id',
+        'nama',
         'npsn',
+        'jenis_sekolah_id',
         'alamat',
         'logo',
         'foto_gedung',
@@ -29,30 +28,42 @@ class Sekolah extends Model
         'village_id',
         'no_telp',
         'email',
-        'kode_zona'
+        'zona_id',
+        'user_id',
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [];
-
-        public function user()
+    public function user()
     {
         return $this->belongsTo('App\User','user_id');
     }
 
-       public function jenis_sekolah()
+    public function jenis_sekolah()
     {
         return $this->belongsTo('Bantenprov\Sekolah\Models\Bantenprov\Sekolah\JenisSekolah','jenis_sekolah_id');
     }
 
-    public function master_zona()
+    public function province()
     {
-        return $this->belongsTo('Bantenprov\Zona\Models\Bantenprov\Zona\MasterZona','kode_zona');
+        return $this->belongsTo('Laravolt\Indonesia\Models\Province','province_id');
     }
 
+    public function city()
+    {
+        return $this->belongsTo('Laravolt\Indonesia\Models\City','city_id');
+    }
 
+    public function district()
+    {
+        return $this->belongsTo('Laravolt\Indonesia\Models\District','district_id');
+    }
+
+    public function village()
+    {
+        return $this->belongsTo('Laravolt\Indonesia\Models\Village','village_id');
+    }
+
+    public function zona()
+    {
+        return $this->belongsTo('Bantenprov\Zona\Models\Bantenprov\Zona\Zona','zona_id');
+    }
 }
