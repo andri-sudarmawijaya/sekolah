@@ -10,6 +10,7 @@ use Bantenprov\Sekolah\Facades\SekolahFacade;
 /* Models */
 use Bantenprov\Sekolah\Models\Bantenprov\Sekolah\JenisSekolah;
 use Bantenprov\Sekolah\Models\Bantenprov\Sekolah\Sekolah;
+use Bantenprov\Zona\Models\Bantenprov\Zona\Zona;
 use App\User;
 
 /* Etc */
@@ -24,9 +25,10 @@ use Auth;
  */
 class SekolahController extends Controller
 {
-    protected $user;
     protected $jenis_sekolah;
     protected $sekolah;
+    protected $zona;
+    protected $user;
 
     /**
      * Create a new controller instance.
@@ -37,6 +39,7 @@ class SekolahController extends Controller
     {
         $this->jenis_sekolah    = new JenisSekolah;
         $this->sekolah          = new Sekolah;
+        $this->zona          = new Zona;
         $this->user             = new User;
     }
 
@@ -67,11 +70,32 @@ class SekolahController extends Controller
 
         $perPage = request()->has('per_page') ? (int) request()->per_page : null;
 
-        $response = $query->with('jenis_sekolah', 'user')->paginate($perPage);
+        $response = $query->with('jenis_sekolah', 'province', 'city', 'district', 'village', 'zona', 'user')->paginate($perPage);
 
         return response()->json($response)
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', 'GET');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function get()
+    {
+        $sekolahs = $this->sekolah->with('jenis_sekolah', 'province', 'city', 'district', 'village', 'zona', 'user')->get();
+
+        foreach($sekolahs as $sekolah){
+            array_set($sekolah, 'label', $sekolah->nama);
+        }
+
+        $response['sekolahs']    = $sekolahs;
+        $response['error']      = false;
+        $response['message']    = 'Success';
+        $response['status']     = true;
+
+        return response()->json($response);
     }
 
     /**
@@ -116,9 +140,9 @@ class SekolahController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Store a newly created resource in storage.
      *
-     * @param  \App\Sekolah  $sekolah
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -193,20 +217,19 @@ class SekolahController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Sekolah  $sekolah
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $sekolah = $this->sekolah->findOrFail($id);
+        $sekolah = $this->sekolah->with(['jenis_sekolah', 'province', 'city', 'district', 'village', 'zona', 'user'])->findOrFail($id);
 
-        array_set($sekolah, 'user', $sekolah->user->name);
-        array_set($sekolah, 'jenis_sekolah', $sekolah->jenis_sekolah);
-
-        $response['sekolah'] = $sekolah;
-        $response['status'] = true;
+        $response['sekolah']      = $sekolah;
+        $response['error']      = false;
+        $response['message']    = 'Success';
+        $response['status']     = true;
 
         return response()->json($response);
     }
