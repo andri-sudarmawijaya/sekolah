@@ -6,38 +6,41 @@ namespace Bantenprov\Sekolah\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Bantenprov\Sekolah\Facades\SekolahFacade;
-use App\User;
+
 /* Models */
-use Bantenprov\Sekolah\Models\Bantenprov\Sekolah\Sekolah;
 use Bantenprov\Sekolah\Models\Bantenprov\Sekolah\ProdiSekolah;
+use Bantenprov\Sekolah\Models\Bantenprov\Sekolah\Sekolah;
 use Bantenprov\ProgramKeahlian\Models\Bantenprov\ProgramKeahlian\ProgramKeahlian;
+use App\User;
 
 /* Etc */
 use Validator;
+use Auth;
 
 /**
- * The SekolahController class.
+ * The ProdiSekolahController class.
  *
  * @package Bantenprov\Sekolah
  * @author  bantenprov <developer.bantenprov@gmail.com>
  */
 class ProdiSekolahController extends Controller
 {
+    protected $prodi_sekolah;
+    protected $sekolah;
+    protected $program_keahlian;
+    protected $user;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    protected $user;
-    protected $prodi_sekolah;
-    protected $sekolah;
-    protected $program_keahlian;
-    public function __construct(Sekolah $sekolah, User $user, ProdiSekolah $prodi_sekolah, ProgramKeahlian $program_keahlian)
+    public function __construct()
     {
-        $this->sekolah          = $sekolah;
-        $this->user             = $user;
-        $this->prodi_sekolah    = $prodi_sekolah;
-        $this->program_keahlian = $program_keahlian;
+        $this->prodi_sekolah    = new ProdiSekolah;
+        $this->sekolah          = new Sekolah;
+        $this->program_keahlian = new ProgramKeahlian;
+        $this->user             = new User;
     }
 
     /**
@@ -58,27 +61,15 @@ class ProdiSekolahController extends Controller
         if ($request->exists('filter')) {
             $query->where(function($q) use($request) {
                 $value = "%{$request->filter}%";
-                $q->where('keterangana', 'like', $value)
+
+                $q->where('keterangan', 'like', $value)
                     ->orWhere('kuota_siswa', 'like', $value);
             });
         }
 
         $perPage = request()->has('per_page') ? (int) request()->per_page : null;
-        $response = $query->with('user')->with('sekolah')->with('program_keahlian')->paginate($perPage);
 
-
-        /*foreach($response as $sekolah){
-            array_set($response->data, 'sekolah', $sekolah->sekolah->label);
-        }
-
-        foreach($response as $user){
-            array_set($response->data, 'user', $user->user->name);
-        }
-
-        foreach($response as $program_keahlian){
-            array_set($response->data, 'program_keahlian', $program_keahlian->program_keahlian->label);
-        }*/
-
+        $response = $query->with('sekolah', 'program_keahlian', 'user')->paginate($perPage);
 
         return response()->json($response)
             ->header('Access-Control-Allow-Origin', '*')
@@ -294,9 +285,13 @@ class ProdiSekolahController extends Controller
         $prodi_sekolah = $this->prodi_sekolah->findOrFail($id);
 
         if ($prodi_sekolah->delete()) {
-            $response['status'] = true;
+            $response['message']    = 'Success';
+            $response['success']    = true;
+            $response['status']     = true;
         } else {
-            $response['status'] = false;
+            $response['message']    = 'Failed';
+            $response['success']    = false;
+            $response['status']     = false;
         }
 
         return json_encode($response);
