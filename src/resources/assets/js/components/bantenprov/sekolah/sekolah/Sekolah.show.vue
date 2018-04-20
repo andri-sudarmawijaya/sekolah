@@ -123,9 +123,6 @@ export default {
           this.model.email            = response.data.sekolah.email;
           this.model.kode_zona        = response.data.sekolah.kode_zona;
           this.model.user_id          = response.data.sekolah.user_id;
-
-
-          this.model.user_id          = response.data.sekolah.user_id;
           this.model.created_at       = response.data.sekolah.created_at;
           this.model.updated_at       = response.data.sekolah.updated_at;
 
