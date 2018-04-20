@@ -161,13 +161,12 @@
         <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
-            <label for="master_zona">Zona</label>
-            <v-select name="master_zona" v-model="model.master_zona" :options="master_zona" class="mb-4"></v-select>
+              <label for="kode_zona">Zona</label>
+              <input class="form-control" v-model="model.kode_zona" name="kode_zona" type="text" placeholder="Zona">
 
-            <field-messages name="master_zona" show="$invalid && $submitted" class="text-danger">
-              <small class="form-text text-success">Looks good!</small>
-              <small class="form-text text-danger" slot="required">Zona is a required field</small>
-            </field-messages>
+              <field-messages name="kode_zona" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+              </field-messages>
             </validate>
           </div>
         </div>
@@ -201,13 +200,13 @@
         </div>
 
         <div class="form-row mt-4">
-          <div class="col-md">            
+          <div class="col-md">
             <button type="submit" class="btn btn-primary">Submit</button>
 
-            <button type="reset" class="btn btn-secondary" @click="reset">Reset</button>            
+            <button type="reset" class="btn btn-secondary" @click="reset">Reset</button>
           </div>
         </div>
-        
+
       </vue-form>
     </div>
   </div>
@@ -235,7 +234,7 @@ export default {
           this.model.village_id     = response.data.sekolah.village_id;
           this.model.no_telp        = response.data.sekolah.no_telp;
           this.model.email          = response.data.sekolah.email;
-          this.model.master_zona    = response.data.sekolah.master_zona;
+          this.model.kode_zona        = response.data.sekolah.kode_zona;
 
         } else {
           alert('Failed');
@@ -250,9 +249,6 @@ export default {
       .then(response => {
           response.data.jenis_sekolah.forEach(element => {
             this.jenis_sekolah.push(element);
-          });
-          response.data.master_zona.forEach(element => {
-            this.master_zona.push(element);
           });
           if(response.data.user_special == true){
             response.data.user.forEach(user_element => {
@@ -284,13 +280,12 @@ export default {
         village_id: "",
         no_telp: "",
         email: "",
-        master_zona: "",
+        kode_zona: "",
         old_user_id:    "",
         old_npsn:       "",
       },
       jenis_sekolah: [],
-      user: [],
-      master_zona: [],
+      user: []
     }
   },
   methods: {
@@ -316,7 +311,7 @@ export default {
             village_id:         this.model.village_id,
             no_telp:            this.model.no_telp,
             email:              this.model.email,
-            kode_zona:            this.model.master_zona.id,
+            kode_zona:            this.model.kode_zona,
           })
           .then(response => {
             if (response.data.status == true) {
@@ -352,7 +347,7 @@ export default {
           this.model.village_id     = response.data.sekolah.village_id;
           this.model.no_telp        = response.data.sekolah.no_telp;
           this.model.email          = response.data.sekolah.email;
-          this.model.zona_id        = response.data.sekolah.zona_id;
+          this.model.kode_zona        = response.data.sekolah.kode_zona;
           } else {
             alert('Failed');
           }
