@@ -69,6 +69,7 @@ class SekolahController extends Controller
         if ($request->exists('filter')) {
             $query->where(function($q) use($request) {
                 $value = "%{$request->filter}%";
+
                 $q->where('nama', 'like', $value)
                     ->orWhere('npsn', 'like', $value)
                     ->orWhere('alamat', 'like', $value)
@@ -271,15 +272,12 @@ class SekolahController extends Controller
      */
     public function edit($id)
     {
-        $sekolah = $this->sekolah->findOrFail($id);
+        $sekolah = $this->sekolah->with(['jenis_sekolah', 'province', 'city', 'district', 'village', 'master_zona', 'user'])->findOrFail($id);
 
-        array_set($sekolah->jenis_sekolah, 'label', $sekolah->jenis_sekolah->jenis_sekolah);
-        array_set($sekolah->user, 'label', $sekolah->user->name);
-
-        $response['sekolah'] = $sekolah;
-        $response['user'] = $sekolah->user;
-        $response['jenis_sekolah'] = $sekolah->jenis_sekolah;
-        $response['status'] = true;
+        $response['sekolah']    = $sekolah;
+        $response['error']      = false;
+        $response['message']    = 'Success';
+        $response['status']     = true;
 
         return response()->json($response);
     }
