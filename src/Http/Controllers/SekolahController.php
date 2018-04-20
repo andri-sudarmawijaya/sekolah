@@ -79,7 +79,7 @@ class SekolahController extends Controller
 
         $perPage = request()->has('per_page') ? (int) request()->per_page : null;
 
-        $response = $query->with('jenis_sekolah', 'province', 'city', 'district', 'village', 'master_zona', 'user')->paginate($perPage);
+        $response = $query->with(['jenis_sekolah', 'province', 'city', 'district', 'village', 'master_zona', 'user'])->paginate($perPage);
 
         return response()->json($response)
             ->header('Access-Control-Allow-Origin', '*')
@@ -93,7 +93,7 @@ class SekolahController extends Controller
      */
     public function get()
     {
-        $sekolahs = $this->sekolah->with('jenis_sekolah', 'province', 'city', 'district', 'village', 'master_zona', 'user')->get();
+        $sekolahs = $this->sekolah->with(['jenis_sekolah', 'province', 'city', 'district', 'village', 'master_zona', 'user'])->get();
 
         foreach($sekolahs as $sekolah){
             array_set($sekolah, 'label', $sekolah->nama);
