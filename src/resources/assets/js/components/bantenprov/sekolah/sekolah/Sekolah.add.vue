@@ -409,11 +409,9 @@ export default {
       }
     },
     changeProvince() {
-      if (typeof this.model.province.id === 'undefined') {
-        this.model.city = "";
-      } else {
-        this.model.city = "";
+      this.model.city = '';
 
+      if (typeof this.model.province.id !== 'undefined') {
         axios.get('api/wilayah-indonesia/city/get/by-province/'+this.model.province.id)
           .then(response => {
             if (response.data.status == true && response.data.error == false) {
@@ -423,11 +421,9 @@ export default {
       }
     },
     changeCity() {
-      if (typeof this.model.city.id === 'undefined') {
-        this.model.district = "";
-      } else {
-        this.model.district = "";
+      this.model.district = '';
 
+      if (typeof this.model.city.id !== 'undefined') {
         axios.get('api/wilayah-indonesia/district/get/by-city/'+this.model.city.id)
           .then(response => {
             if (response.data.status == true && response.data.error == false) {
@@ -437,11 +433,9 @@ export default {
       }
     },
     changeDistrict() {
-      if (typeof this.model.district.id === 'undefined') {
-        this.model.village = "";
-      } else {
-        this.model.village = "";
+      this.model.village = '';
 
+      if (typeof this.model.district.id !== 'undefined') {
         axios.get('api/wilayah-indonesia/village/get/by-district/'+this.model.district.id)
           .then(response => {
             if (response.data.status == true && response.data.error == false) {
