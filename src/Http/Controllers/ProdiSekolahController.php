@@ -76,6 +76,26 @@ class ProdiSekolahController extends Controller
             ->header('Access-Control-Allow-Methods', 'GET');
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function get()
+    {
+        $prodi_sekolahs = $this->prodi_sekolah->with('sekolah', 'program_keahlian', 'user')->get();
+
+        foreach($prodi_sekolahs as $prodi_sekolah){
+            array_set($prodi_sekolah, 'label', $prodi_sekolah->nama);
+        }
+
+        $response['prodi_sekolahs']   = $prodi_sekolahs;
+        $response['error']      = false;
+        $response['message']    = 'Success';
+        $response['status']     = true;
+
+        return response()->json($response);
+    }
 
      /** Show the form for creating a new resource.
      *
