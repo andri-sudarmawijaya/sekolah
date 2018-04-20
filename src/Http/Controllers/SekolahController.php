@@ -200,7 +200,7 @@ class SekolahController extends Controller
 
         $validator = Validator::make($request->all(), [
             'nama'              => 'required|max:255',
-            'npsn'              => "required|max:255|unique:{$this->sekolah->getTable()},npsn,NULL,id,deleted_at,NULL",
+            'npsn'              => "required|numeric|max:255|unique:{$this->sekolah->getTable()},npsn,NULL,id,deleted_at,NULL",
             'jenis_sekolah_id'  => "required|exists:{$this->jenis_sekolah->getTable()},id",
             'alamat'            => 'required|max:255',
             'logo'              => 'required|max:255',
