@@ -95,7 +95,7 @@ export default {
         },
         {
           name: 'sekolah.nama',
-          title: 'Sekolah',
+          title: 'Nama Sekolah',
           sortField: 'sekolah_id',
           titleClass: 'center aligned'
         },
@@ -108,7 +108,7 @@ export default {
         },
         {
           name: 'kuota_siswa',
-          title: 'Kuota siswa',
+          title: 'Kuota Siswa',
           sortField: 'kuota_siswa',
           titleClass: 'center aligned'
         },
