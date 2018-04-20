@@ -200,7 +200,7 @@ class SekolahController extends Controller
 
         $validator = Validator::make($request->all(), [
             'nama'              => 'required|max:255',
-            'npsn'              => "required|numeric|max:255|unique:{$this->sekolah->getTable()},npsn,NULL,id,deleted_at,NULL",
+            'npsn'              => "required|between:4,17|unique:{$this->sekolah->getTable()},npsn,NULL,id,deleted_at,NULL",
             'jenis_sekolah_id'  => "required|exists:{$this->jenis_sekolah->getTable()},id",
             'alamat'            => 'required|max:255',
             'logo'              => 'required|max:255',
@@ -297,9 +297,9 @@ class SekolahController extends Controller
         $sekolah = $this->sekolah->findOrFail($id);
 
             $validator = Validator::make($request->all(), [
-                'label'               => 'required',
+                'nama'               => 'required',
                 'user_id'             => 'required|unique:sekolahs,user_id,'.$id,
-                'jenis_sekolah_id'    => 'required',
+                'jenis_sekolah_id'    => "required|exists:{$this->jenis_sekolah->getTable()},id",
                 'npsn'                => 'required|unique:sekolahs,npsn,'.$id,
                 'alamat'              => 'required',
                 'logo'                => 'required',
@@ -310,7 +310,7 @@ class SekolahController extends Controller
                 'village_id'          => 'required',
                 'no_telp    '         => 'required',
                 'email'               => 'required',
-                'kode_zona'             => 'required',
+                'kode_zona'           => 'required',
 
             ]);
 
@@ -330,7 +330,7 @@ class SekolahController extends Controller
                     $response['message'] = implode("\n",$message);
 
                 } else {
-                    $sekolah->label             = $request->input('label');
+                $sekolah->nama             = $request->input('nama');
                 $sekolah->jenis_sekolah_id  = $request->input('jenis_sekolah_id');
                 $sekolah->npsn              = $request->input('npsn');
                 $sekolah->alamat            = $request->input('alamat');
@@ -349,7 +349,7 @@ class SekolahController extends Controller
             }
 
         } else {
-            $sekolah->label             = $request->input('label');
+                $sekolah->nama             = $request->input('nama');
                 $sekolah->jenis_sekolah_id  = $request->input('jenis_sekolah_id');
                 $sekolah->npsn              = $request->input('npsn');
                 $sekolah->alamat            = $request->input('alamat');

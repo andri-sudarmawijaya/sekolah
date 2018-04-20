@@ -17,8 +17,8 @@
         <div class="form-row">
           <div class="col-md">
             <validate tag="div">
-              <label for="nama">Nama</label>
-              <input type="text" class="form-control" name="nama" v-model="model.nama" placeholder="Nama" required autofocus>
+              <label for="nama">Nama Sekolah</label>
+              <input type="text" class="form-control" name="nama" v-model="model.nama" placeholder="Nama Sekolah" required autofocus>
 
               <field-messages name="nama" show="$invalid && $submitted" class="text-danger">
                 <small class="form-text text-success">Looks good!</small>
@@ -32,7 +32,7 @@
           <div class="col-md">
             <validate tag="div">
               <label for="npsn">NPSN</label>
-              <input type="text" class="form-control" name="npsn" v-model="model.npsn" placeholder="NPSN" required>
+              <input type="number" class="form-control" name="npsn" v-model="model.npsn" placeholder="NPSN" required>
 
               <field-messages name="npsn" show="$invalid && $submitted" class="text-danger">
                 <small class="form-text text-success">Looks good!</small>
@@ -409,9 +409,11 @@ export default {
       }
     },
     changeProvince() {
-      this.model.city = '';
+      if (typeof this.model.province.id === 'undefined') {
+        this.model.city = "";
+      } else {
+        this.model.city = "";
 
-      if (typeof this.model.province.id !== 'undefined') {
         axios.get('api/wilayah-indonesia/city/get/by-province/'+this.model.province.id)
           .then(response => {
             if (response.data.status == true && response.data.error == false) {
@@ -421,9 +423,11 @@ export default {
       }
     },
     changeCity() {
-      this.model.district = '';
+      if (typeof this.model.city.id === 'undefined') {
+        this.model.district = "";
+      } else {
+        this.model.district = "";
 
-      if (typeof this.model.city.id !== 'undefined') {
         axios.get('api/wilayah-indonesia/district/get/by-city/'+this.model.city.id)
           .then(response => {
             if (response.data.status == true && response.data.error == false) {
@@ -433,9 +437,11 @@ export default {
       }
     },
     changeDistrict() {
-      this.model.village = '';
+      if (typeof this.model.district.id === 'undefined') {
+        this.model.village = "";
+      } else {
+        this.model.village = "";
 
-      if (typeof this.model.district.id !== 'undefined') {
         axios.get('api/wilayah-indonesia/village/get/by-district/'+this.model.district.id)
           .then(response => {
             if (response.data.status == true && response.data.error == false) {
