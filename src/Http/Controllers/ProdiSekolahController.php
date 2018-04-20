@@ -98,6 +98,27 @@ class ProdiSekolahController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getBySekolah($id)
+    {
+        $prodi_sekolahs = $this->prodi_sekolah->where('sekolah_id', '=', $id)->with(['program_keahlian'])->get();
+
+        foreach($prodi_sekolahs as $prodi_sekolah){
+            array_set($prodi_sekolah, 'label', $prodi_sekolah->program_keahlian->label);
+        }
+
+        $response['prodi_sekolahs'] = $prodi_sekolahs;
+        $response['message']        = 'Success';
+        $response['error']          = false;
+        $response['status']         = true;
+
+        return response()->json($response);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
