@@ -86,7 +86,11 @@ class ProdiSekolahController extends Controller
         $prodi_sekolahs = $this->prodi_sekolah->with(['sekolah', 'program_keahlian', 'user'])->get();
 
         foreach($prodi_sekolahs as $prodi_sekolah){
-            array_set($prodi_sekolah, 'label', $prodi_sekolah->nama);
+            if (isset($prodi_sekolah->program_keahlian->label)) {
+                array_set($prodi_sekolah, 'label', $prodi_sekolah->program_keahlian->label);
+            } else {
+                array_set($prodi_sekolah, 'label', 'Keterangan: '.$prodi_sekolah->keterangan);
+            }
         }
 
         $response['prodi_sekolahs']   = $prodi_sekolahs;
@@ -104,10 +108,14 @@ class ProdiSekolahController extends Controller
      */
     public function getBySekolah($id)
     {
-        $prodi_sekolahs = $this->prodi_sekolah->where('sekolah_id', '=', $id)->with(['program_keahlian'])->get();
+        $prodi_sekolahs = $this->prodi_sekolah->where('sekolah_id', '=', $id)->with(['sekolah', 'program_keahlian', 'user'])->get();
 
         foreach($prodi_sekolahs as $prodi_sekolah){
-            array_set($prodi_sekolah, 'label', $prodi_sekolah->program_keahlian->label);
+            if (isset($prodi_sekolah->program_keahlian->label)) {
+                array_set($prodi_sekolah, 'label', $prodi_sekolah->program_keahlian->label);
+            } else {
+                array_set($prodi_sekolah, 'label', 'Keterangan: '.$prodi_sekolah->keterangan);
+            }
         }
 
         $response['prodi_sekolahs'] = $prodi_sekolahs;
