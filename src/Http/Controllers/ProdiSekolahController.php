@@ -170,25 +170,22 @@ class ProdiSekolahController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\ProdiSekolah  $prodi_sekolah
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-     {
-         $prodi_sekolah = $this->prodi_sekolah->findOrFail($id);
+    {
+        $prodi_sekolah = $this->prodi_sekolah->with(['sekolah', 'program_keahlian', 'user'])->findOrFail($id);
 
-         array_set($prodi_sekolah, 'user', $prodi_sekolah->user->name);
-         array_set($prodi_sekolah, 'sekolah', $prodi_sekolah->sekolah->label);
-         array_set($prodi_sekolah, 'program_keahlian', $prodi_sekolah->program_keahlian->label);
+        $response['prodi_sekolah']  = $prodi_sekolah;
+        $response['error']          = false;
+        $response['message']        = 'Success';
+        $response['status']         = true;
 
-         $response['sekolah']           = $prodi_sekolah;
-         $response['program_keahlian']  = $prodi_sekolah;
-         $response['status']            = true;
-
-         return response()->json($response);
-     }
+        return response()->json($response);
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -198,16 +195,12 @@ class ProdiSekolahController extends Controller
      */
     public function edit($id)
     {
-        $prodi_sekolah = $this->prodi_sekolah->findOrFail($id);
+        $prodi_sekolah = $this->prodi_sekolah->with(['sekolah', 'program_keahlian', 'user'])->findOrFail($id);
 
-        array_set($prodi_sekolah->user, 'label', $prodi_sekolah->user->name);
-        array_set($prodi_sekolah->program_keahlian, 'program_keahlian', $prodi_sekolah->program_keahlian->label);
-
-        $response['user']               = $prodi_sekolah->user;
-        $response['sekolah']            = $prodi_sekolah;
-        $response['prodi_sekolah']      = $prodi_sekolah->sekolah;
-        $Response['program_keahlian']   = $prodi_sekolah->program_keahlian;
-        $response['status'] = true;
+        $response['prodi_sekolah']  = $prodi_sekolah;
+        $response['error']          = false;
+        $response['message']        = 'Success';
+        $response['status']         = true;
 
         return response()->json($response);
     }
