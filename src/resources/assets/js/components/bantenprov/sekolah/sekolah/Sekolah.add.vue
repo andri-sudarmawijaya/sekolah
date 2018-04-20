@@ -59,7 +59,7 @@
         <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
-              <label for="alamat">Alamat </label>
+              <label for="alamat">Alamat</label>
               <input type="text" class="form-control" name="alamat" v-model="model.alamat" placeholder="Alamat" required>
 
               <field-messages name="alamat" show="$invalid && $submitted" class="text-danger">
@@ -73,10 +73,10 @@
         <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
-              <label for="nomor_kk">Logo</label>
+              <label for="logo">Logo</label>
               <input type="text" class="form-control" name="logo" v-model="model.logo" placeholder="Logo" required>
 
-              <field-messages name="nomor_kk" show="$invalid && $submitted" class="text-danger">
+              <field-messages name="logo" show="$invalid && $submitted" class="text-danger">
                 <small class="form-text text-success">Looks good!</small>
                 <small class="form-text text-danger" slot="required">Label is a required field</small>
               </field-messages>
