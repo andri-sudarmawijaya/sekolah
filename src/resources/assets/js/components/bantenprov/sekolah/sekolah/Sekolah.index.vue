@@ -112,6 +112,12 @@ export default {
           titleClass: 'center aligned'
         },
         {
+          name: 'master_zona.label',
+          title: 'Zona',
+          sortField: 'kode_zona',
+          titleClass: 'center aligned'
+        },
+        {
           name: '__slot:actions',
           title: 'Actions',
           titleClass: 'center aligned',

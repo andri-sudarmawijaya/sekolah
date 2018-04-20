@@ -26,7 +26,7 @@ class CreateSekolahsTable extends Migration
 			$table->string('village_id')->nullable();
 			$table->string('no_telp');
 			$table->string('email');
-			$table->string('zona_id')->nullable();
+			$table->string('kode_zona')->nullable();
 			$table->integer('user_id')->nullable();
 			$table->timestamps();
 			$table->softDeletes();

@@ -51,7 +51,7 @@
           <dd class="col-8">{{ model.email }}</dd>
 
           <dt class="col-4">Zona</dt>
-          <dd class="col-8">{{ model.zona.id }}</dd>
+          <dd class="col-8">{{ model.master_zona.label }}</dd>
       </dl>
     </div>
 
@@ -90,7 +90,7 @@ export default {
         village_id        : "",
         no_telp           : "",
         email             : "",
-        zona_id           : "",
+        kode_zona         : "",
         user_id           : "",
 
         jenis_sekolah     : [],
@@ -98,7 +98,7 @@ export default {
         city              : [],
         district          : [],
         village           : [],
-        zona              : [],
+        master_zona       : [],
         user              : [],
       },
     }
@@ -121,7 +121,7 @@ export default {
           this.model.village_id       = response.data.sekolah.village_id;
           this.model.no_telp          = response.data.sekolah.no_telp;
           this.model.email            = response.data.sekolah.email;
-          this.model.zona_id          = response.data.sekolah.zona_id;
+          this.model.kode_zona        = response.data.sekolah.kode_zona;
           this.model.user_id          = response.data.sekolah.user_id;
 
 
@@ -134,7 +134,7 @@ export default {
           this.model.city             = response.data.sekolah.city;
           this.model.district         = response.data.sekolah.district;
           this.model.village          = response.data.sekolah.village;
-          this.model.zona             = response.data.sekolah.zona;
+          this.model.master_zona      = response.data.sekolah.master_zona;
           this.model.user             = response.data.sekolah.user;
 
           if (this.model.jenis_sekolah === null) {
@@ -157,8 +157,8 @@ export default {
             this.model.village = {"id": this.model.village_id,"name":""};
           }
 
-          if (this.model.zona === null) {
-            this.model.zona = {"id": this.model.zona_id,"name":""};
+          if (this.model.master_zona === null) {
+            this.model.master_zona = {"id": this.model.kode_zona,"label":""};
           }
 
           if (this.model.user === null) {

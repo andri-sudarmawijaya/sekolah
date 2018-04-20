@@ -185,10 +185,10 @@
         <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
-              <label for="zona_id">Zona</label>
-              <v-select name="zona_id" v-model="model.zona" :options="zona" placeholder="Zona" required></v-select>
+              <label for="kode_zona">Zona</label>
+              <v-select name="kode_zona" v-model="model.master_zona" :options="master_zona" placeholder="Zona" required></v-select>
 
-              <field-messages name="zona_id" show="$invalid && $submitted" class="text-danger">
+              <field-messages name="kode_zona" show="$invalid && $submitted" class="text-danger">
                 <small class="form-text text-success">Looks good!</small>
                 <small class="form-text text-danger" slot="required">User is a required field</small>
               </field-messages>
@@ -243,7 +243,7 @@ export default {
         village_id        : "",
         no_telp           : "",
         email             : "",
-        zona_id           : "",
+        kode_zona         : "",
         user_id           : "",
         created_at        : "",
         updated_at        : "",
@@ -253,7 +253,7 @@ export default {
         city              : "",
         district          : "",
         village           : "",
-        zona              : "",
+        master_zona       : "",
         user              : "",
       },
       jenis_sekolah : [],
@@ -261,7 +261,7 @@ export default {
       city          : [],
       district      : [],
       village       : [],
-      zona          : [],
+      master_zona   : [],
       user          : [],
     }
   },
@@ -272,7 +272,7 @@ export default {
       .then(response => {
         if (response.data.status == true && response.data.error == false) {
           this.jenis_sekolah  = response.data.jenis_sekolahs;
-          this.zona           = response.data.zonas;
+          this.master_zona    = response.data.master_zonas;
           this.model.user     = response.data.current_user;
 
           if(response.data.user_special == true){
@@ -344,7 +344,7 @@ export default {
             village_id        : this.model.village.id,
             no_telp           : this.model.no_telp,
             email             : this.model.email,
-            zona_id           : this.model.zona.id,
+            kode_zona         : this.model.master_zona.id,
             user_id           : this.model.user.id,
           })
           .then(response => {
@@ -441,7 +441,7 @@ export default {
         village_id        : "",
         no_telp           : "",
         email             : "",
-        zona_id           : "",
+        kode_zona         : "",
         user_id           : "",
         created_at        : "",
         updated_at        : "",
@@ -451,7 +451,7 @@ export default {
         city              : "",
         district          : "",
         village           : "",
-        zona              : "",
+        master_zona       : "",
         user              : "",
       };
     },

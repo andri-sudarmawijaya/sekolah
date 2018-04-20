@@ -28,7 +28,7 @@ class Sekolah extends Model
         'village_id',
         'no_telp',
         'email',
-        'zona_id',
+        'kode_zona',
         'user_id',
     ];
 
@@ -62,8 +62,8 @@ class Sekolah extends Model
         return $this->belongsTo('Laravolt\Indonesia\Models\Village','village_id');
     }
 
-    public function zona()
+    public function master_zona()
     {
-        return $this->belongsTo('Bantenprov\Zona\Models\Bantenprov\Zona\Zona','zona_id');
+        return $this->belongsTo('Bantenprov\Zona\Models\Bantenprov\Zona\MasterZona','kode_zona');
     }
 }

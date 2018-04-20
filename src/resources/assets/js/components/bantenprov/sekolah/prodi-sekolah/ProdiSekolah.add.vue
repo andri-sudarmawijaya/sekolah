@@ -17,30 +17,18 @@
         <div class="form-row">
           <div class="col-md">
             <validate tag="div">
-              <input class="form-control" v-model="model.Keterangan" required autofocus name="Keterangan" type="text" placeholder="Keterangan">
+            <label for="sekolah_id">Sekolah</label>
+            <v-select name="sekolah_id" v-model="model.sekolah" :options="sekolah" class="mb-4"></v-select>
 
-              <field-messages name="Keterangan" show="$invalid && $submitted" class="text-danger">
-                <small class="form-text text-success">Looks good!</small>
-                <small class="form-text text-danger" slot="required">Label is a required field</small>
-              </field-messages>
+            <field-messages name="sekolah_id" show="$invalid && $submitted" class="text-danger">
+              <small class="form-text text-success">Looks good!</small>
+              <small class="form-text text-danger" slot="required">Label is a required field</small>
+            </field-messages>
             </validate>
           </div>
         </div>
 
-        <div class="form-row mt-4">
-          <div class="col-md">
-            <validate tag="div">
-              <input class="form-control" v-model="model.kuota_siswa" required autofocus name="kuota_siswa" type="text" placeholder="Kuota Siswa">
-
-              <field-messages name="kuota_siswa" show="$invalid && $submitted" class="text-danger">
-                <small class="form-text text-success">Looks good!</small>
-                <small class="form-text text-danger" slot="required">Label is a required field</small>
-              </field-messages>
-            </validate>
-          </div>
-        </div>
-
-        <div class="form-row mt-4">
+         <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
             <label for="program_keahlian_id">Program Keahlian</label>
@@ -54,17 +42,28 @@
           </div>
         </div>
 
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+              <input class="form-control" v-model="model.kuota_siswa" required autofocus name="kuota_siswa" type="text" placeholder="Kuota Siswa">
+
+              <field-messages name="kuota_siswa" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+                <small class="form-text text-danger" slot="required">Kuota Siswa is a required field</small>
+              </field-messages>
+            </validate>
+          </div>
+        </div>
 
         <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
-            <label for="sekolah_id">Sekolah</label>
-            <v-select name="sekolah_id" v-model="model.sekolah" :options="sekolah" class="mb-4"></v-select>
+              <input class="form-control" v-model="model.keterangan" required autofocus name="keterangan" type="text" placeholder="Keterangan">
 
-            <field-messages name="sekolah_id" show="$invalid && $submitted" class="text-danger">
-              <small class="form-text text-success">Looks good!</small>
-              <small class="form-text text-danger" slot="required">Label is a required field</small>
-            </field-messages>
+              <field-messages name="keterangan" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+                <small class="form-text text-danger" slot="required">Keterangan is a required field</small>
+              </field-messages>
             </validate>
           </div>
         </div>
@@ -150,7 +149,7 @@ export default {
         return;
       } else {
         axios.post('api/prodi-sekolah', {
-            keterangan:           this.model.Keterangan,
+            keterangan:           this.model.keterangan,
             kuota_siswa:          this.model.kuota_siswa,
             sekolah_id:           this.model.sekolah.id,
             program_keahlian_id:  this.model.program_keahlian.id,
