@@ -115,7 +115,7 @@ class SekolahController extends Controller
     {
         $user_id        = isset(Auth::User()->id) ? Auth::User()->id : null;
         $sekolah        = $this->sekolah->getAttributes();
-        $jenis_sekolahs = $this->jenis_sekolah->all();
+        $jenis_sekolahs = $this->jenis_sekolah->getAttributes();
         $provinces      = $this->province->getAttributes();
         $cities         = $this->city->getAttributes();
         $districts      = $this->district->getAttributes();
