@@ -273,11 +273,25 @@ class SekolahController extends Controller
     public function edit($id)
     {
         $sekolah = $this->sekolah->with(['jenis_sekolah', 'province', 'city', 'district', 'village', 'master_zona', 'user'])->findOrFail($id);
+        
+        $response['sekolah']['province'] = array_add($sekolah->province, 'label', $sekolah->province->name);
+
+        $response['sekolah']['city'] = array_add($sekolah->city, 'label', $sekolah->city->name);
+
+        $response['sekolah']['district'] = array_add($sekolah->district, 'label', $sekolah->district->name);
+
+        $response['sekolah']['village'] = array_add($sekolah->village, 'label', $sekolah->village->name);
+
+        $response['sekolah']['jenis_sekolah'] = array_add($sekolah->jenis_sekolah, 'label', $sekolah->jenis_sekolah->jenis_sekolah);
+
+
+        
 
         $response['sekolah']    = $sekolah;
         $response['error']      = false;
         $response['message']    = 'Success';
         $response['status']     = true;
+
 
         return response()->json($response);
     }
@@ -297,20 +311,20 @@ class SekolahController extends Controller
         $sekolah = $this->sekolah->findOrFail($id);
 
             $validator = Validator::make($request->all(), [
-                'nama'               => 'required',
-                'user_id'             => 'required|unique:sekolahs,user_id,'.$id,
-                'jenis_sekolah_id'    => "required|exists:{$this->jenis_sekolah->getTable()},id",
-                'npsn'                => 'required|unique:sekolahs,npsn,'.$id,
-                'alamat'              => 'required',
-                'logo'                => 'required',
-                'foto_gedung'         => 'required',
-                'province_id'         => 'required',
-                'city_id'             => 'required',
-                'district_id'         => 'required',
-                'village_id'          => 'required',
-                'no_telp    '         => 'required',
-                'email'               => 'required',
-                'kode_zona'           => 'required',
+                'nama'              => 'required|max:255',
+                'npsn'              => "required|between:4,17|unique:{$this->sekolah->getTable()},npsn,NULL,id,deleted_at,NULL",
+                'jenis_sekolah_id'  => "required|exists:{$this->jenis_sekolah->getTable()},id",
+                'alamat'            => 'required|max:255',
+                'logo'              => 'required|max:255',
+                'foto_gedung'       => 'required|max:255',
+                'province_id'       => "required|exists:{$this->province->getTable()},id",
+                'city_id'           => "required|exists:{$this->city->getTable()},id",
+                'district_id'       => "required|exists:{$this->district->getTable()},id",
+                'village_id'        => "required|exists:{$this->village->getTable()},id",
+                'no_telp'           => 'required|digits_between:10,12',
+                'email'             => 'required|email|max:255',
+                'kode_zona'         => "required|exists:{$this->master_zona->getTable()},id",
+                'user_id'           => "required|exists:{$this->user->getTable()},id",
 
             ]);
 
@@ -322,15 +336,15 @@ class SekolahController extends Controller
                     }
                 }
 
-                $check_user   = $this->sekolah->where('id','!=', $id)->where('user_id', $request->user_id);
+               // $check_user   = $this->sekolah->where('id','!=', $id)->where('user_id', $request->user_id);
                 $check_npsn   = $this->sekolah->where('id','!=', $id)->where('npsn', $request->npsn);
 
 
-                if($check_npsn->count() > 0 || $check_user->count() > 0){
+                if($check_npsn->count() > 0 ){
                     $response['message'] = implode("\n",$message);
 
                 } else {
-                $sekolah->nama             = $request->input('nama');
+                $sekolah->nama              = $request->input('nama');
                 $sekolah->jenis_sekolah_id  = $request->input('jenis_sekolah_id');
                 $sekolah->npsn              = $request->input('npsn');
                 $sekolah->alamat            = $request->input('alamat');
@@ -342,14 +356,14 @@ class SekolahController extends Controller
                 $sekolah->village_id        = $request->input('village_id');
                 $sekolah->no_telp           = $request->input('no_telp');
                 $sekolah->email             = $request->input('email');
-                $sekolah->kode_zona           = $request->input('kode_zona');
+                $sekolah->kode_zona         = $request->input('kode_zona');
                 $sekolah->user_id           = $request->input('user_id');
-                    $sekolah->save();
-                    $response['message'] = 'success';
+                $sekolah->save();
+                $response['message'] = 'success';
             }
 
         } else {
-                $sekolah->nama             = $request->input('nama');
+                $sekolah->nama              = $request->input('nama');
                 $sekolah->jenis_sekolah_id  = $request->input('jenis_sekolah_id');
                 $sekolah->npsn              = $request->input('npsn');
                 $sekolah->alamat            = $request->input('alamat');
@@ -361,10 +375,10 @@ class SekolahController extends Controller
                 $sekolah->village_id        = $request->input('village_id');
                 $sekolah->no_telp           = $request->input('no_telp');
                 $sekolah->email             = $request->input('email');
-                $sekolah->kode_zona           = $request->input('kode_zona');
+                $sekolah->kode_zona         = $request->input('kode_zona');
                 $sekolah->user_id           = $request->input('user_id');
-            $sekolah->save();
-            $response['message'] = 'success';
+                $sekolah->save();
+                $response['message'] = 'success';
         }
 
         $response['status'] = true;
