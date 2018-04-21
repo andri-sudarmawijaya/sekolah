@@ -20,7 +20,7 @@
               <label for="nama">Nama Sekolah</label>
               <input class="form-control" v-model="model.nama" required autofocus name="nama" type="text" placeholder="Nama Sekolah">
 
-              <field-messages name="label" show="$invalid && $submitted" class="text-danger">
+              <field-messages name="nama" show="$invalid && $submitted" class="text-danger">
                 <small class="form-text text-success">Looks good!</small>
                 <small class="form-text text-danger" slot="required">Label is a required field</small>
               </field-messages>
@@ -165,7 +165,7 @@
         <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
-            <label for="kode_zona">Zona</label>
+            <label for="kode_zona">Zona </label>
             <v-select name="kode_zona" v-model="model.kode_zona" :options="master_zona" class="mb-4"></v-select>
 
             <field-messages name="kode_zona" show="$invalid && $submitted" class="text-danger">
@@ -227,19 +227,19 @@ export default {
           this.model.nama           = response.data.sekolah.nama;
           this.model.old_user_id    = response.data.sekolah.user_id;
           this.model.user           = response.data.sekolah.user.name;
-          this.model.jenis_sekolah  = response.data.sekolah.jenis_sekolah.jenis_sekolah;
+          this.model.jenis_sekolah  = response.data.sekolah.jenis_sekolah;
           this.model.npsn           = response.data.sekolah.npsn;
           this.model.old_npsn       = response.data.sekolah.npsn;
           this.model.alamat         = response.data.sekolah.alamat;
           this.model.logo           = response.data.sekolah.logo;
           this.model.foto_gedung    = response.data.sekolah.foto_gedung;
-          this.model.province       = response.data.sekolah.province.name;
-          this.model.city           = response.data.sekolah.city.name;
-          this.model.district       = response.data.sekolah.district.name;
-          this.model.village        = response.data.sekolah.village.name;
+          this.model.province       = response.data.sekolah.province;
+          this.model.city           = response.data.sekolah.city;
+          this.model.district       = response.data.sekolah.district;
+          this.model.village        = response.data.sekolah.village;
           this.model.no_telp        = response.data.sekolah.no_telp;
           this.model.email          = response.data.sekolah.email;
-          this.model.kode_zona      = response.data.sekolah.master_zona.label;
+          this.model.kode_zona      = response.data.sekolah.master_zona;
           //this.model.master_zonasona =response.data.master_zona_id;
 
         } else {
@@ -375,7 +375,8 @@ export default {
         return;
       } else {
         axios.put('api/sekolah/' + this.$route.params.id, {
-            nama:              this.model.nama,
+
+            nama:               this.model.nama,
             user_id:            this.model.user.id,
             old_user_id:        this.model.old_user_id,
             jenis_sekolah_id:   this.model.jenis_sekolah.id,
@@ -384,15 +385,16 @@ export default {
             alamat:             this.model.alamat,
             logo:               this.model.logo,
             foto_gedung:        this.model.foto_gedung,
-            province_id:        this.model.province_id,
-            city_id:            this.model.city_id,
-            district_id:        this.model.district_id,
-            village_id:         this.model.village_id,
+            province_id:        this.model.province.id,
+            city_id:            this.model.city.id,
+            district_id:        this.model.district.id,
+            village_id:         this.model.village.id,
             no_telp:            this.model.no_telp,
             email:              this.model.email,
-            kode_zona:          this.model.kode_zona,
+            kode_zona:          this.model.kode_zona.id,
           })
           .then(response => {
+            console.log(this.model.jenis_sekolah.id);
             if (response.data.status == true) {
               if(response.data.message == 'success'){
                 alert(response.data.message);
@@ -413,7 +415,7 @@ export default {
       if (typeof this.model.province.id === 'undefined') {
         this.model.city = "";
       } else {
-        this.model.city = "";
+        // this.model.city = "";
 
         axios.get('api/wilayah-indonesia/city/get/by-province/'+this.model.province.id)
           .then(response => {
@@ -427,7 +429,7 @@ export default {
       if (typeof this.model.city.id === 'undefined') {
         this.model.district = "";
       } else {
-        this.model.district = "";
+        // this.model.district = "";
 
         axios.get('api/wilayah-indonesia/district/get/by-city/'+this.model.city.id)
           .then(response => {
@@ -441,7 +443,7 @@ export default {
       if (typeof this.model.district.id === 'undefined') {
         this.model.village = "";
       } else {
-        this.model.village = "";
+        // this.model.village = "";
 
         axios.get('api/wilayah-indonesia/village/get/by-district/'+this.model.district.id)
           .then(response => {
@@ -455,20 +457,22 @@ export default {
       axios.get('api/sekolah/' + this.$route.params.id + '/edit')
         .then(response => {
           if (response.data.status == true) {
-            this.model.nama          = response.data.sekolah.nama;
-            this.model.user           = response.data.sekolah.user;
-            this.model.jenis_sekolah  = response.data.sekolah.jenis_sekolah.jenis_sekolah;
-            this.model.npsn           = response.data.sekolah.npsn;
-            this.model.alamat         = response.data.sekolah.alamat;
-            this.model.logo           = response.data.sekolah.logo;
-            this.model.foto_gedung    = response.data.sekolah.foto_gedung;
-            this.model.province_id    = response.data.sekolah.province_id;
-          this.model.city_id        = response.data.sekolah.city_id;
-          this.model.district_id    = response.data.sekolah.district_id;
-          this.model.village_id     = response.data.sekolah.village_id;
+          this.model.nama           = response.data.sekolah.nama;
+          this.model.old_user_id    = response.data.sekolah.user_id;
+        //  this.model.user           = response.data.sekolah.user.name;
+          this.model.jenis_sekolah  = response.data.sekolah.jenis_sekolah.jenis_sekolah;
+          this.model.npsn           = response.data.sekolah.npsn;
+          this.model.old_npsn       = response.data.sekolah.npsn;
+          this.model.alamat         = response.data.sekolah.alamat;
+          this.model.logo           = response.data.sekolah.logo;
+          this.model.foto_gedung    = response.data.sekolah.foto_gedung;
+          this.model.province       = response.data.sekolah.province;
+          this.model.city           = response.data.sekolah.city;
+          this.model.district       = response.data.sekolah.district;
+          this.model.village        = response.data.sekolah.village;
           this.model.no_telp        = response.data.sekolah.no_telp;
           this.model.email          = response.data.sekolah.email;
-          this.model.kode_zona        = response.data.sekolah.kode_zona;
+          this.model.kode_zona      = response.data.sekolah.master_zona.label;
           } else {
             alert('Failed');
           }
