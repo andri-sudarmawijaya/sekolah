@@ -26,11 +26,11 @@
           <dt class="col-4">Alamat</dt>
           <dd class="col-8">{{ model.alamat }}</dd>
 
-          <dt class="col-4">Logo</dt>
-          <dd class="col-8">{{ model.logo }}</dd>
-
-          <dt class="col-4">Foto Gedung</dt>
-          <dd class="col-8">{{ model.foto_gedung }}</dd>
+         <!--  <dt class="col-4">Logo</dt>
+         <dd class="col-8">{{ model.logo }}</dd>
+         
+         <dt class="col-4">Foto Gedung</dt>
+         <dd class="col-8">{{ model.foto_gedung }}</dd> -->
 
           <dt class="col-4">Provinsi</dt>
           <dd class="col-8">{{ model.province.name }}</dd>
@@ -135,31 +135,31 @@ export default {
           this.model.user             = response.data.sekolah.user;
 
           if (this.model.jenis_sekolah === null) {
-            this.model.jenis_sekolah = {"id":this.model.jenis_sekolah_id, "jenis_sekolah":""};
+            this.model.jenis_sekolah = {"id": this.model.jenis_sekolah_id,"jenis_sekolah":""};
           }
 
           if (this.model.province === null) {
-            this.model.province = {"id":this.model.province_id, "name":""};
+            this.model.province = {"id": this.model.province_id,"name":""};
           }
 
           if (this.model.city === null) {
-            this.model.city = {"id":this.model.city_id, "name":""};
+            this.model.city = {"id": this.model.city_id,"name":""};
           }
 
           if (this.model.district === null) {
-            this.model.district = {"id":this.model.district_id, "name":""};
+            this.model.district = {"id": this.model.district_id,"name":""};
           }
 
           if (this.model.village === null) {
-            this.model.village = {"id":this.model.village_id, "name":""};
+            this.model.village = {"id": this.model.village_id,"name":""};
           }
 
           if (this.model.master_zona === null) {
-            this.model.master_zona = {"id":this.model.kode_zona, "label":""};
+            this.model.master_zona = {"id": this.model.kode_zona,"label":""};
           }
 
           if (this.model.user === null) {
-            this.model.user = {"id":this.model.user_id, "name":""};
+            this.model.user = {"id": this.model.user_id,"name":""};
           }
         } else {
           swal(
