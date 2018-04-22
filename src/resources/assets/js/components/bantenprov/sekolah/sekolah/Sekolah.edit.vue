@@ -54,31 +54,31 @@
           </div>
         </div>
 
-        <div class="form-row mt-4">
+        <!-- <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
               <label for="logo">Logo</label>
               <input class="form-control" v-model="model.logo" name="logo" type="text" placeholder="Logo">
-
+        
               <field-messages name="logo" show="$invalid && $submitted" class="text-danger">
                 <small class="form-text text-success">Looks good!</small>
               </field-messages>
             </validate>
           </div>
         </div>
-
+        
         <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
               <label for="foto_gedung">Foto Gedung</label>
               <input class="form-control" v-model="model.foto_gedung" name="foto_gedung" type="text" placeholder="Foto Gedung">
-
+        
               <field-messages name="foto_gedung" show="$invalid && $submitted" class="text-danger">
                 <small class="form-text text-success">Looks good!</small>
               </field-messages>
             </validate>
           </div>
-        </div>
+        </div> -->
 
         <div class="form-row mt-4">
           <div class="col-md">
@@ -218,6 +218,9 @@
 </template>
 
 <script>
+
+import swal from 'sweetalert2';
+
 export default {
   mounted() {
     axios.get('api/sekolah/' + this.$route.params.id + '/edit')
@@ -394,20 +397,40 @@ export default {
             kode_zona:          this.model.kode_zona.id,
           })
           .then(response => {
-            console.log(this.model.jenis_sekolah.id);
             if (response.data.status == true) {
-              if(response.data.message == 'success'){
-                alert(response.data.message);
+              if(response.data.error == false){
+                swal(
+                  'Updated',
+                  'Yeah!!! Your data has been updated.',
+                  'success'
+                );
+
                 app.back();
               }else{
-                alert(response.data.message);
+                swal(
+                  'Failed',
+                  'Oops... '+response.data.message,
+                  'error'
+                );
               }
             } else {
-              alert(response.data.message);
+              swal(
+                'Failed',
+                'Oops... '+response.data.message,
+                'error'
+              );
+
+              app.back();
             }
           })
           .catch(function(response) {
-            alert('Break ' + response.data.message);
+            swal(
+              'Not Found',
+              'Oops... Your page is not found.',
+              'error'
+            );
+
+            app.back();
           });
       }
     },
