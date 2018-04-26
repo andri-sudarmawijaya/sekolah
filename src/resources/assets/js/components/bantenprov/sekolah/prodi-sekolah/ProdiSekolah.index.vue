@@ -94,6 +94,12 @@ export default {
           dataClass: 'right aligned'
         },
         {
+          name: 'sekolah_id',
+          title: 'NPSN',
+          sortField: 'sekolah_id',
+          titleClass: 'center aligned'
+        },
+        {
           name: 'sekolah.nama',
           title: 'Nama Sekolah',
           sortField: 'sekolah_id',
@@ -110,12 +116,6 @@ export default {
           name: 'kuota_siswa',
           title: 'Kuota Siswa',
           sortField: 'kuota_siswa',
-          titleClass: 'center aligned'
-        },
-        {
-          name: 'keterangan',
-          title: 'Keterangan',
-          sortField: 'keterangan',
           titleClass: 'center aligned'
         },
         {

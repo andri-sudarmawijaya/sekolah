@@ -56,19 +56,19 @@
           </div>
         </div>
 
-        <div class="form-row mt-4">
+        <!-- <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
               <label for="keterangan">Keterangan</label>
               <input type="text" class="form-control" name="keterangan" v-model="model.keterangan" placeholder="Keterangan" required>
-
+        
               <field-messages name="keterangan" show="$invalid && $submitted" class="text-danger">
                 <small class="form-text text-success">Looks good!</small>
                 <small class="form-text text-danger" slot="required">Label is a required field</small>
               </field-messages>
             </validate>
           </div>
-        </div>
+        </div> -->
 
         <div class="form-row mt-4">
           <div class="col-md">
@@ -108,7 +108,7 @@ export default {
         sekolah_id          : "",
         program_keahlian_id : "",
         kuota_siswa         : "",
-        keterangan          : "",
+        //keterangan          : "",
         user_id             : "",
         created_at          : "",
         updated_at          : "",
@@ -191,7 +191,7 @@ export default {
             sekolah_id            : this.model.sekolah.id,
             program_keahlian_id   : this.model.program_keahlian.id,
             kuota_siswa           : this.model.kuota_siswa,
-            keterangan            : this.model.keterangan,
+            //keterangan            : this.model.keterangan,
             user_id           : this.model.user.id,
           })
           .then(response => {
@@ -237,7 +237,7 @@ export default {
         sekolah_id          : "",
         program_keahlian_id : "",
         kuota_siswa         : "",
-        keterangan          : "",
+       // keterangan          : "",
         user_id             : "",
         created_at          : "",
         updated_at          : "",
