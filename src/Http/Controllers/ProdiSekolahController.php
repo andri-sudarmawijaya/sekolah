@@ -197,7 +197,7 @@ class ProdiSekolahController extends Controller
             'sekolah_id'            => "required|exists:{$this->sekolah->getTable()},id",
             'program_keahlian_id'   => "required|exists:{$this->program_keahlian->getTable()},id|unique:{$this->prodi_sekolah->getTable()},program_keahlian_id,NULL,id,sekolah_id,{$request->input('sekolah_id')},deleted_at,NULL",
             'kuota_siswa'           => 'required|numeric|min:0|max:100000',
-            'keterangan'            => 'required|max:255',
+            //'keterangan'            => 'max:255',
             'user_id'               => "required|exists:{$this->user->getTable()},id",
         ]);
 
@@ -208,7 +208,7 @@ class ProdiSekolahController extends Controller
             $prodi_sekolah->sekolah_id          = $request->input('sekolah_id');
             $prodi_sekolah->program_keahlian_id = $request->input('program_keahlian_id');
             $prodi_sekolah->kuota_siswa         = $request->input('kuota_siswa');
-            $prodi_sekolah->keterangan          = $request->input('keterangan');
+            //$prodi_sekolah->keterangan          = $request->input('keterangan');
             $prodi_sekolah->user_id             = $request->input('user_id');
             $prodi_sekolah->save();
 
@@ -252,7 +252,12 @@ class ProdiSekolahController extends Controller
     {
         $prodi_sekolah = $this->prodi_sekolah->with(['sekolah', 'program_keahlian', 'user'])->findOrFail($id);
 
+         $response['prodi_sekolah']['sekolah'] = array_add($prodi_sekolah->sekolah, 'label', $prodi_sekolah->sekolah->nama);
+
+
+
         $response['prodi_sekolah']  = $prodi_sekolah;
+        //$response['sekolah']        = $sekolahs;
         $response['error']          = false;
         $response['message']        = 'Success';
         $response['status']         = true;
@@ -269,31 +274,19 @@ class ProdiSekolahController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $response = array();
-        $message  = array();
-
         $prodi_sekolah = $this->prodi_sekolah->findOrFail($id);
 
             $validator = Validator::make($request->all(), [
                 'sekolah_id'             => 'required',
-                'user_id'                => 'required|unique:prodi_sekolahs,user_id,'.$id,
-                'keterangan'             => 'required',
+                'user_id'                => "required|exists:{$this->user->getTable()},id",
+                //'keterangan'             => 'required',
                 'kuota_siswa'            => 'required',
                 'program_keahlian_id'    => 'required',
             ]);
 
-            if($validator->fails()){
-
-                foreach($validator->messages()->getMessages() as $key => $error){
-                    foreach($error AS $error_get) {
-                        array_push($message, $error_get);
-                    }
-                }
-
-                $check_user   = $this->prodi_sekolah->where('id','!=', $id)->where('user_id', $request->user_id);
-
-            if($check_user->count() > 0){
-                    $response['message'] = implode("\n",$message);
+        if ($validator->fails()) {
+            $error      = true;
+            $message    = $validator->errors()->first();
 
             } else {
                 $prodi_sekolah->sekolah_id          = $request->input('sekolah_id');
@@ -303,21 +296,13 @@ class ProdiSekolahController extends Controller
                 $prodi_sekolah->kuota_siswa         = $request->input('kuota_siswa');
                 $prodi_sekolah->save();
 
-                $response['message'] = 'success';
-            }
-
-        } else {
-                $prodi_sekolah->sekolah_id          = $request->input('sekolah_id');
-                $prodi_sekolah->user_id             = $request->input('user_id');
-                $prodi_sekolah->program_keahlian_id = $request->input('program_keahlian_id');
-                $prodi_sekolah->keterangan          = $request->input('keterangan');
-                $prodi_sekolah->kuota_siswa         = $request->input('kuota_siswa');
-                $prodi_sekolah->save();
-
-            $response['message'] = 'success';
+            $error      = false;
+            $message    = 'Success';
         }
 
-        $response['status'] = true;
+        $response['error']      = $error;
+        $response['message']    = $message;
+        $response['status']     = true;
 
         return response()->json($response);
     }

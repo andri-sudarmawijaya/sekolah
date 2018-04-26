@@ -14,6 +14,9 @@
 
     <div class="card-body">
       <dl class="row">
+          <dt class="col-4">NPSN</dt>
+          <dd class="col-8">{{ model.sekolah.id }}</dd>
+
           <dt class="col-4">Nama Sekolah</dt>
           <dd class="col-8">{{ model.sekolah.nama }}</dd>
 
@@ -22,9 +25,6 @@
 
           <dt class="col-4">Kuota Siswa</dt>
           <dd class="col-8">{{ model.kuota_siswa }}</dd>
-
-          <dt class="col-4">Keterangan</dt>
-          <dd class="col-8">{{ model.keterangan }}</dd>
       </dl>
     </div>
 
