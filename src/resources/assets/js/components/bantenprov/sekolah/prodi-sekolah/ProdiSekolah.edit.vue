@@ -14,34 +14,21 @@
 
     <div class="card-body">
       <vue-form class="form-horizontal form-validation" :state="state" @submit.prevent="onSubmit">
-        <div class="form-row">
-          <div class="col-md">
-            <validate tag="div">
-              <label for="keterangan">Keterangan</label>
-              <input class="form-control" v-model="model.keterangan" required autofocus name="keterangan" type="text" placeholder="keterangan">
+       <!--  <div class="form-row">
+         <div class="col-md">
+           <validate tag="div">
+             <label for="keterangan">Keterangan</label>
+             <input class="form-control" v-model="model.keterangan" required autofocus name="keterangan" type="text" placeholder="keterangan">
+       
+             <field-messages name="keterangan" show="$invalid && $submitted" class="text-danger">
+               <small class="form-text text-success">Looks good!</small>
+               <small class="form-text text-danger" slot="required">Keterangan is a required field</small>
+             </field-messages>
+           </validate>
+         </div>
+       </div> -->
 
-              <field-messages name="keterangan" show="$invalid && $submitted" class="text-danger">
-                <small class="form-text text-success">Looks good!</small>
-                <small class="form-text text-danger" slot="required">Keterangan is a required field</small>
-              </field-messages>
-            </validate>
-          </div>
-        </div>
-
-        <div class="form-row mt-4">
-          <div class="col-md">
-            <validate tag="div">
-              <label for="kuota_siswa">Kuota Siswa</label>
-              <input class="form-control" v-model="model.kuota_siswa" name="kuota_siswa" type="text" placeholder="kuota_siswa">
-
-              <field-messages name="kuota_siswa" show="$invalid && $submitted" class="text-danger">
-                <small class="form-text text-success">Looks good!</small>
-              </field-messages>
-            </validate>
-          </div>
-        </div>
-
-        <div class="form-row mt-4">
+       <div class="form-row mt-4">
           <div class="col-md">
             <validate tag="div">
             <label for="sekolah">Sekolah</label>
@@ -65,6 +52,19 @@
               <small class="form-text text-success">Looks good!</small>
               <small class="form-text text-danger" slot="required">program keahlian is a required field</small>
             </field-messages>
+            </validate>
+          </div>
+        </div>
+
+        <div class="form-row mt-4">
+          <div class="col-md">
+            <validate tag="div">
+              <label for="kuota_siswa">Kuota Siswa</label>
+              <input class="form-control" v-model="model.kuota_siswa" name="kuota_siswa" type="text" placeholder="Kuota Siswa">
+
+              <field-messages name="kuota_siswa" show="$invalid && $submitted" class="text-danger">
+                <small class="form-text text-success">Looks good!</small>
+              </field-messages>
             </validate>
           </div>
         </div>
@@ -97,19 +97,21 @@
 </template>
 
 <script>
+
+import swal from 'sweetalert2';
+
 export default {
   mounted() {
     axios.get('api/prodi-sekolah/' + this.$route.params.id + '/edit')
       .then(response => {
         if (response.data.status == true) {
 
-          this.model.keterangan       = response.data.sekolah.keterangan;
-          this.model.kuota_siswa      = response.data.sekolah.kuota_siswa;
-          this.model.old_user_id      = response.data.sekolah.user_id;
-          this.model.user             = response.data.user;
-          this.model.program_keahlian = response.data.sekolah.program_keahlian;
-          this.model.old_user         = response.data.sekolah.user;
-          this.model.sekolah          = response.data.sekolah.sekolah;
+          this.model.kuota_siswa      = response.data.prodi_sekolah.kuota_siswa;
+          this.model.old_user_id      = response.data.prodi_sekolah.user_id;
+          this.model.user             = response.data.prodi_sekolah.user.name;
+          this.model.program_keahlian = response.data.prodi_sekolah.program_keahlian;
+          /*this.model.old_user         = response.data.prodi_sekolah.sekolah.user;*/
+          this.model.sekolah          = response.data.prodi_sekolah.sekolah;
 
 
 
@@ -118,40 +120,70 @@ export default {
         }
       })
       .catch(function(response) {
-        alert('Break');
+        alert('Break1');
         window.location.href = '#/admin/prodi-sekolah';
       });
 
       axios.get('api/prodi-sekolah/create')
       .then(response => {
-          response.data.sekolah.forEach(element => {
-            this.sekolah.push(element);
-          });
-          response.data.program_keahlian.forEach(element => {
-            this.program_keahlian.push(element);
-          });
+        if (response.data.status == true && response.data.error == false) {
+          this.sekolah              = response.data.sekolahs;
+          this.program_keahlian     = response.data.program_keahlians;
+          this.model.user           = response.data.current_user;
+
           if(response.data.user_special == true){
-            response.data.user.forEach(user_element => {
-              this.user.push(user_element);
-            });
+            this.user = response.data.users;
           }else{
-            this.user.push(response.data.user);
+            this.user.push(response.data.users);
           }
+        } else {
+          swal(
+            'Failed',
+            'Oops... '+response.data.message,
+            'error'
+          );
+
+          app.back();
+        }
+      })
+      axios.get('api/sekolah/get')
+      .then(response => {
+        if (response.data.status == true && response.data.error == false) {
+          this.sekolah = response.data.sekolahs;
+        } else {
+          swal(
+            'Failed',
+            'Oops... '+response.data.message,
+            'error'
+          );
+
+          app.back();
+        }
       })
       .catch(function(response) {
-        alert('Break');
-        window.location.href = '#/admin/prodi-sekolah';
-      })
+        swal(
+          'Not Found',
+          'Oops... Your page is not found.',
+          'error'
+        );
+
+        app.back();
+      });
   },
   data() {
     return {
       state: {},
       model: {
-        keterangan:          "",
         kuota_siswa:         "",
         user:                "",
         sekolah:             "",
         program_keahlian:    "",
+
+        user_id           : "",
+        created_at        : "",
+        updated_at        : "",
+        sekolah_id        : "",
+
 
       },
       user: [],
@@ -170,24 +202,44 @@ export default {
             user_id:            this.model.user.id,
             old_user_id:        this.model.old_user_id,
             sekolah_id:         this.model.sekolah.id,
-            keterangan:         this.model.keterangan,
             program_keahlian_id:this.model.program_keahlian.id,
             kuota_siswa:        this.model.kuota_siswa,
           })
           .then(response => {
             if (response.data.status == true) {
-              if(response.data.message == 'success'){
-                alert(response.data.message);
+              if(response.data.error == false){
+                swal(
+                  'Updated',
+                  'Yeah!!! Your data has been updated.',
+                  'success'
+                );
+
                 app.back();
               }else{
-                alert(response.data.message);
+                swal(
+                  'Failed',
+                  'Oops... '+response.data.message,
+                  'error'
+                );
               }
             } else {
-              alert(response.data.message);
+              swal(
+                'Failed',
+                'Oops... '+response.data.message,
+                'error'
+              );
+
+              app.back();
             }
           })
           .catch(function(response) {
-            alert('Break ' + response.data.message);
+            swal(
+              'Not Found',
+              'Oops... Your page is not found.',
+              'error'
+            );
+
+            app.back();
           });
       }
     },
@@ -195,11 +247,10 @@ export default {
       axios.get('api/prodi-sekolah/' + this.$route.params.id + '/edit')
         .then(response => {
           if (response.data.status == true) {
-            this.model.user             = response.data.sekolah.user;
-            this.model.sekolah          = response.data.sekolah.sekolah;
-            this.model.program_keahlian = response.data.sekolah.program_keahlian;
-            this.model.keterangan       = response.data.sekolah.keterangan;
-            this.model.kuota_siswa      = response.data.sekolah.kuota_siswa;
+            this.model.user             = response.data.prodi_sekolah.user.name;
+            this.model.sekolah          = response.data.prodi_sekolah.sekolah;
+            this.model.program_keahlian = response.data.prodi_sekolah.program_keahlian;
+            this.model.kuota_siswa      = response.data.prodi_sekolah.kuota_siswa;
           } else {
             alert('Failed');
           }
